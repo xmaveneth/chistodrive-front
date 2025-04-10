@@ -37,7 +37,7 @@ export default function Intro() {
                     </span>
                 </h2>
 
-                <p className="text-text-muted mb-6 sm:mb-7 xl:mb-10">
+                <p className="text-text-muted mb-6 sm:mb-7 xl:mb-13">
                     Множество автовладельцов доверяют нашему сервису
                 </p>
 
