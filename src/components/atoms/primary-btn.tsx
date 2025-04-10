@@ -11,7 +11,7 @@ export default function PrimaryBtn({ children, className, onClick }: PrimaryBtnP
         <Button
             onClick={onClick}
             className={cn(
-                'flex items-center justify-center cursor-pointer gap-2 bg-btn-bg rounded-full text-white px-[1.5em] py-[1em] transition-colors duration-200 ease-in hover:bg-btn-hover',
+                'flex items-center justify-center cursor-pointer gap-[0.25em] bg-btn-bg rounded-full text-white px-[1.5em] py-[0.75em] transition-colors duration-200 ease-in hover:bg-btn-hover',
                 className
             )}
         >

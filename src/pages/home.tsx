@@ -1,9 +1,12 @@
-import PrimaryBtn from "@/components/atoms/primary-btn";
+import Hero from "@/components/organisms/home/hero";
+import Intro from "@/components/organisms/home/intro";
 
 export default function Home() {
-    return <div>
-        Hello world
+    return (
+        <div>
+            <Hero />
 
-        <PrimaryBtn>Find car</PrimaryBtn>
-    </div>;
+            <Intro />
+        </div>
+    );
 }
