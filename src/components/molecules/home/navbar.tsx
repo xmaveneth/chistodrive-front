@@ -17,9 +17,9 @@ export default function Navbar() {
                 />
             </div>
 
-            <div className="flex items-center gap-1.5">
+            <div className="flex items-center gap-1.5 sm:mr-auto sm:ml-2 md:ml-5">
                 <MapPinIcon
-                    className="size-4 text-btn-bg shrink-0"
+                    className="size-4 md:size-6 text-btn-bg shrink-0"
                     aria-hidden="true"
                 />
                 Ваш город: Москва

@@ -1,15 +1,23 @@
-import Hero from "@/components/organisms/home/hero";
-import Intro from "@/components/organisms/home/intro";
-import Slider from "@/components/organisms/home/slider";
+import Hero from '@/components/organisms/home/hero';
+import Intro from '@/components/organisms/home/intro';
+import Slider from '@/components/organisms/home/slider';
+import ErrorFallback from '@/components/organisms/shared/error-boundary';
+import { ErrorBoundary } from 'react-error-boundary';
 
 export default function Home() {
     return (
         <div>
-            <Hero />
+            <ErrorBoundary FallbackComponent={ErrorFallback}>
+                <Hero />
+            </ErrorBoundary>
 
-            <Intro />
+            <ErrorBoundary FallbackComponent={ErrorFallback}>
+                <Intro />
+            </ErrorBoundary>
 
-            <Slider />
+            <ErrorBoundary FallbackComponent={ErrorFallback}>
+                <Slider />
+            </ErrorBoundary>
         </div>
     );
 }

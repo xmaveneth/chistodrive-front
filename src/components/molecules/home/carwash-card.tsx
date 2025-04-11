@@ -10,6 +10,7 @@ export type CarwashCardProps = {
     address: string;
     description: string;
     price: number;
+    url: string;
 };
 
 export default function CarwashCard({
@@ -19,6 +20,7 @@ export default function CarwashCard({
     address,
     description,
     price,
+    url
 }: CarwashCardProps) {
     const [isLoading, setIsLoading] = useState(true);
 
@@ -66,7 +68,7 @@ export default function CarwashCard({
                     <span className="text-2xl ml-1 text-btn-bg">{price} ₽</span>
                 </p>
                 <a
-                    href=""
+                    href={url}
                     target="_blank"
                     className="flex items-center justify-between gap-1 text-xs sm:text-sm text-white/70 hover:ring-1 hover:ring-btn-bg/50 rounded-sm p-1 transition-all duration-300 ease"
                 >

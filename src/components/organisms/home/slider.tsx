@@ -43,9 +43,10 @@ export default function Slider() {
     } = useCarousel({
         slides: carwashes && !isError ? [...carwashes, ...carwashes] : [],
         offset: 1,
-        animationDuration: 300,
+        animationDuration: 500,
         breakpoints: breakpoints,
     });
+
 
     if (isError || !carwashes?.length)
         return (
@@ -80,7 +81,7 @@ export default function Slider() {
                         <div
                             className={cn(
                                 'flex gap-[10px] sm:gap-[17px] xl:gap-[15px]',
-                                shouldAnimate && 'transition-transform linear'
+                                shouldAnimate && 'transition-transform ease-in-out'
                             )}
                             style={{
                                 transform: `translateX(-${offsetPx}px)`,
@@ -100,6 +101,7 @@ export default function Slider() {
                                             address={carwash.location}
                                             description={carwash.description}
                                             price={carwash.price}
+                                            url={carwash.url}
                                         />
                                     ) : null
                             )}
