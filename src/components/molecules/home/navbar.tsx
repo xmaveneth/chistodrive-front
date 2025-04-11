@@ -26,7 +26,7 @@ export default function Navbar() {
             </div>
 
             <div className="flex items-center gap-2 md:gap-4">
-                <Button className="hidden sm:block">Регистрация</Button>
+                <Button className="hidden sm:block hover:underline underline-offset-4">Регистрация</Button>
                 <PrimaryBtn className="py-2">
                     <UserIcon className="size-3" aria-hidden="true" />
                     Войти

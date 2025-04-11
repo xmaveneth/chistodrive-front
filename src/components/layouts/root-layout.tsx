@@ -1,3 +1,4 @@
+import Footer from '@/components/organisms/shared/footer';
 import { Link, Outlet, ScrollRestoration } from 'react-router-dom';
 
 export function RootLayout() {
@@ -10,6 +11,8 @@ export function RootLayout() {
                     <Link to='/account' className='underline underline-offset-2'>Account</Link>
                 </header>
                 <Outlet />
+
+                <Footer />
             </div>
         </>
     );

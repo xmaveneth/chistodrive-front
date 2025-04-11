@@ -1,16 +1,25 @@
 import CarouselBtn from '@/components/atoms/carousel-btn';
+import PrimaryBtn from '@/components/atoms/primary-btn';
 import CarwashCard from '@/components/molecules/home/carwash-card';
 import CarouselSkeleton from '@/components/organisms/home/carousel-skeleton';
 import { BreakpointConfig, useCarousel } from '@/lib/hooks/useCarousel';
 import { useCarwashes } from '@/lib/hooks/useCarwashes';
 import { cn } from '@/lib/utils/cn';
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/16/solid';
+import {
+    ChevronLeftIcon,
+    ChevronRightIcon,
+    MagnifyingGlassIcon,
+} from '@heroicons/react/16/solid';
 
 export type FetchedCarwash = {
     id: number;
     name: string;
     location: string;
+    img: string;
+    price: number;
+    rating: number;
     url: string;
+    description: string;
 };
 
 const breakpoints: BreakpointConfig[] = [
@@ -39,7 +48,11 @@ export default function Slider() {
     });
 
     if (isError || !carwashes?.length)
-        return <div className="text-white px-5 sm:px-12.5 xl:px-25">Произошла ошибка, попробуйте позже</div>;
+        return (
+            <div className="text-white primary-px primary-py">
+                Произошла ошибка, попробуйте позже
+            </div>
+        );
 
     const renderContent = () => {
         if (isLoading) {
@@ -62,7 +75,7 @@ export default function Slider() {
                     <div
                         onTouchStart={handleTouchStart}
                         onTouchEnd={handleTouchEnd}
-                        className="relative overflow-x-clip px-1"
+                        className="relative overflow-x-clip px-1 py-1"
                     >
                         <div
                             className={cn(
@@ -81,12 +94,12 @@ export default function Slider() {
                                     carwash != null ? (
                                         <CarwashCard
                                             key={carwash.id}
-                                            imgPath={carwash.url}
-                                            rating={4}
+                                            imgPath={carwash.img}
+                                            rating={carwash.rating}
                                             name={carwash.name}
                                             address={carwash.location}
-                                            description="Круглосуточная профессиональная автомойка и шиномонтаж, полировка кузова и фар, Ceramic Pro в ЮЗАО"
-                                            price={500}
+                                            description={carwash.description}
+                                            price={carwash.price}
                                         />
                                     ) : null
                             )}
@@ -120,6 +133,11 @@ export default function Slider() {
 
             {/*  h-91.25 sm:h-129.75 xl:h-117.25 */}
             {renderContent()}
+
+            <PrimaryBtn className="gap-2 mx-auto mt-5 sm:mt-9 xl:mt-12">
+                <MagnifyingGlassIcon className="size-5" />
+                Найти мойку
+            </PrimaryBtn>
         </section>
     );
 }
