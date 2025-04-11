@@ -46,7 +46,7 @@ export default function CarwashCard({
                     {address && address}
                 </p>
                 <div className="flex items-center mb-3">
-                    <div className="text-xs sm:text-sm mr-1.5">{`${rating},0`}</div>
+                    <div className="text-xs sm:text-sm mr-1.5">{rating}</div>
                     {Array.from({ length: 5 }, (_, index) => (
                         <StarIcon
                             key={index}
