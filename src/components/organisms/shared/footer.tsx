@@ -1,5 +1,4 @@
 import logo from '@/assets/images/home/logo.webp';
-import { Button } from '@headlessui/react';
 import tgSvg from '@/assets/svgs/tg.svg?raw';
 import vkSvg from '@/assets/svgs/vk.svg?raw';
 import FooterSocial from '@/components/atoms/footer-social';
@@ -12,13 +11,16 @@ export default function Footer() {
                 aria-label="Основная навигация"
                 className="flex items-center py-2 px-4.5 sm:px-9 sm:py-3 mb-4 md:mb-0 justify-between rounded-full bg-input-bg text-xs sm:text-sm gap-1 sm:gap-6"
             >
-                <div className="shrink-0 w-22 sm:w-32.25 hidden xs:block">
+                <Link
+                    to="/"
+                    className="shrink-0 w-22 sm:w-32.25 hidden xs:block"
+                >
                     <img
                         src={logo}
                         alt="Chisto.drive логотип"
                         className="object-contain"
                     />
-                </div>
+                </Link>
 
                 <div className="flex items-center gap-1.5 xs:gap-2.5">
                     <FooterSocial url="" html={vkSvg} />
@@ -26,17 +28,23 @@ export default function Footer() {
                 </div>
 
                 <div className="flex items-center gap-3 sm:gap-6 md:mr-auto">
-                    <Button className="block cursor-pointer hover:underline underline-offset-4">
+                    <Link
+                        to="/about"
+                        className="block hover:underline underline-offset-4"
+                    >
                         О сервисе
-                    </Button>
-                    <Button className="block cursor-pointer hover:underline underline-offset-4">
+                    </Link>
+                    <Link
+                        to="/rules"
+                        className="block hover:underline underline-offset-4"
+                    >
                         Правила сервиса
-                    </Button>
+                    </Link>
                 </div>
 
                 <Link
-                    to="/"
-                    className="text-text-muted text-sm hidden lg:block mr-2"
+                    to="/policy"
+                    className="text-text-muted text-sm hidden lg:block mr-2 hover:underline underline-offset-4"
                 >
                     Политика конфиденциальности
                 </Link>

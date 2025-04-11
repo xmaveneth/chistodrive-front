@@ -4,6 +4,7 @@ import CarwashCard from '@/components/molecules/home/carwash-card';
 import CarouselSkeleton from '@/components/organisms/home/carousel-skeleton';
 import { BreakpointConfig, useCarousel } from '@/lib/hooks/useCarousel';
 import { useCarwashes } from '@/lib/hooks/useCarwashes';
+import { useCityContext } from '@/lib/hooks/useCityContext';
 import { cn } from '@/lib/utils/cn';
 import {
     ChevronLeftIcon,
@@ -29,7 +30,8 @@ const breakpoints: BreakpointConfig[] = [
 ];
 
 export default function Slider() {
-    const { data: carwashes, isLoading, isError } = useCarwashes('Moscow');
+    const { currentCity } = useCityContext();
+    const { data: carwashes, isLoading, isError } = useCarwashes(currentCity.name);
 
     const {
         slides: carouselSlides,
@@ -91,10 +93,10 @@ export default function Slider() {
                             }}
                         >
                             {carouselSlides.map(
-                                (carwash: FetchedCarwash | null) =>
+                                (carwash: FetchedCarwash | null, index) =>
                                     carwash != null ? (
                                         <CarwashCard
-                                            key={carwash.id}
+                                            key={`carswash-${index}`}
                                             imgPath={carwash.img}
                                             rating={carwash.rating}
                                             name={carwash.name}
@@ -136,7 +138,7 @@ export default function Slider() {
             {/*  h-91.25 sm:h-129.75 xl:h-117.25 */}
             {renderContent()}
 
-            <PrimaryBtn className="gap-2 mx-auto mt-5 sm:mt-9 xl:mt-12">
+            <PrimaryBtn route='/search' className="gap-2 mx-auto mt-5 sm:mt-9 xl:mt-12">
                 <MagnifyingGlassIcon className="size-5" />
                 Найти мойку
             </PrimaryBtn>

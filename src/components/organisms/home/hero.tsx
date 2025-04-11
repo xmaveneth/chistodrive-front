@@ -33,7 +33,7 @@ export default function Hero() {
                 на автомойку максимально простым, быстрым и удобным
             </p>
 
-            <PrimaryBtn className="mt-7 mb-28 gap-2 sm:mt-10 sm:mb-36.25 xl:mt-9 xl:mb-30.25">
+            <PrimaryBtn route='/search' className="mt-7 mb-28 gap-2 sm:mt-10 sm:mb-36.25 xl:mt-9 xl:mb-30.25">
                 <MagnifyingGlassIcon className="size-5" />
                 Найти мойку
             </PrimaryBtn>

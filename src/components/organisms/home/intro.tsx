@@ -45,7 +45,7 @@ export default function Intro() {
                     <img src={intro} alt="Вид сбоку на серебристый спортивный автомобиль с чёрными дисками и задним спойлером" className='object-contain object-center w-full' />
                 </div>
 
-                <PrimaryBtn className="gap-2 mx-auto xl:ml-0 mb-2.5 xl:mb-4.5">
+                <PrimaryBtn route='/search' className="gap-2 mx-auto xl:ml-0 mb-2.5 xl:mb-4.5">
                     <MagnifyingGlassIcon className="size-5" />
                     Найти мойку
                 </PrimaryBtn>
