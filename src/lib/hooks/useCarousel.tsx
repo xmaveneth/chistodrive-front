@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export type BreakpointConfig = {
     screen: number;
@@ -34,9 +34,14 @@ export function useCarousel<T>({
 }: UseCarouselOptions<T>): UseCarouselReturn<T> {
     const [carouselSlides, setCarouselSlides] = useState<T[]>([...slides]);
     const [multiplier, setMultiplier] = useState(0);
+    const [currentSlide, setCurrentSlide] = useState(offset);
     const [shouldAnimate, setShouldAnimate] = useState(true);
     const [isAnimating, setIsAnimating] = useState(false);
     const [touchStartX, setTouchStartX] = useState<number | null>(null);
+
+    useEffect(() => {
+        setCarouselSlides([...slides]);
+    }, [slides.length])
 
     const getOffset = () => {
         const width = screen.width;
@@ -45,7 +50,7 @@ export function useCarousel<T>({
         return config.values.slide + config.values.gap;
     };
 
-    const offsetPx = getOffset() * multiplier + getOffset() * offset;
+    const offsetPx = getOffset() * multiplier + getOffset() * currentSlide;
 
     const handleSlide = (direction: 1 | -1) => {
         if (isAnimating) return;
@@ -63,6 +68,12 @@ export function useCarousel<T>({
                     ? [...prev.slice(1), prev[0]]
                     : [prev[prev.length - 1], ...prev.slice(0, -1)]
             );
+
+            setCurrentSlide((prev) => 
+                direction === 1
+                    ? (prev + 1) % carouselSlides.length
+                    : (prev - 1 + carouselSlides.length) % carouselSlides.length
+            )
 
             setIsAnimating(false);
         }, animationDuration);

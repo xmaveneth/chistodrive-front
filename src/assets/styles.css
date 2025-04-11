@@ -6,7 +6,7 @@
         'Noto Color Emoji';
 
     --breakpoint-xs: 420px;
-    
+
     --color-background: oklch(0.17 0.0175 268.55);
     --color-btn-bg: oklch(0.73 0.06 79.64);
     --color-btn-hover: oklch(0.68 0.0575 80.42);
@@ -22,4 +22,37 @@
 
 .primary-py {
     @apply py-6 sm:py-12.5 xl:py-18;
+}
+
+.card-loader {
+    width: 48px;
+    height: 48px;
+    display: inline-block;
+    position: relative;
+}
+.card-loader::after,
+.card-loader::before {
+    content: '';
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    position: absolute;
+    left: 0;
+    top: 0;
+    animation: animloader 2s linear infinite;
+}
+.card-loader::after {
+    animation-delay: 1s;
+}
+
+@keyframes animloader {
+    0% {
+        transform: scale(0);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 0;
+    }
 }
