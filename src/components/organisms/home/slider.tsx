@@ -25,7 +25,7 @@ export type FetchedCarwash = {
 
 const breakpoints: BreakpointConfig[] = [
     { screen: 640, values: { slide: 220, gap: 10 } },
-    { screen: 1280, values: { slide: 367, gap: 17 } },
+    { screen: 768, values: { slide: 367, gap: 17 } },
     { screen: Infinity, values: { slide: 331, gap: 15 } },
 ];
 
@@ -44,7 +44,7 @@ export default function Slider() {
         animationDuration,
     } = useCarousel({
         slides: carwashes && !isError ? [...carwashes, ...carwashes] : [],
-        offset: 1,
+        offset: 3,
         animationDuration: 500,
         breakpoints: breakpoints,
     });
