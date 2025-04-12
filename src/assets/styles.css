@@ -14,6 +14,8 @@
     --color-border: oklch(1 0 0 / 20%);
     --color-input-bg: oklch(1 0 0 / 5%);
     --color-hero-overlay: oklch(0.17 0.0175 268.55 / 40%);
+
+    --shadow-input: 0 0 0 3px #0e121b, 0 0 0 4px #e0e4ea;
 }
 
 .primary-px {

@@ -7,12 +7,14 @@ type PrimaryBtnProps = {
     className?: string;
     onClick?: () => void;
     route?: string;
+    type?: "button" | "submit" | "reset" | undefined;
 };
 export default function PrimaryBtn({
     children,
     className,
     onClick,
     route,
+    type = 'button'
 }: PrimaryBtnProps) {
     return route != null ? (
         <Link
@@ -26,6 +28,7 @@ export default function PrimaryBtn({
         </Link>
     ) : (
         <Button
+            type={type}
             onClick={onClick}
             className={cn(
                 'flex items-center justify-center cursor-pointer gap-[0.25em] bg-btn-bg rounded-full text-white px-[1.5em] py-[0.75em] transition-colors duration-200 ease-in hover:bg-btn-hover',

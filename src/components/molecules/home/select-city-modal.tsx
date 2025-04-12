@@ -26,12 +26,12 @@ export default function SelectCityModal() {
                     <XMarkIcon className="size-4" />
                     <span className="absolute inset-0 size-8 -translate-x-1/2"></span>
                 </Button>
-                <div className="px-3">
-                    <header className="mb-3">
+                <div className="px-2">
+                    <header className="mb-3 px-1">
                         <p className="text-lg text-center">Выберите город</p>
                     </header>
                     <SearchCity value={searchTerm} onChange={setSearchTerm} />
-                    <ul className="space-y-1 h-60 md:h-80 overflow-y-auto scrollbar-hidden">
+                    <ul className="space-y-1 h-60 md:h-80 overflow-y-auto scrollbar-hidden px-1 py-1">
                         <CityList
                             cities={cities}
                             searchTerm={searchTerm}
