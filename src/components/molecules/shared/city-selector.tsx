@@ -1,0 +1,45 @@
+import SelectCityModal from '@/components/molecules/home/select-city-modal';
+import { useCityContext } from '@/lib/hooks/useCityContext';
+import useClickOutside from '@/lib/hooks/useClickOutside';
+import { cn } from '@/lib/utils/cn';
+import { Button } from '@headlessui/react';
+import { MapPinIcon } from '@heroicons/react/16/solid';
+import { useRef } from 'react';
+
+export default function CitySelector() {
+    const { toggleCityList, currentCity, showCityList } = useCityContext();
+
+    const modalRef = useRef<HTMLDivElement | null>(null);
+
+    useClickOutside(modalRef, () => {
+        if (showCityList) toggleCityList(false);
+    });
+
+    return (
+        <div
+            ref={modalRef}
+            className="sm:relative sm:mr-auto sm:ml-5 min-w-55 sm:min-w-70"
+        >
+            <Button
+                onClick={() => toggleCityList()}
+                className="flex items-center gap-1.5 cursor-pointer"
+            >
+                <MapPinIcon
+                    className="size-4 sm:size-6 text-btn-bg shrink-0"
+                    aria-hidden="true"
+                />
+                Ваш город: {currentCity.ru_name}
+                <span
+                    className={cn(
+                        'text-[0.5rem] md:text-[0.625rem] mt-0.5 transition-transform ease-in-out duration-300',
+                        showCityList && 'rotate-180'
+                    )}
+                >
+                    &#9660;
+                </span>
+            </Button>
+
+            <SelectCityModal />
+        </div>
+    );
+}

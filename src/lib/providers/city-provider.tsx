@@ -1,6 +1,7 @@
+import { useLocalStorage } from '@/lib/hooks/useLocalStorage';
 import useToggle from '@/lib/hooks/useToggle';
 import { City, defaultCity } from '@/lib/types/city';
-import { useState, createContext } from 'react';
+import { createContext } from 'react';
 
 type CityContextType = {
     showCityList: boolean;
@@ -13,7 +14,7 @@ export const CityContext = createContext<CityContextType | null>(null);
 
 export function CityProvider({ children }: { children: React.ReactNode }) {
     const [showCityList, toggleCityList] = useToggle(false)
-    const [currentCity, setCurrentCity] = useState<City>(defaultCity);
+    const [currentCity, setCurrentCity] = useLocalStorage<City>('currentCity', defaultCity);
 
     function selectCity(city: City) {
         setCurrentCity(city);
