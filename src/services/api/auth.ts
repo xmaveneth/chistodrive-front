@@ -36,3 +36,13 @@ export const signupUser = async ({
 
     return response.data;
 };
+
+type CurrentUserResponse = {
+    name: string;
+    telephone: string;
+};
+
+export const getCurrentUser = async (): Promise<CurrentUserResponse> => {
+    const response = await axiosInstance.get('/api/profile/me');
+    return response.data;
+};

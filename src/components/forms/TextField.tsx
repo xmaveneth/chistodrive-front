@@ -8,7 +8,6 @@ type TextFieldProps = {
     placeholder?: string;
     error?: string;
     shouldFocus?: boolean;
-    // Register props from useForm
     registration: React.ComponentProps<'input'>;
 };
 

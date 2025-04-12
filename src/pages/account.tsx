@@ -1,4 +1,10 @@
+import { useCurrentUser } from '@/lib/hooks/useCurrentUser';
 
 export default function Account() {
-    return 'This is the account page';
+    const { data: user, isLoading, isError } = useCurrentUser();
+
+    if (isLoading) return <p>Загрузка...</p>;
+    if (isError || !user) return <p>Вы не вошли в систему</p>;
+
+    return <p>Здравствуйте, {user.name}</p>;
 }
