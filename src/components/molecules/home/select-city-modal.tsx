@@ -1,5 +1,5 @@
+import SearchField from '@/components/forms/search-field';
 import CityList from '@/components/molecules/home/city-list';
-import SearchCity from '@/components/molecules/home/search-city';
 import { useCities } from '@/lib/hooks/useCities';
 import { useCityContext } from '@/lib/hooks/useCityContext';
 import { Button, Transition } from '@headlessui/react';
@@ -30,7 +30,12 @@ export default function SelectCityModal() {
                     <header className="mb-3 px-1">
                         <p className="text-lg text-center">Выберите город</p>
                     </header>
-                    <SearchCity value={searchTerm} onChange={setSearchTerm} />
+                    <SearchField
+                        value={searchTerm}
+                        onChange={setSearchTerm}
+                        placeholder="Ваш город"
+                        className="w-full"
+                    />
                     <ul className="space-y-1 h-60 md:h-80 overflow-y-auto scrollbar-hidden px-1 py-1">
                         <CityList
                             cities={cities}

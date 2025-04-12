@@ -1,6 +1,6 @@
 import PrimaryBtn from '@/components/atoms/primary-btn';
-import PasswordField from '@/components/forms/PasswordField';
-import TextField from '@/components/forms/TextField';
+import PasswordField from '@/components/forms/password-field';
+import TextField from '@/components/forms/text-field';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { loginUser } from '@/services/api/auth';

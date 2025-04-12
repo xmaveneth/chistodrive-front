@@ -1,4 +1,4 @@
-import ErrorField from '@/components/forms/ErrorField';
+import ErrorField from '@/components/forms/error-field';
 import { Field, Label, Checkbox } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/16/solid';
 import { RefCallBack } from 'react-hook-form';

@@ -1,9 +1,8 @@
-import logo from '@/assets/images/home/logo.webp';
 import { Button } from '@headlessui/react';
-import PrimaryBtn from '@/components/atoms/primary-btn';
-import { UserIcon } from '@heroicons/react/16/solid';
 import CitySelector from '@/components/molecules/shared/city-selector';
 import { useAuthContext } from '@/lib/hooks/useAuthContext';
+import LoginBtn from '@/components/atoms/login-btn';
+import Logo from '@/components/atoms/logo';
 
 export default function Navbar() {
     const { toggleLoginDialog, toggleSignupDialog } = useAuthContext();
@@ -14,15 +13,9 @@ export default function Navbar() {
                 aria-label="Основная навигация"
                 className="flex relative items-center py-2 pr-2.5 pl-4.5 sm:py-2.5 sm:pr-5 sm:pl-9 justify-between rounded-full bg-background text-xs sm:text-sm gap-1"
             >
-                <div className="shrink-0 w-22 sm:w-32.25 hidden sm:block">
-                    <img
-                        src={logo}
-                        alt="Chisto.drive логотип"
-                        className="object-contain"
-                    />
-                </div>
+                <Logo className="shrink-0 w-22 sm:w-32.25 hidden sm:block" />
 
-                <CitySelector />
+                <CitySelector className='sm:mr-auto sm:ml-5 min-w-55 sm:min-w-70 z-10' />
 
                 <div className="flex items-center gap-2 md:gap-4">
                     <Button
@@ -31,13 +24,7 @@ export default function Navbar() {
                     >
                         Регистрация
                     </Button>
-                    <PrimaryBtn
-                        onClick={() => toggleLoginDialog(true)}
-                        className="py-2"
-                    >
-                        <UserIcon className="size-3" aria-hidden="true" />
-                        Войти
-                    </PrimaryBtn>
+                    <LoginBtn onClick={() => toggleLoginDialog(true)}/>
                 </div>
             </nav>
         </>

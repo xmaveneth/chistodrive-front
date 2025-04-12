@@ -1,8 +1,8 @@
 import { Field, Input, Label } from '@headlessui/react';
 import { useState } from 'react';
-import ErrorField from './ErrorField';
-import HintField from './HintField';
-import ShowInputBtn from './ShowInputBtn';
+import ErrorField from './error-field';
+import HintField from './hint-field';
+import ShowInputBtn from './show-input-btn';
 import { cn } from '@/lib/utils/cn';
 
 type PasswordFieldProps = {

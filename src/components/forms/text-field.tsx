@@ -1,6 +1,6 @@
 import { Field, Input, Label } from '@headlessui/react';
 import clsx from 'clsx';
-import ErrorField from './ErrorField';
+import ErrorField from './error-field';
 
 type TextFieldProps = {
     label: string;

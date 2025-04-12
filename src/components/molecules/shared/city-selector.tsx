@@ -6,7 +6,11 @@ import { Button } from '@headlessui/react';
 import { MapPinIcon } from '@heroicons/react/16/solid';
 import { useRef } from 'react';
 
-export default function CitySelector() {
+type CitySelectorProps = {
+    className?: string;
+}
+
+export default function CitySelector({className}: CitySelectorProps) {
     const { toggleCityList, currentCity, showCityList } = useCityContext();
 
     const modalRef = useRef<HTMLDivElement | null>(null);
@@ -18,7 +22,7 @@ export default function CitySelector() {
     return (
         <div
             ref={modalRef}
-            className="sm:relative sm:mr-auto sm:ml-5 min-w-55 sm:min-w-70"
+            className={cn("sm:relative", className)}
         >
             <Button
                 onClick={() => toggleCityList()}

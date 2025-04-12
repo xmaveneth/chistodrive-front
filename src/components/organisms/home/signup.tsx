@@ -1,6 +1,6 @@
 import PrimaryBtn from '@/components/atoms/primary-btn';
-import PasswordField from '@/components/forms/PasswordField';
-import TextField from '@/components/forms/TextField';
+import PasswordField from '@/components/forms/password-field';
+import TextField from '@/components/forms/text-field';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { signupUser } from '@/services/api/auth';
@@ -9,7 +9,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { AxiosError } from 'axios';
 import { Button } from '@headlessui/react';
 import { useNavigate } from 'react-router-dom';
-import CheckboxField from '@/components/forms/CheckboxField';
+import CheckboxField from '@/components/forms/checkbox-field';
 const signupSchema = z
     .object({
         name: z.string().min(1, 'Введите имя'),
