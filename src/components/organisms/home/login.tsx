@@ -9,6 +9,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { AxiosError } from 'axios';
 import { Button } from '@headlessui/react';
 import { useNavigate } from 'react-router-dom';
+import { useAuthContext } from '@/lib/hooks/useAuthContext';
+import Cookies from 'js-cookie';
 
 const loginSchema = z.object({
     telephone: z
@@ -21,9 +23,10 @@ type LoginFormInputs = z.infer<typeof loginSchema>;
 
 type LoginProps = {
     onClick: () => void;
-}
-export default function Login({onClick}: LoginProps) {
+};
+export default function Login({ onClick }: LoginProps) {
     const navigate = useNavigate();
+    const { toggleLoginDialog } = useAuthContext();
 
     const {
         register,
@@ -36,8 +39,18 @@ export default function Login({onClick}: LoginProps) {
 
     const mutation = useMutation({
         mutationFn: loginUser,
-        onSuccess: () => {
+        onSuccess: (data) => {
+            Cookies.set('access_token', data.access_token, {
+                secure: true,
+                sameSite: 'Strict',
+            });
+            Cookies.set('refresh_token', data.refresh_token, {
+                secure: true,
+                sameSite: 'Strict',
+            });
+
             navigate('/account');
+            toggleLoginDialog(false);
         },
         onError: (error: unknown) => {
             if (error instanceof AxiosError && error.response) {
@@ -80,7 +93,10 @@ export default function Login({onClick}: LoginProps) {
                 Войти
             </PrimaryBtn>
 
-            <Button onClick={onClick} className="underline underline-offset-3 text-center cursor-pointer">
+            <Button
+                onClick={onClick}
+                className="underline underline-offset-3 text-center cursor-pointer"
+            >
                 У вас еще нет аккаунта? Зарегистироваться
             </Button>
         </form>

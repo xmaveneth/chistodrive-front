@@ -13,6 +13,7 @@ export function RootLayout() {
         toggleLoginDialog,
         toggleSignupDialog,
     } = useAuthContext();
+    
     return (
         <CityProvider>
             <ScrollRestoration />

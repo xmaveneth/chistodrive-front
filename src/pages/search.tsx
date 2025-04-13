@@ -2,11 +2,20 @@ import LoginBtn from '@/components/atoms/login-btn';
 import Logo from '@/components/atoms/logo';
 import CitySelector from '@/components/molecules/shared/city-selector';
 import { useAuthContext } from '@/lib/hooks/useAuthContext';
-import 'leaflet/dist/leaflet.css';
 import { MapContainer, TileLayer, Marker, Tooltip } from 'react-leaflet';
 import { Address, fakeAddresses } from '@/lib/types/address';
 import SearchField from '@/components/forms/search-field';
 import SelectField from '@/components/forms/select-field';
+import 'leaflet/dist/leaflet.css';
+
+import L from 'leaflet';
+delete (L.Icon.Default.prototype as any)._getIconUrl;
+
+L.Icon.Default.mergeOptions({
+    iconRetinaUrl: 'images/leaflet/marker-icon-2x.png',
+    iconUrl: 'images/leaflet/marker-icon.png',
+    shadowUrl: 'images/leaflet/marker-shadow.png',
+});
 
 export default function Search() {
     const { toggleLoginDialog } = useAuthContext();
@@ -14,7 +23,7 @@ export default function Search() {
     return (
         <div className="primary-px primary-py">
             <header className="flex items-center justify-between mb-6 sm:mb-10 xl:mb-12">
-                <CitySelector className="z-[1200]" />
+                <CitySelector className="z-10" />
 
                 <Logo className="w-33.5 hidden sm:block md:w-80 xl:w-123.5" />
 
@@ -29,10 +38,15 @@ export default function Search() {
                         placeholder="Поиск по названию"
                         className="w-48 text-sm"
                     />
-                    <SelectField values={people} value='Tom Cook' onChange={() => {}} className='w-48' />
+                    <SelectField
+                        values={people}
+                        value="Tom Cook"
+                        onChange={() => {}}
+                        className="w-48"
+                    />
                 </div>
 
-                <div className="rounded-3xl overflow-clip">
+                <div className="rounded-3xl overflow-clip z-0">
                     <AddressMap addresses={fakeAddresses} />
                 </div>
             </section>
@@ -58,7 +72,7 @@ function AddressMap({ addresses }: MapProps) {
             center={[addresses[0].lat, addresses[0].lng]}
             zoom={12}
             scrollWheelZoom={true}
-            style={{ height: '500px', width: '100%' }}
+            style={{ height: '500px', width: '100%', zIndex: '0' }}
         >
             <TileLayer
                 attribution='&copy; <a href="https://osm.org">OpenStreetMap</a>'

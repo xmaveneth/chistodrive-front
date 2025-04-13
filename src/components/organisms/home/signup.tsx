@@ -10,6 +10,7 @@ import { AxiosError } from 'axios';
 import { Button } from '@headlessui/react';
 import { useNavigate } from 'react-router-dom';
 import CheckboxField from '@/components/forms/checkbox-field';
+import { useAuthContext } from '@/lib/hooks/useAuthContext';
 const signupSchema = z
     .object({
         name: z.string().min(1, 'Введите имя'),
@@ -44,6 +45,7 @@ type SignupProps = {
 
 export default function Signup({ onClick }: SignupProps) {
     const navigate = useNavigate();
+     const { toggleSignupDialog } = useAuthContext();
 
     const {
         register,
@@ -60,6 +62,7 @@ export default function Signup({ onClick }: SignupProps) {
             signupUser({ name, telephone, password }),
         onSuccess: () => {
             navigate('/account');
+            toggleSignupDialog(false);
         },
         onError: (error: unknown) => {
             if (error instanceof AxiosError && error.response) {

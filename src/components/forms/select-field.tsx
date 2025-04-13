@@ -35,7 +35,7 @@ export default function SelectField({value, onChange, values, className}: Select
                     anchor="bottom"
                     transition
                     className={cn(
-                        'w-[var(--button-width)] rounded-xl z-[1500] border border-white/5 bg-background p-1 [--anchor-gap:var(--spacing-1)] focus:outline-none',
+                        'w-[var(--button-width)] rounded-xl z-10 border border-white/5 bg-background p-1 [--anchor-gap:var(--spacing-1)] focus:outline-none',
                         'transition duration-100 ease-in data-[leave]:data-[closed]:opacity-0'
                     )}
                 >
