@@ -9,6 +9,7 @@ import SelectField from '@/components/forms/select-field';
 import 'leaflet/dist/leaflet.css';
 
 import L from 'leaflet';
+
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 
 L.Icon.Default.mergeOptions({
