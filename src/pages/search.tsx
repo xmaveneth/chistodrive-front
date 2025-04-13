@@ -9,6 +9,7 @@ import SelectField from '@/components/forms/select-field';
 import 'leaflet/dist/leaflet.css';
 
 import L from 'leaflet';
+import SearchHeader from '@/components/molecules/search/search-header';
 
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 
@@ -19,17 +20,10 @@ L.Icon.Default.mergeOptions({
 });
 
 export default function Search() {
-    const { toggleLoginDialog } = useAuthContext();
 
     return (
         <div className="primary-px primary-py">
-            <header className="flex items-center justify-between mb-6 sm:mb-10 xl:mb-12">
-                <CitySelector className="z-10" />
-
-                <Logo className="w-33.5 hidden sm:block md:w-80 xl:w-123.5" />
-
-                <LoginBtn onClick={() => toggleLoginDialog(true)} />
-            </header>
+            <SearchHeader />
 
             <section className="px-4 sm:px-8 sm:pb-9 xl:pb-8 xl:px-9 xl:pt-7 pt-5 pb-7 border border-border rounded-xl">
                 <div className="mb-3.5 flex items-center gap-3">
@@ -76,7 +70,7 @@ function AddressMap({ addresses }: MapProps) {
             style={{ height: '500px', width: '100%', zIndex: '0' }}
         >
             <TileLayer
-                attribution='&copy; <a href="https://osm.org">OpenStreetMap</a>'
+              /*   attribution='&copy; <a href="https://osm.org">OpenStreetMap</a>' */
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
             {addresses.map((addr, idx) => (

@@ -68,3 +68,7 @@
 .scrollbar-hidden::-webkit-scrollbar {
     display: none;
 }
+
+.leaflet-control-attribution a {
+    display: none !important;
+}
