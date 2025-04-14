@@ -26,13 +26,13 @@ export default function CitySelector({className}: CitySelectorProps) {
         >
             <Button
                 onClick={() => toggleCityList()}
-                className="flex items-center gap-1.5 cursor-pointer"
+                className="flex items-center gap-1.5 cursor-pointer text-sm sm:text-base"
             >
                 <MapPinIcon
                     className="size-4 sm:size-6 text-btn-bg shrink-0"
                     aria-hidden="true"
                 />
-                Ваш город: {currentCity.ru_name}
+                <span className='hidden xs:inline'>Ваш город: </span>{currentCity.ru_name}
                 <span
                     className={cn(
                         'text-[0.5rem] md:text-[0.625rem] mt-0.5 transition-transform ease-in-out duration-300',

@@ -62,8 +62,10 @@ export default function PriceRangePicker({
                             <div
                                 key={key}
                                 {...rest}
-                                className="size-2.5 bg-btn-bg rounded-full shadow-md"
-                            />
+                                className="size-2.5 bg-btn-bg rounded-full shadow-md relative"
+                            >
+                                <span className="absolute size-7 left-1/2 top-1/2 -translate-1/2 [@media(pointer:fine)]:hidden"></span>
+                            </div>
                         );
                     }}
                 />
