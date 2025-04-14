@@ -56,12 +56,16 @@ export default function PriceRangePicker({
                             {children}
                         </div>
                     )}
-                    renderThumb={({ props }) => (
-                        <div
-                            {...props}
-                            className="size-2.5 bg-btn-bg rounded-full shadow-md"
-                        />
-                    )}
+                    renderThumb={({ props }) => {
+                        const { key, ...rest } = props;
+                        return (
+                            <div
+                                key={key}
+                                {...rest}
+                                className="size-2.5 bg-btn-bg rounded-full shadow-md"
+                            />
+                        );
+                    }}
                 />
             </div>
         </div>

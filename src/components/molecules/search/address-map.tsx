@@ -1,7 +1,8 @@
-import { Address } from '@/lib/types/address';
 import { MapContainer, TileLayer, Marker, Tooltip } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
+import { useSearchServicesContext } from '@/lib/hooks/useSearchServicesContext';
+import { convertToAddresses } from '@/lib/utils/get-filter-options';
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 
 L.Icon.Default.mergeOptions({
@@ -10,11 +11,13 @@ L.Icon.Default.mergeOptions({
     shadowUrl: 'images/leaflet/marker-shadow.png',
 });
 
-type AddressMapProps = {
-    addresses: Address[];
-};
+export default function AddressMap() {
+    const { servicesData } = useSearchServicesContext();
 
-export default function AddressMap({ addresses }: AddressMapProps) {
+    const addresses = convertToAddresses(servicesData?.data);
+
+    if (addresses.length === 0) return null;
+
     return (
         <MapContainer
             center={[addresses[0].lat, addresses[0].lng]}

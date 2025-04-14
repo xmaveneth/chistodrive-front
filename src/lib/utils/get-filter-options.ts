@@ -1,65 +1,104 @@
+import { Address } from '@/lib/types/address';
 import { Filters } from '@/lib/types/filters';
+import { ServiceResult } from '@/lib/utils/search-services';
 
-type Params = {
-    filtersData: Filters;
-    currentFilters: {
-        service_category_id: number | null;
-        order_by_id: number | null;
-        vehicle_type_id: number | null;
-        service_type_id: number | null;
-    };
+type SelectOption = {
+    id: number;
+    label: string;
 };
 
-export function getFilterOptions({ filtersData, currentFilters }: Params) {
-    const sortOptions = filtersData.sortBy.map((opt) => ({
+export function getSortOptions(filtersData: Filters): SelectOption[] {
+    return filtersData.sortBy.map((opt) => ({
         label: opt.name,
         id: opt.id,
     }));
+}
 
-    const currentSortOption = sortOptions.find(
-        (opt) => opt.id === currentFilters.order_by_id
-    );
+export function getCurrentSortOption(
+    filtersData: Filters,
+    order_by_id: number | null
+): SelectOption | undefined {
+    return getSortOptions(filtersData).find((opt) => opt.id === order_by_id);
+}
 
-    const categoryOptions = filtersData.category.map((c) => ({
-        label: c.ru_name,
-        id: c.id,
+// --- Category Options ---
+export function getCategoryOptions(filtersData: Filters): SelectOption[] {
+    return filtersData.category.map((cat) => ({
+        label: cat.ru_name,
+        id: cat.id,
     }));
+}
 
-    const selectedCategory = filtersData.category.find(
-        (c) => c.id === currentFilters.service_category_id
+export function getSelectedCategoryOption(
+    filtersData: Filters,
+    service_category_id: number | null
+): SelectOption | null {
+    const category = filtersData.category.find(
+        (c) => c.id === service_category_id
     );
+    return category ? { id: category.id, label: category.ru_name } : null;
+}
 
-    const selectedCategoryOption = selectedCategory
-        ? { id: selectedCategory.id, label: selectedCategory.ru_name }
-        : null;
+export function getSelectedCategory(
+    filtersData: Filters,
+    service_category_id: number | null
+) {
+    return (
+        filtersData.category.find((c) => c.id === service_category_id) ?? null
+    );
+}
 
-    const serviceTypeOptions =
-        selectedCategory?.types.map((t) => ({
+// --- Service Type Options ---
+export function getServiceTypeOptions(
+    filtersData: Filters,
+    service_category_id: number | null
+): SelectOption[] {
+    const category = getSelectedCategory(filtersData, service_category_id);
+    return (
+        category?.types.map((t) => ({
             label: t.ru_name,
             id: t.id,
-        })) ?? [];
-
-    const currentServiceTypeOption = serviceTypeOptions.find(
-        (opt) => opt.id === currentFilters.service_type_id
+        })) ?? []
     );
+}
 
-    const carTypeOptions = filtersData.carType.map((ct) => ({
+export function getCurrentServiceTypeOption(
+    filtersData: Filters,
+    service_category_id: number | null,
+    service_type_id: number | null
+): SelectOption | null {
+    return getServiceTypeOptions(filtersData, service_category_id).find(
+        (opt) => opt.id === service_type_id
+    ) ?? null;
+}
+
+// --- Car Type Options ---
+export function getCarTypeOptions(filtersData: Filters): SelectOption[] {
+    return filtersData.carType.map((ct) => ({
         label: ct.ru_name,
         id: ct.id,
     }));
+}
 
-    const currentCarTypeOption = carTypeOptions.find(
-        (opt) => opt.id === currentFilters.vehicle_type_id
+export function getCurrentCarTypeOption(
+    filtersData: Filters,
+    vehicle_type_id: number
+): SelectOption | null {
+    return (
+        getCarTypeOptions(filtersData).find(
+            (opt) => opt.id === vehicle_type_id
+        ) ?? null
     );
+}
 
-    return {
-        sortOptions,
-        categoryOptions,
-        selectedCategoryOption,
-        serviceTypeOptions,
-        carTypeOptions,
-        currentSortOption,
-        currentServiceTypeOption,
-        currentCarTypeOption
-    };
+export function convertToAddresses(
+    data: ServiceResult[] | undefined
+): Address[] {
+    return data
+        ? data.map((item) => ({
+              name: item.car_wash_name,
+              lat: parseFloat(item.lat),
+              lng: parseFloat(item.lng),
+          }))
+        : [];
 }

@@ -29,3 +29,4 @@ function CarouselCardSkeleton() {
         </div>
     );
 }
+
