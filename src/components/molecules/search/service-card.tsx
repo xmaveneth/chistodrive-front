@@ -7,6 +7,7 @@ export type ServiceCardProps = {
     imgPath: string;
     name: string;
     address: string;
+    serviceName: string;
     description: string;
     price: number;
     slots: Slot[]
@@ -16,6 +17,7 @@ export default function ServiceCard({
     imgPath,
     name,
     address,
+    serviceName,
     description,
     price,
     slots
@@ -47,12 +49,12 @@ export default function ServiceCard({
                 </p>
                 <p className="mb-2.5 text-2xl">{name}</p>
                 <div className="my-5">
-                    <span className='px-4 py-3 rounded-full text-sm bg-background'>Бесконтактная мойка</span>
+                    <span className='px-4 py-3 rounded-full text-sm bg-background'>{serviceName}</span>
                 </div>
                 <p className="mb-2.5 text-white/70 min-h-26 sm:min-h-30">
                     {description}
                 </p>
-                <p className="mb-2.5 text-2xl text-btn-bg">{price} ₽</p>
+                <p className="mb-3 text-2xl text-btn-bg">{price} ₽</p>
                 <div className='flex flex-wrap items-center gap-3'>
                     {slots.map(slot => (
                         <button key={`slot-${slot.id}`} className='px-3 py-1.5 rounded-full bg-btn-bg cursor-pointer font-medium hover:bg-btn-hover transition-colors duration-200 ease-in'>{slot.time}</button>

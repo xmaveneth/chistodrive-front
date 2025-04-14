@@ -40,6 +40,7 @@ export default function SearchResult() {
                     imgPath={service.img}
                     name={service.car_wash_name}
                     address={service.address}
+                    serviceName={service.service_name}
                     description={service.description}
                     price={service.price}
                     slots={service.slots}
