@@ -14,9 +14,11 @@ L.Icon.Default.mergeOptions({
 export default function AddressMap() {
     const { servicesData } = useSearchServicesContext();
 
+    if (servicesData == null) return <div className='bg-gray-200/50 h-[500px] animate-pulse'></div>;
+
     const addresses = convertToAddresses(servicesData?.data);
 
-    if (addresses.length === 0) return <div className='bg-gray-200/50 h-[500px] animate-pulse'></div>;
+    if (addresses.length === 0) return null;
 
     return (
         <MapContainer

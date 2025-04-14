@@ -25,26 +25,27 @@ export default function SearchResult() {
     if (servicesData == null) return null;
     const services = servicesData.data;
 
+    if (services.length === 0)
+        return (
+            <p className="text-white">
+                По вашему запросу не найдено ни одного результата
+            </p>
+        );
+
     return (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 xs:gap-3 md:gap-3.5">
-            {services.length > 0 ? (
-                services.map((service, index) => (
-                    <ServiceCard
-                        key={`service-${service.car_wash_id}-${index}`}
-                        imgPath={service.img}
-                        rating={4}
-                        name={service.car_wash_name}
-                        address={service.address}
-                        description={service.description}
-                        price={service.price}
-                        url={service.url}
-                    />
-                ))
-            ) : (
-                <p className="text-white">
-                    По вашему запросу не найдено ни одного результата
-                </p>
-            )}
+            {services.map((service, index) => (
+                <ServiceCard
+                    key={`service-${service.car_wash_id}-${index}`}
+                    imgPath={service.img}
+                    rating={4}
+                    name={service.car_wash_name}
+                    address={service.address}
+                    description={service.description}
+                    price={service.price}
+                    url={service.url}
+                />
+            ))}
         </div>
     );
 }
