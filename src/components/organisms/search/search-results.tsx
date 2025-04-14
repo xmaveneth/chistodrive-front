@@ -38,12 +38,11 @@ export default function SearchResult() {
                 <ServiceCard
                     key={`service-${service.car_wash_id}-${index}`}
                     imgPath={service.img}
-                    rating={4}
                     name={service.car_wash_name}
                     address={service.address}
                     description={service.description}
                     price={service.price}
-                    url={service.url}
+                    slots={service.slots}
                 />
             ))}
         </div>
