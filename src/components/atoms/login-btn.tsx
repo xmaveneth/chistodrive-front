@@ -8,7 +8,7 @@ type LoginBtnProps = {
 };
 export default function LoginBtn({ onClick }: LoginBtnProps) {
     const navigate = useNavigate();
-    const { data: user, isError } = useCurrentUser();
+    const { data: user, isLoading, isError } = useCurrentUser();
 
     const loggedIn = !(isError || !user);
 
@@ -21,7 +21,7 @@ export default function LoginBtn({ onClick }: LoginBtnProps) {
       };
 
     return (
-        <PrimaryBtn onClick={loginClick} className="py-2">
+        <PrimaryBtn disabled={isLoading} onClick={loginClick} className="py-2">
             <UserIcon className="size-3" aria-hidden="true" />
             Войти
         </PrimaryBtn>

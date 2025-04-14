@@ -10,7 +10,7 @@ type SearchFieldProps = {
 };
 export default function SearchField({ value, onChange, placeholder, className }: SearchFieldProps) {
     return (
-        <Field className={cn("relative text-text-muted input-field py-2 px-4 rounded-full flex items-center justify-between shadow-sm gap-2 mb-3 bg-input-bg", className)}>
+        <Field className={cn("relative text-text-muted input-field py-2 px-4 md:text-base md:py-3 md:px-6 rounded-full flex items-center justify-between shadow-sm gap-2 mb-3 bg-input-bg", className)}>
             <Input
                 type="search"
                 placeholder={placeholder}
@@ -19,7 +19,7 @@ export default function SearchField({ value, onChange, placeholder, className }:
                 onChange={(e) => onChange(e.target.value)}
                 autoFocus
             />
-            <MagnifyingGlassIcon className="size-4" />
+            <MagnifyingGlassIcon className="size-4 md:size-5" />
         </Field>
     );
 }

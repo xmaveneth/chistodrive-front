@@ -1,4 +1,7 @@
 @import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
 
 @theme {
     --font-display: 'Gilroy', ui-sans-serif, system-ui, sans-serif,
@@ -59,7 +62,6 @@
     }
 }
 
-
 .scrollbar-hidden {
     -ms-overflow-style: none;
     scrollbar-width: none;
@@ -72,3 +74,4 @@
 .leaflet-control-attribution a {
     display: none !important;
 }
+

@@ -8,13 +8,15 @@ type PrimaryBtnProps = {
     onClick?: () => void;
     route?: string;
     type?: "button" | "submit" | "reset" | undefined;
+    disabled?: boolean;
 };
 export default function PrimaryBtn({
     children,
     className,
     onClick,
     route,
-    type = 'button'
+    type = 'button',
+    disabled = false
 }: PrimaryBtnProps) {
     return route != null ? (
         <Link
@@ -28,6 +30,7 @@ export default function PrimaryBtn({
         </Link>
     ) : (
         <Button
+            disabled={disabled}
             type={type}
             onClick={onClick}
             className={cn(
