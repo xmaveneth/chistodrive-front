@@ -19,7 +19,7 @@ export default function DatePicker({
         : '';
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-        const raw = e.target.value; 
+        const raw = e.target.value;
         if (!raw) return onChange(null);
 
         try {
@@ -38,7 +38,7 @@ export default function DatePicker({
                 type="date"
                 value={inputValue}
                 onChange={handleChange}
-                className="text-text-muted w-full text-sm md:text-base md:py-3 md:px-6 input-field py-2 px-4 rounded-full flex items-center justify-between shadow-sm gap-2 mb-3 bg-input-bg"
+                className="text-text-muted appearance-none w-full text-sm md:text-base md:py-3 md:px-6 input-field py-2 px-4 rounded-full flex items-center justify-between shadow-sm gap-2 mb-3 bg-input-bg"
             />
         </div>
     );

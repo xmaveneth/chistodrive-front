@@ -4,6 +4,7 @@ import { useSearchServices } from '@/lib/hooks/useSearchServices';
 import { FiltersResponse } from '@/lib/types/filters';
 import { SearchServicesResponse } from '@/lib/utils/search-services';
 import { createContext, useEffect, useState } from 'react';
+import useDebounce from '@/lib/hooks/useDebounce';
 
 type SearchServiceContextType = {
     areFiltersLoading: boolean;
@@ -81,10 +82,11 @@ export function SearchServiceProvider({
             end_price: endPrice,
             vehicle_type_id: vehicleTypeId ?? 0,
         });
-
     };
 
-    useEffect(() => handleSearchClick(), [])
+    useEffect(() => handleSearchClick(), []);
+
+    useDebounce(() =>  handleSearchClick(), 750, [currentCity.id, query, orderById, serviceCategoryId, serviceTypeId, date, startTime, endTime, startPrice, endPrice, vehicleTypeId])
 
     return (
         <SearchServiceContext.Provider

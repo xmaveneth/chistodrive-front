@@ -16,7 +16,7 @@ export default function AddressMap() {
 
     const addresses = convertToAddresses(servicesData?.data);
 
-    if (addresses.length === 0) return null;
+    if (addresses.length === 0) return <div className='bg-gray-200/50 h-[500px] animate-pulse'></div>;
 
     return (
         <MapContainer
@@ -39,3 +39,4 @@ export default function AddressMap() {
         </MapContainer>
     );
 }
+

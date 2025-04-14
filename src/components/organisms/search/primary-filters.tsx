@@ -1,4 +1,4 @@
-import PrimaryBtn from '@/components/atoms/primary-btn';
+
 import DatePicker from '@/components/forms/date-picker';
 import PriceRangePicker from '@/components/forms/price-range-picker';
 import SelectField from '@/components/forms/select-field';
@@ -34,10 +34,10 @@ export default function PrimaryFilters() {
         setServiceTypeId,
         vehicleTypeId,
         setVehicleTypeId,
-        handleSearchClick
     } = useSearchServicesContext();
 
-    if (areFiltersLoading || !filters) return <div>Loading...</div>;
+
+    if (areFiltersLoading || !filters) return <Skeleton />;
 
     const categoryOptions = getCategoryOptions(filters.filters);
     const serviceTypeOptions = getServiceTypeOptions(
@@ -122,9 +122,22 @@ export default function PrimaryFilters() {
                 />
             </FilterField>
 
-            <PrimaryBtn onClick={handleSearchClick} className="py-2 mb-4.5">
+            {/*  <PrimaryBtn onClick={handleSearchClick} className="py-2 mb-4.5">
                 Применить
-            </PrimaryBtn>
+            </PrimaryBtn> */}
+        </div>
+    );
+}
+
+function Skeleton() {
+    return (
+        <div className="flex items-center flex-wrap gap-x-3 sm:gap-x-4.5 gap-y-3 sm:gap-y-5 text-transparent animate-pulse">
+            {Array.from({ length: 6 }, () => (
+                <div>
+                    <div className="text-sm mb-2.5 md:text-base w-1/2 rounded-full bg-gray-200/50">loading</div>
+                    <div className="w-60 md:w-80 text-sm md:text-base bg-gray-200/50 input-field py-2 px-4 md:py-3 md:px-6 rounded-full gap-2 mb-3" aria-hidden={true}>loading</div>
+                </div>
+            ))}
         </div>
     );
 }
