@@ -2,41 +2,27 @@ import { cn } from '@/lib/utils';
 import { useState, useEffect } from 'react';
 import { Range } from 'react-range';
 
-type TimeRangePickerProps = {
-    from: string;
-    to: string;
-    onChange: (range: { from: string; to: string }) => void;
+type PriceRangePickerProps = {
+    from: number;
+    to: number;
+    onChange: (range: { from: number; to: number }) => void;
     className?: string;
 };
 
-const STEP = 1;
-const MIN = 1;
-const MAX = 48;
+const STEP = 100;
+const MIN = 0;
+const MAX = 10000;
 
-function convertToTime(value: number): string {
-    const hours = Math.floor((value - 1) / 2);
-    const minutes = value % 2 === 0 ? '30' : '00';
-    return `${hours.toString().padStart(2, '0')}:${minutes}`;
-}
-
-function parseTime(time: string): number {
-    const [h, m] = time.split(':').map(Number);
-    return h * 2 + (m >= 30 ? 1 : 0) + 1;
-}
-
-export default function TimeRangePicker({
+export default function PriceRangePicker({
     from,
     to,
     onChange,
     className,
-}: TimeRangePickerProps) {
-    const [values, setValues] = useState([parseTime(from), parseTime(to)]);
+}: PriceRangePickerProps) {
+    const [values, setValues] = useState([from, to]);
 
     useEffect(() => {
-        onChange({
-            from: convertToTime(values[0]),
-            to: convertToTime(values[1]),
-        });
+        onChange({ from: values[0], to: values[1] });
     }, [values]);
 
     return (
@@ -44,11 +30,13 @@ export default function TimeRangePicker({
             <div className="text-white w-full text-sm md:text-base md:py-3 md:px-6 input-field py-2 px-4 flex items-center justify-between shadow-sm gap-2 divide-x-1 divide-text-muted/50">
                 <div className="flex-1">
                     <span className="text-xs text-text-muted mr-2">от</span>
-                    {convertToTime(values[0])}
+                    {values[0]} ₽
                 </div>
                 <div className="flex-1 text-end">
-                    <span className="text-xs text-text-muted ml-auto mr-2">до</span>
-                    {convertToTime(values[1])}
+                    <span className="text-xs text-text-muted ml-auto mr-2">
+                        до
+                    </span>
+                    {values[1]} ₽
                 </div>
             </div>
             <div className="mx-auto w-7/10">

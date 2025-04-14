@@ -1,5 +1,6 @@
 import { Address } from '@/lib/types/address';
 import { MapContainer, TileLayer, Marker, Tooltip } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 

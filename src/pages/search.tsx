@@ -1,6 +1,5 @@
 import SearchField from '@/components/forms/search-field';
 import SelectField from '@/components/forms/select-field';
-import 'leaflet/dist/leaflet.css';
 
 import SearchHeader from '@/components/molecules/search/search-header';
 import { useState } from 'react';
@@ -10,25 +9,53 @@ import { useFilters } from '@/lib/hooks/useFilters';
 import PrimaryBtn from '@/components/atoms/primary-btn';
 import { getFilterOptions } from '@/lib/utils/get-filter-options';
 import TimeRangePicker from '@/components/forms/time-range-picker';
+import PriceRangePicker from '@/components/forms/price-range-picker';
+import { useCityContext } from '@/lib/hooks/useCityContext';
+import { useSearchServices } from '@/lib/hooks/useSearchServices';
+import SearchResult from '@/components/organisms/search/search-results';
 
 export default function Search() {
-    const { data, isLoading } = useFilters();
-
-
-
-    const [cityId, setCityId] = useState<number | null>(null);
+    const { data: filters, isLoading: filtersLoading } = useFilters();
+    const { currentCity } = useCityContext();
     const [query, setQuery] = useState('');
     const [orderById, setOrderById] = useState<number | null>(null);
-    const [serviceCategoryId, setServiceCategoryId] = useState<number | null>(null);
+    const [serviceCategoryId, setServiceCategoryId] = useState<number | null>(
+        null
+    );
     const [serviceTypeId, setServiceTypeId] = useState<number | null>(null);
     const [date, setDate] = useState<string | null>('01.01.2025');
     const [startTime, setStartTime] = useState('12:00');
     const [endTime, setEndTime] = useState('15:00');
-    const [startPrice, setStartPrice] = useState(0);
-    const [endPrice, setEndPrice] = useState(0);
-    const [vehicleTypeId, setVehicleTypeId] = useState<number | null>(null);
+    const [startPrice, setStartPrice] = useState(100);
+    const [endPrice, setEndPrice] = useState(9900);
+    const [vehicleTypeId, setVehicleTypeId] = useState<number>(0);
 
-    if (isLoading || !data) return <div>Загрузка фильтров...</div>;
+    const {
+        mutate: searchServices,
+        data: services,
+        isPending,
+        isError: isServicesError,
+    } = useSearchServices();
+
+    const handleSearchClick = () => {
+        if (!currentCity?.id) return;
+
+        searchServices({
+            city_id: currentCity.id,
+            query: query.trim(),
+            order_by_id: orderById ?? null,
+            service_category_id: serviceCategoryId ?? null,
+            service_type_id: serviceTypeId ?? null,
+            date: date ?? '',
+            start_time: startTime,
+            end_time: endTime,
+            start_price: startPrice,
+            end_price: endPrice,
+            vehicle_type_id: vehicleTypeId ?? 0,
+        });
+    };
+
+    if (filtersLoading || !filters) return <div>Загрузка фильтров...</div>;
 
     const {
         sortOptions,
@@ -40,7 +67,7 @@ export default function Search() {
         currentServiceTypeOption,
         currentCarTypeOption,
     } = getFilterOptions({
-        filtersData: data.filters,
+        filtersData: filters.filters,
         currentFilters: {
             service_category_id: serviceCategoryId,
             order_by_id: orderById,
@@ -89,11 +116,33 @@ export default function Search() {
                         </FilterField>
 
                         <FilterField title="Временной интервал">
-                            
-                            <TimeRangePicker from='0:00' to="23:30" onChange={(range: { from: string; to: string }) => {
-                                setStartTime(range.from);
-                                setEndTime(range.to);
-                            }} className="w-60" />
+                            <TimeRangePicker
+                                from="0:00"
+                                to="23:30"
+                                onChange={(range: {
+                                    from: string;
+                                    to: string;
+                                }) => {
+                                    setStartTime(range.from);
+                                    setEndTime(range.to);
+                                }}
+                                className="w-60"
+                            />
+                        </FilterField>
+
+                        <FilterField title="Цена, ₽">
+                            <PriceRangePicker
+                                from={100}
+                                to={9900}
+                                onChange={(range: {
+                                    from: number;
+                                    to: number;
+                                }) => {
+                                    setStartPrice(range.from);
+                                    setEndPrice(range.to);
+                                }}
+                                className="w-60"
+                            />
                         </FilterField>
 
                         <FilterField title="Категория услуги">
@@ -125,11 +174,17 @@ export default function Search() {
                             />
                         </FilterField>
 
-                        <PrimaryBtn className="py-2 mt-4.5">
+                        <PrimaryBtn
+                            onClick={handleSearchClick}
+                            className="py-2 mt-4.5"
+                        >
                             Применить
                         </PrimaryBtn>
                     </div>
                 </div>
+
+                {isPending == false && <SearchResult services={services?.data} />}
+                {isServicesError && <p className='text-white'>Произошла ошибка при загрузке результатов запроса, попробуйте позже</p>}
             </section>
         </div>
     );

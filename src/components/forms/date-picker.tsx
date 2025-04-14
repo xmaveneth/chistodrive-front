@@ -19,7 +19,7 @@ export default function DatePicker({
         : '';
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-        const raw = e.target.value; // "yyyy-MM-dd"
+        const raw = e.target.value; 
         if (!raw) return onChange(null);
 
         try {
