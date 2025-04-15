@@ -75,3 +75,34 @@
     display: none !important;
 }
 
+.custom-date-input::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    cursor: pointer;
+    opacity: 0.6;
+    padding-left: 5.5rem;
+    transition: opacity 0.2s ease;
+}
+
+@media screen and (min-width: 768px) {
+    .custom-date-input::-webkit-calendar-picker-indicator {
+        padding-left: 8.5rem;
+    }
+}
+
+.custom-date-input::-webkit-calendar-picker-indicator:hover {
+    opacity: 1;
+}
+
+.custom-date-input::-moz-calendar-picker-indicator {
+    filter: invert(1);
+    cursor: pointer;
+    opacity: 0.6;
+}
+
+.custom-date-input::-ms-clear {
+    display: none;
+}
+
+.custom-date-input::-ms-expand {
+    display: none;
+}

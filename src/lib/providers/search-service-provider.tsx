@@ -5,7 +5,6 @@ import { FiltersResponse } from '@/lib/types/filters';
 import { SearchServicesResponse } from '@/lib/utils/search-services';
 import { createContext, useEffect, useState } from 'react';
 import useDebounce from '@/lib/hooks/useDebounce';
-import { findPassengerCarId } from '@/lib/utils/get-filter-options';
 import { formatDateToString } from '@/lib/utils/format-date';
 
 type SearchServiceContextType = {
@@ -21,15 +20,15 @@ type SearchServiceContextType = {
     endPrice: number;
     setStartPrice: (val: number) => void;
     setEndPrice: (val: number) => void;
-    serviceCategoryId: number | null;
+    serviceCategoryId: number;
     setServiceCategoryId: (val: number) => void;
-    serviceTypeId: number | null;
+    serviceTypeId: number;
     setServiceTypeId: (val: number) => void;
     vehicleTypeId: number;
     setVehicleTypeId: (val: number) => void;
     query: string;
     setQuery: (val: string) => void;
-    orderById: number | null;
+    orderById: number;
     setOrderById: (val: number) => void;
     servicesData: SearchServicesResponse | undefined;
     areServicesLoading: boolean;
@@ -49,18 +48,15 @@ export function SearchServiceProvider({
 
     const { currentCity } = useCityContext();
     const [query, setQuery] = useState('');
-    const [orderById, setOrderById] = useState<number | null>(null);
-    const [serviceCategoryId, setServiceCategoryId] = useState<number | null>(
-        null
-    );
-    const [serviceTypeId, setServiceTypeId] = useState<number | null>(null);
+    const [orderById, setOrderById] = useState<number>(0);
+    const [serviceCategoryId, setServiceCategoryId] = useState<number>(0);
+    const [serviceTypeId, setServiceTypeId] = useState<number>(0);
     const [date, setDate] = useState<string>(formatDateToString(new Date()));
     const [startTime, setStartTime] = useState('00:00');
     const [endTime, setEndTime] = useState('23:30');
     const [startPrice, setStartPrice] = useState(100);
     const [endPrice, setEndPrice] = useState(9900);
-    const [vehicleTypeId, setVehicleTypeId] = useState<number>(findPassengerCarId(filters?.filters, 'passenger'));
-
+    const [vehicleTypeId, setVehicleTypeId] = useState<number>(1);
 
     const {
         mutate: searchServices,
@@ -75,23 +71,35 @@ export function SearchServiceProvider({
         searchServices({
             city_id: currentCity.id,
             query: query.trim(),
-            order_by_id: orderById ?? null,
-            service_category_id: serviceCategoryId ?? null,
-            service_type_id: serviceTypeId ?? null,
+            order_by_id: orderById ?? 0,
+            service_category_id: serviceCategoryId ?? 0,
+            service_type_id: serviceTypeId ?? 0,
             date: date ?? '',
             start_time: startTime,
             end_time: endTime,
             start_price: startPrice,
             end_price: endPrice,
-            vehicle_type_id: vehicleTypeId ?? 0,
+            vehicle_type_id: vehicleTypeId ?? 1,
         });
     };
 
-    useEffect(() => setServiceTypeId(null), [serviceCategoryId]);
+    useEffect(() => setServiceTypeId(0), [serviceCategoryId]);
 
     useEffect(() => handleSearchClick(), []);
 
-    useDebounce(() =>  handleSearchClick(), 750, [currentCity.id, query, orderById, serviceCategoryId, serviceTypeId, date, startTime, endTime, startPrice, endPrice, vehicleTypeId])
+    useDebounce(() => handleSearchClick(), 750, [
+        currentCity.id,
+        query,
+        orderById,
+        serviceCategoryId,
+        serviceTypeId,
+        date,
+        startTime,
+        endTime,
+        startPrice,
+        endPrice,
+        vehicleTypeId,
+    ]);
 
     return (
         <SearchServiceContext.Provider

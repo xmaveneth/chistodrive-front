@@ -11,13 +11,18 @@ export type ServiceType = {
     service_category_id: number;
 };
 
-export type ServiceCategory = {
-    id: number;
-    name: string;
-    ru_name: string;
-    description: string;
-    types: ServiceType[];
-};
+export type ServiceCategory =
+    | {
+          id: number;
+          name: string;
+          ru_name: string;
+          description: string;
+          types: ServiceType[];
+      }
+    | {
+          id: number;
+          ru_name: string;
+      };
 
 export type CarType = {
     id: number;
@@ -35,3 +40,9 @@ export type Filters = {
 export type FiltersResponse = {
     filters: Filters;
 };
+
+export function hasServiceTypes(
+    category: ServiceCategory
+): category is Extract<ServiceCategory, { types: ServiceType[] }> {
+    return 'types' in category && Array.isArray(category.types);
+}

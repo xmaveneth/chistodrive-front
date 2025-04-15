@@ -1,5 +1,5 @@
 import { Address } from '@/lib/types/address';
-import { Filters } from '@/lib/types/filters';
+import { Filters, hasServiceTypes } from '@/lib/types/filters';
 import { ServiceResult } from '@/lib/utils/search-services';
 
 type SelectOption = {
@@ -7,7 +7,10 @@ type SelectOption = {
     label: string;
 };
 
-export function findPassengerCarId(filtersData: Filters | undefined, name: string = 'passenger') {
+export function findPassengerCarId(
+    filtersData: Filters | undefined,
+    name: string = 'passenger'
+) {
     if (filtersData == null) return 0;
 
     return filtersData.carType.find((ct) => ct.name === name)?.id ?? 0;
@@ -22,9 +25,12 @@ export function getSortOptions(filtersData: Filters): SelectOption[] {
 
 export function getCurrentSortOption(
     filtersData: Filters,
-    order_by_id: number | null
-): SelectOption | undefined {
-    return getSortOptions(filtersData).find((opt) => opt.id === order_by_id);
+    order_by_id: number
+): SelectOption | null {
+    return (
+        getSortOptions(filtersData).find((opt) => opt.id === order_by_id) ??
+        null
+    );
 }
 
 // --- Category Options ---
@@ -45,6 +51,7 @@ export function getSelectedCategoryOption(
     return category ? { id: category.id, label: category.ru_name } : null;
 }
 
+
 export function getSelectedCategory(
     filtersData: Filters,
     service_category_id: number | null
@@ -60,12 +67,15 @@ export function getServiceTypeOptions(
     service_category_id: number | null
 ): SelectOption[] {
     const category = getSelectedCategory(filtersData, service_category_id);
-    return (
-        category?.types.map((t) => ({
-            label: t.ru_name,
-            id: t.id,
-        })) ?? []
-    );
+
+    if (!category || !hasServiceTypes(category)) {
+        return [];
+    }
+
+    return category.types.map((t) => ({
+        label: t.ru_name,
+        id: t.id,
+    }));
 }
 
 export function getCurrentServiceTypeOption(
@@ -73,9 +83,11 @@ export function getCurrentServiceTypeOption(
     service_category_id: number | null,
     service_type_id: number | null
 ): SelectOption | null {
-    return getServiceTypeOptions(filtersData, service_category_id).find(
-        (opt) => opt.id === service_type_id
-    ) ?? null;
+    return (
+        getServiceTypeOptions(filtersData, service_category_id).find(
+            (opt) => opt.id === service_type_id
+        ) ?? null
+    );
 }
 
 // --- Car Type Options ---

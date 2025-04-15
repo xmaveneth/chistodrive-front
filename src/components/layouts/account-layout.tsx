@@ -1,5 +1,4 @@
 import Logo from '@/components/atoms/logo';
-import PrimaryBtn from '@/components/atoms/primary-btn';
 import { useUserContext } from '@/lib/hooks/useUserContext';
 import { useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';

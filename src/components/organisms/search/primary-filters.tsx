@@ -11,6 +11,7 @@ import {
     getCategoryOptions,
     getCurrentCarTypeOption,
     getCurrentServiceTypeOption,
+    getSelectedCategoryOption,
     getServiceTypeOptions,
 } from '@/lib/utils/get-filter-options';
 
@@ -40,6 +41,8 @@ export default function PrimaryFilters() {
     if (areFiltersLoading || !filters) return <Skeleton />;
 
     const categoryOptions = getCategoryOptions(filters.filters);
+    const categoryOption = getSelectedCategoryOption(filters.filters, serviceCategoryId)
+
     const serviceTypeOptions = getServiceTypeOptions(
         filters.filters,
         serviceCategoryId
@@ -89,20 +92,16 @@ export default function PrimaryFilters() {
                 />
             </FilterField>
 
-            <FilterField title="Категория услуги">
+            {categoryOptions && categoryOption && <FilterField title="Категория услуги">
                 <SelectField
                     values={categoryOptions}
-                    value={
-                        categoryOptions.find(
-                            (opt) => opt.id === serviceCategoryId
-                        ) || null
-                    }
+                    value={categoryOption}
                     onChange={(val) => setServiceCategoryId(val)}
                     className="w-60 md:w-80"
                 />
-            </FilterField>
+            </FilterField>}
 
-            {serviceCategoryId !== null && (
+            {currentServiceTypeOption !== null && (
                 <FilterField title="Тип услуги">
                     <SelectField
                         values={serviceTypeOptions}
@@ -113,14 +112,14 @@ export default function PrimaryFilters() {
                 </FilterField>
             )}
 
-            <FilterField title="Тип авто">
+            {currentCarTypeOption != null && <FilterField title="Тип авто">
                 <SelectField
                     values={carTypeOptions}
                     value={currentCarTypeOption}
                     onChange={(val) => setVehicleTypeId(val)}
                     className="w-60 md:w-80"
                 />
-            </FilterField>
+            </FilterField>}
 
             {/*  <PrimaryBtn onClick={handleSearchClick} className="py-2 mb-4.5">
                 Применить
