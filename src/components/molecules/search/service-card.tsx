@@ -1,5 +1,7 @@
+import { useAuthContext } from '@/lib/hooks/useAuthContext';
+import { useUserContext } from '@/lib/hooks/useUserContext';
 import { cn } from '@/lib/utils/cn';
-import { Slot } from '@/lib/utils/search-services';
+import { ServiceResult, Slot } from '@/lib/utils/search-services';
 import { MapPinIcon } from '@heroicons/react/24/solid';
 import { useState } from 'react';
 
@@ -10,7 +12,9 @@ export type ServiceCardProps = {
     serviceName: string;
     description: string;
     price: number;
-    slots: Slot[]
+    slots: Slot[];
+    onClick: (val: string, carwash: ServiceResult) => void;
+    service: ServiceResult
 };
 
 export default function ServiceCard({
@@ -20,23 +24,28 @@ export default function ServiceCard({
     serviceName,
     description,
     price,
-    slots
+    slots,
+    onClick,
+    service
 }: ServiceCardProps) {
-    const [isLoading, setIsLoading] = useState(true);
+    const [isImageLoading, setIsImageLoading] = useState(true);
+    const { isLoggedIn, isLoading } = useUserContext();
+    const { toggleLoginDialog } = useAuthContext();
+    
 
     return (
         <div className="rounded-lg bg-input-bg">
             <div className="overflow-clip relative aspect-[1.55/1] rounded-lg mb-1">
                 <img
-                    onLoad={() => setIsLoading(false)}
+                    onLoad={() => setIsImageLoading(false)}
                     src={imgPath}
                     alt="Изображение автомойки"
                     className={cn(
                         'object-center object-cover w-full h-full',
-                        isLoading && 'opacity-0'
+                        isImageLoading && 'opacity-0'
                     )}
                 />
-                {isLoading && (
+                {isImageLoading && (
                     <div className="inset-0 absolute z-10 flex items-center justify-center">
                         <span className="card-loader"></span>
                     </div>
@@ -57,7 +66,7 @@ export default function ServiceCard({
                 <p className="mb-3 text-2xl text-btn-bg">{price} ₽</p>
                 <div className='flex flex-wrap items-center gap-3'>
                     {slots.map(slot => (
-                        <button key={`slot-${slot.id}`} className='px-3 py-1.5 rounded-full bg-btn-bg cursor-pointer font-medium hover:bg-btn-hover transition-colors duration-200 ease-in'>{slot.time}</button>
+                        <button disabled={isLoading} key={`slot-${slot.id}`} onClick={() => isLoggedIn ? onClick(slot.time, service) : toggleLoginDialog(true)} className='px-3 py-1.5 rounded-full bg-btn-bg cursor-pointer font-medium hover:bg-btn-hover transition-colors duration-200 ease-in'>{slot.time}</button>
                     ))}
                 </div>
             </div>

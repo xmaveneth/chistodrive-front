@@ -1,9 +1,24 @@
+import DialogLayout from '@/components/layouts/dialog-layout';
+import EntryDialog from '@/components/molecules/search/entry-dialog';
 import ServiceCard from '@/components/molecules/search/service-card';
 import { useSearchServicesContext } from '@/lib/hooks/useSearchServicesContext';
+import { ServiceResult } from '@/lib/utils/search-services';
+import { useState } from 'react';
 
 export default function SearchResult() {
-    const { servicesData, areServicesLoading, isServicesError } =
+    const { servicesData, areServicesLoading, isServicesError, date } =
         useSearchServicesContext();
+    const [showEntryDialog, setShowEntryDialog] = useState(false);
+    const [selectedCarwash, setSelectedCarwash] =
+        useState<ServiceResult | null>(null);
+
+    const [selectedTime, setSelectedTime] = useState('');
+
+    function handleTimeSelect(val: string, carwash: ServiceResult) {
+        setSelectedTime(val);
+        setSelectedCarwash(carwash);
+        setShowEntryDialog(true);
+    }
 
     if (isServicesError)
         return (
@@ -33,20 +48,31 @@ export default function SearchResult() {
         );
 
     return (
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 xs:gap-3 md:gap-3.5">
-            {services.map((service, index) => (
-                <ServiceCard
-                    key={`service-${service.car_wash_id}-${index}`}
-                    imgPath={service.img}
-                    name={service.car_wash_name}
-                    address={service.address}
-                    serviceName={service.service_name}
-                    description={service.description}
-                    price={service.price}
-                    slots={service.slots}
-                />
-            ))}
-        </div>
+        <>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 xs:gap-3 md:gap-3.5">
+                {services.map((service, index) => (
+                    <ServiceCard
+                        key={`service-${service.car_wash_id}-${index}`}
+                        imgPath={service.img}
+                        name={service.car_wash_name}
+                        address={service.address}
+                        serviceName={service.service_name}
+                        description={service.description}
+                        price={service.price}
+                        slots={service.slots}
+                        onClick={handleTimeSelect}
+                        service={service}
+                    />
+                ))}
+            </div>
+
+            <DialogLayout
+                isOpen={showEntryDialog}
+                closeDialog={() => setShowEntryDialog(false)}
+            >
+                <EntryDialog carwash={selectedCarwash} date={date} time={selectedTime} />
+            </DialogLayout>
+        </>
     );
 }
 

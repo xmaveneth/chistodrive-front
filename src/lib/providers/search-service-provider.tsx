@@ -6,12 +6,13 @@ import { SearchServicesResponse } from '@/lib/utils/search-services';
 import { createContext, useEffect, useState } from 'react';
 import useDebounce from '@/lib/hooks/useDebounce';
 import { findPassengerCarId } from '@/lib/utils/get-filter-options';
+import { formatDateToDotFormat } from '@/lib/utils/format-date';
 
 type SearchServiceContextType = {
     areFiltersLoading: boolean;
     filters: FiltersResponse | undefined;
-    date: string | null;
-    setDate: (val: string | null) => void;
+    date: string;
+    setDate: (val: string) => void;
     startTime: string;
     endTime: string;
     setStartTime: (val: string) => void;
@@ -53,12 +54,13 @@ export function SearchServiceProvider({
         null
     );
     const [serviceTypeId, setServiceTypeId] = useState<number | null>(null);
-    const [date, setDate] = useState<string | null>('01.01.2025');
+    const [date, setDate] = useState<string>(formatDateToDotFormat(new Date()));
     const [startTime, setStartTime] = useState('00:00');
     const [endTime, setEndTime] = useState('23:30');
     const [startPrice, setStartPrice] = useState(100);
     const [endPrice, setEndPrice] = useState(9900);
     const [vehicleTypeId, setVehicleTypeId] = useState<number>(findPassengerCarId(filters?.filters, 'passenger'));
+
 
     const {
         mutate: searchServices,

@@ -1,9 +1,10 @@
 import { useId } from 'react';
 import { format, parse } from 'date-fns';
+import { formatDateFromString, formatDateToDotFormat } from '@/lib/utils/format-date';
 
 type DatePickerProps = {
-    value: string | null;
-    onChange: (val: string | null) => void;
+    value: string;
+    onChange: (val: string) => void;
     className?: string;
 };
 
@@ -14,20 +15,22 @@ export default function DatePicker({
 }: DatePickerProps) {
     const id = useId();
 
+    const today = formatDateToDotFormat(new Date());
+
     const inputValue = value
-        ? format(parse(value, 'dd.MM.yyyy', new Date()), 'yyyy-MM-dd')
+        ? formatDateFromString(value)
         : '';
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
         const raw = e.target.value;
-        if (!raw) return onChange(null);
+        if (!raw) return onChange(today);
 
         try {
             const parsedDate = parse(raw, 'yyyy-MM-dd', new Date());
             const formatted = format(parsedDate, 'dd.MM.yyyy');
             onChange(formatted);
         } catch {
-            onChange(null);
+            onChange(today);
         }
     }
 

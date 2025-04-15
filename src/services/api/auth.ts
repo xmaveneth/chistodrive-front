@@ -37,7 +37,7 @@ export const signupUser = async ({
     return response.data;
 };
 
-type CurrentUserResponse = {
+export type CurrentUserResponse = {
     name: string;
     telephone: string;
 };

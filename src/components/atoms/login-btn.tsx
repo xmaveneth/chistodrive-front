@@ -1,5 +1,5 @@
 import PrimaryBtn from '@/components/atoms/primary-btn';
-import { useCurrentUser } from '@/lib/hooks/useCurrentUser';
+import { useUserContext } from '@/lib/hooks/useUserContext';
 import { UserIcon } from '@heroicons/react/16/solid';
 import { useNavigate } from 'react-router-dom';
 
@@ -8,17 +8,15 @@ type LoginBtnProps = {
 };
 export default function LoginBtn({ onClick }: LoginBtnProps) {
     const navigate = useNavigate();
-    const { data: user, isLoading, isError } = useCurrentUser();
-
-    const loggedIn = !(isError || !user);
+    const { isLoading, isLoggedIn } = useUserContext();
 
     const loginClick = () => {
-        if (loggedIn) {
-          navigate('/account');
+        if (isLoggedIn) {
+            navigate('/account');
         } else {
             onClick();
         }
-      };
+    };
 
     return (
         <PrimaryBtn disabled={isLoading} onClick={loginClick} className="py-2">

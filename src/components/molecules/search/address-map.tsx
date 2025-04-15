@@ -12,9 +12,9 @@ L.Icon.Default.mergeOptions({
 });
 
 export default function AddressMap() {
-    const { servicesData } = useSearchServicesContext();
+    const { servicesData, areServicesLoading, areFiltersLoading } = useSearchServicesContext();
 
-    if (servicesData == null) return <div className='bg-gray-200/50 h-[500px] animate-pulse'></div>;
+    if (areServicesLoading || areFiltersLoading) return <div className='bg-gray-200/50 h-[500px] animate-pulse'></div>;
 
     const addresses = convertToAddresses(servicesData?.data);
 
