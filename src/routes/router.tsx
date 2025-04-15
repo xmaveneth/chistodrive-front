@@ -3,6 +3,7 @@ import { RootLayout } from '@/components/layouts/root-layout';
 import About from '@/pages/about';
 import AccountCars from '@/pages/account/cars';
 import AccountEntries from '@/pages/account/entries';
+import AccountFavorite from '@/pages/account/favorite';
 import Home from '@/pages/home';
 import Policy from '@/pages/policy';
 import Rules from '@/pages/rules';
@@ -24,6 +25,7 @@ export const routes = [
                 children: [
                     { index: true, element: <AccountEntries /> },
                     { path: 'cars', element: <AccountCars /> },
+                    { path: 'favorite', element: <AccountFavorite /> },
                 ],
             },
         ],

@@ -9,7 +9,7 @@ export default function Footer() {
         <footer className="primary-px pb-5 sm:pb-8 xl:pt-3.5 xl:pb-10">
             <nav
                 aria-label="Основная навигация"
-                className="flex items-center py-2 px-4.5 sm:px-9 sm:py-3 mb-4 md:mb-0 justify-between rounded-full bg-input-bg text-xs sm:text-sm gap-1 sm:gap-3 xl:gap-6"
+                className="flex items-center py-2 xs:px-4.5 px-3 sm:px-9 sm:py-3 mb-4 md:mb-0 justify-between rounded-full bg-input-bg text-xs sm:text-sm gap-1 sm:gap-3 xl:gap-6"
             >
                 <Link
                     to="/"
