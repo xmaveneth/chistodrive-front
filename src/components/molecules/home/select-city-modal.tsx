@@ -11,6 +11,7 @@ export default function SelectCityModal() {
     const [searchTerm, setSearchTerm] = useState('');
     const { currentCity, showCityList, selectCity, toggleCityList } =
         useCityContext();
+        
 
     return (
         <Transition show={showCityList}>
