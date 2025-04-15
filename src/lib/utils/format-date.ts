@@ -10,15 +10,25 @@ export function formatDate(date: Date, options = defaultDateOptions) {
     return new Intl.DateTimeFormat(undefined, options).format(date);
 }
 
-export function formatDateFromString(date: string) {
-    return format(parse(date, 'dd.MM.yyyy', new Date()), 'yyyy-MM-dd');
+/* export function formatDateFromString(date: string) {
+    return format(parse(date, 'dd-MM-yyyy', new Date()), 'yyyy-MM-dd');
 }
 
 export function formatDateToDotFormat(date: Date): string {
-    return format(date, 'dd.MM.yyyy');
+    return format(date, 'dd-MM-yyyy');
 }
 
 export function formatDateToDayMonthLabel(dateString: string): string {
-    const parsed = parse(dateString, 'dd.MM.yyyy', new Date());
+    const parsed = parse(dateString, 'dd-MM-yyyy', new Date());
+    return format(parsed, 'd MMMM', { locale: ru });
+}
+ */
+
+export function formatDateToString(date: Date): string {
+    return format(date, 'yyyy-MM-dd');
+}
+
+export function formatDateToDayMonthLabel(dateString: string): string {
+    const parsed = parse(dateString, 'yyyy-MM-dd', new Date());
     return format(parsed, 'd MMMM', { locale: ru });
 }
