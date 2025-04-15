@@ -5,6 +5,7 @@ import { FiltersResponse } from '@/lib/types/filters';
 import { SearchServicesResponse } from '@/lib/utils/search-services';
 import { createContext, useEffect, useState } from 'react';
 import useDebounce from '@/lib/hooks/useDebounce';
+import { findPassengerCarId } from '@/lib/utils/get-filter-options';
 
 type SearchServiceContextType = {
     areFiltersLoading: boolean;
@@ -57,7 +58,7 @@ export function SearchServiceProvider({
     const [endTime, setEndTime] = useState('23:30');
     const [startPrice, setStartPrice] = useState(100);
     const [endPrice, setEndPrice] = useState(9900);
-    const [vehicleTypeId, setVehicleTypeId] = useState<number>(0);
+    const [vehicleTypeId, setVehicleTypeId] = useState<number>(findPassengerCarId(filters?.filters, 'passenger'));
 
     const {
         mutate: searchServices,
@@ -83,6 +84,8 @@ export function SearchServiceProvider({
             vehicle_type_id: vehicleTypeId ?? 0,
         });
     };
+
+    useEffect(() => setServiceTypeId(null), [serviceCategoryId]);
 
     useEffect(() => handleSearchClick(), []);
 

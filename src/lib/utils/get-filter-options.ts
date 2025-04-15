@@ -7,6 +7,12 @@ type SelectOption = {
     label: string;
 };
 
+export function findPassengerCarId(filtersData: Filters | undefined, name: string = 'passenger') {
+    if (filtersData == null) return 0;
+
+    return filtersData.carType.find((ct) => ct.name === name)?.id ?? 0;
+}
+
 export function getSortOptions(filtersData: Filters): SelectOption[] {
     return filtersData.sortBy.map((opt) => ({
         label: opt.name,
