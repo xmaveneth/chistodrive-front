@@ -1,4 +1,4 @@
-import useToggle from '@/lib/hooks/useToggle';
+import useToggle from '@/lib/hooks/utils/use-toggle';
 import { createContext } from 'react';
 
 type AuthContextType = {

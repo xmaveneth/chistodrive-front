@@ -1,6 +1,6 @@
 import { Button } from '@headlessui/react';
 import CitySelector from '@/components/molecules/shared/city-selector';
-import { useAuthContext } from '@/lib/hooks/useAuthContext';
+import { useAuthContext } from '@/lib/hooks/context/use-auth-context';
 import LoginBtn from '@/components/atoms/login-btn';
 import Logo from '@/components/atoms/logo';
 

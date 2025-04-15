@@ -10,7 +10,7 @@ import { AxiosError } from 'axios';
 import { Button } from '@headlessui/react';
 import { useNavigate } from 'react-router-dom';
 import CheckboxField from '@/components/forms/checkbox-field';
-import { useAuthContext } from '@/lib/hooks/useAuthContext';
+import { useAuthContext } from '@/lib/hooks/context/use-auth-context';
 const signupSchema = z
     .object({
         name: z.string().min(1, 'Введите имя'),

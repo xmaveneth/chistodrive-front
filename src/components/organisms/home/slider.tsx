@@ -2,9 +2,9 @@ import CarouselBtn from '@/components/atoms/carousel-btn';
 import PrimaryBtn from '@/components/atoms/primary-btn';
 import CarwashCard from '@/components/molecules/home/carwash-card';
 import CarouselSkeleton from '@/components/organisms/home/carousel-skeleton';
-import { BreakpointConfig, useCarousel } from '@/lib/hooks/useCarousel';
-import { useCarwashes } from '@/lib/hooks/useCarwashes';
-import { useCityContext } from '@/lib/hooks/useCityContext';
+import { BreakpointConfig, useCarousel } from '@/lib/hooks/utils/use-carousel';
+import { useCarwashes } from '@/lib/hooks/carwashes/use-carwashes';
+import { useCityContext } from '@/lib/hooks/context/use-city-context';
 import { cn } from '@/lib/utils/cn';
 import {
     ChevronLeftIcon,

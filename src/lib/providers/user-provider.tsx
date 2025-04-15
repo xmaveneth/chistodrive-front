@@ -1,4 +1,4 @@
-import { useCurrentUser } from '@/lib/hooks/useCurrentUser';
+import { useCurrentUser } from '@/lib/hooks/auth/use-current-user';
 import { CurrentUserResponse } from '@/services/api/auth';
 import { createContext } from 'react';
 

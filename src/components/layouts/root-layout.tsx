@@ -3,7 +3,7 @@ import Login from '@/components/organisms/home/login';
 import Signup from '@/components/organisms/home/signup';
 import ErrorFallback from '@/components/organisms/shared/error-boundary';
 import Footer from '@/components/organisms/shared/footer';
-import { useAuthContext } from '@/lib/hooks/useAuthContext';
+import { useAuthContext } from '@/lib/hooks/context/use-auth-context';
 import { CityProvider } from '@/lib/providers/city-provider';
 import { UserProvider } from '@/lib/providers/user-provider';
 import { ErrorBoundary } from 'react-error-boundary';

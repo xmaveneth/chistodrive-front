@@ -1,7 +1,7 @@
 import { MapContainer, TileLayer, Marker, Tooltip } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
-import { useSearchServicesContext } from '@/lib/hooks/useSearchServicesContext';
+import { useSearchServicesContext } from '@/lib/hooks/context/use-search-services-context';
 import { convertToAddresses } from '@/lib/utils/get-filter-options';
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 

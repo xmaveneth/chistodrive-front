@@ -1,10 +1,10 @@
-import { useCityContext } from '@/lib/hooks/useCityContext';
-import { useFilters } from '@/lib/hooks/useFilters';
-import { useSearchServices } from '@/lib/hooks/useSearchServices';
+import { useCityContext } from '@/lib/hooks/context/use-city-context';
+import { useFilters } from '@/lib/hooks/carwashes/use-filters';
+import { useSearchServices } from '@/lib/hooks/carwashes/use-search-services';
 import { FiltersResponse } from '@/lib/types/filters';
 import { SearchServicesResponse } from '@/lib/utils/search-services';
 import { createContext, useEffect, useState } from 'react';
-import useDebounce from '@/lib/hooks/useDebounce';
+import useDebounce from '@/lib/hooks/utils/use-debounce';
 import { formatDateToString } from '@/lib/utils/format-date';
 
 type SearchServiceContextType = {

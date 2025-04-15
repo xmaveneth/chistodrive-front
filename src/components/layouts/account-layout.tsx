@@ -1,14 +1,16 @@
 import Logo from '@/components/atoms/logo';
-import { useUserContext } from '@/lib/hooks/useUserContext';
+import { useUserContext } from '@/lib/hooks/context/use-user-context';
 import { useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import UserSvg from '@/assets/svgs/user.svg';
 import PrimaryBtn from '@/components/atoms/primary-btn';
 import AccountNavLink from '@/components/atoms/account-nav-link';
+import { useLogout } from '@/lib/hooks/auth/use-logout';
 
 export default function AccountLayout() {
     const { isLoading, isLoggedIn, user } = useUserContext();
     const navigate = useNavigate();
+    const { mutate: logout, isPending } = useLogout();
 
     useEffect(() => {
         if (!isLoggedIn && isLoading == false) {
@@ -32,7 +34,7 @@ export default function AccountLayout() {
                             />
                         </div>
 
-                        <PrimaryBtn className="py-2 text-sm sm:py-2.5 ml-auto sm:text-base">
+                        <PrimaryBtn onClick={() => logout()} disabled={isPending} className="py-2 text-sm sm:py-2.5 ml-auto sm:text-base">
                             Выйти
                         </PrimaryBtn>
 

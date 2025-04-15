@@ -1,7 +1,7 @@
 import SearchField from '@/components/forms/search-field';
 import CityList from '@/components/molecules/home/city-list';
-import { useCities } from '@/lib/hooks/useCities';
-import { useCityContext } from '@/lib/hooks/useCityContext';
+import { useCities } from '@/lib/hooks/cities/use-cities';
+import { useCityContext } from '@/lib/hooks/context/use-city-context';
 import { Button, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/16/solid';
 import { useState } from 'react';

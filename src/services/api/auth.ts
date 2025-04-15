@@ -46,3 +46,8 @@ export const getCurrentUser = async (): Promise<CurrentUserResponse> => {
     const response = await axiosInstance.get('/api/profile/me');
     return response.data;
 };
+
+
+export const logoutCurrentUser = async (): Promise<void> => {
+    await axiosInstance.post('/api/jwt/logout');
+};

@@ -1,5 +1,5 @@
-import { useAuthContext } from '@/lib/hooks/useAuthContext';
-import { useUserContext } from '@/lib/hooks/useUserContext';
+import { useAuthContext } from '@/lib/hooks/context/use-auth-context';
+import { useUserContext } from '@/lib/hooks/context/use-user-context';
 import { cn } from '@/lib/utils/cn';
 import { ServiceResult, Slot } from '@/lib/utils/search-services';
 import { MapPinIcon } from '@heroicons/react/24/solid';

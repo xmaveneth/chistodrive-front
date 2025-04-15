@@ -1,4 +1,4 @@
-import useTimeout from '@/lib/hooks/useTimeout'
+import useTimeout from '@/lib/hooks/utils/use-timeout'
 import { useEffect } from 'react'
 
 type Callback = () => void

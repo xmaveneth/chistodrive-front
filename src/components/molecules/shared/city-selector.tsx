@@ -1,6 +1,6 @@
 import SelectCityModal from '@/components/molecules/home/select-city-modal';
-import { useCityContext } from '@/lib/hooks/useCityContext';
-import useClickOutside from '@/lib/hooks/useClickOutside';
+import { useCityContext } from '@/lib/hooks/context/use-city-context';
+import useClickOutside from '@/lib/hooks/utils/use-click-outside';
 import { cn } from '@/lib/utils/cn';
 import { Button } from '@headlessui/react';
 import { MapPinIcon } from '@heroicons/react/16/solid';

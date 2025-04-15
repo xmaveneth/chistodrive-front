@@ -9,7 +9,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { AxiosError } from 'axios';
 import { Button } from '@headlessui/react';
 import { useNavigate } from 'react-router-dom';
-import { useAuthContext } from '@/lib/hooks/useAuthContext';
+import { useAuthContext } from '@/lib/hooks/context/use-auth-context';
 import Cookies from 'js-cookie';
 
 const loginSchema = z.object({

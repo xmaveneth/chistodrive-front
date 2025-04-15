@@ -1,5 +1,5 @@
 import PrimaryBtn from '@/components/atoms/primary-btn';
-import { useUserContext } from '@/lib/hooks/useUserContext';
+import { useUserContext } from '@/lib/hooks/context/use-user-context';
 import { UserIcon } from '@heroicons/react/16/solid';
 import { useNavigate } from 'react-router-dom';
 

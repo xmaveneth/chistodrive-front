@@ -1,7 +1,7 @@
 import DialogLayout from '@/components/layouts/dialog-layout';
 import EntryDialog from '@/components/molecules/search/entry-dialog';
 import ServiceCard from '@/components/molecules/search/service-card';
-import { useSearchServicesContext } from '@/lib/hooks/useSearchServicesContext';
+import { useSearchServicesContext } from '@/lib/hooks/context/use-search-services-context';
 import { ServiceResult } from '@/lib/utils/search-services';
 import { useState } from 'react';
 

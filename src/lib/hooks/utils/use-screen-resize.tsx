@@ -1,4 +1,4 @@
-import useEventListener from '@/lib/hooks/useEventListener';
+import useEventListener from '@/lib/hooks/utils/use-event-listener';
 import { useRef, useState } from 'react';
 
 export function useScreenResize() {

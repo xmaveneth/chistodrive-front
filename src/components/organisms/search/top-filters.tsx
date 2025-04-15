@@ -1,6 +1,6 @@
 import SearchField from '@/components/forms/search-field';
 import SelectField from '@/components/forms/select-field';
-import { useSearchServicesContext } from '@/lib/hooks/useSearchServicesContext';
+import { useSearchServicesContext } from '@/lib/hooks/context/use-search-services-context';
 import {
     getCurrentSortOption,
     getSortOptions,

@@ -4,7 +4,7 @@ import PriceRangePicker from '@/components/forms/price-range-picker';
 import SelectField from '@/components/forms/select-field';
 import TimeRangePicker from '@/components/forms/time-range-picker';
 import FilterField from '@/components/molecules/search/filter-field';
-import { useSearchServicesContext } from '@/lib/hooks/useSearchServicesContext';
+import { useSearchServicesContext } from '@/lib/hooks/context/use-search-services-context';
 
 import {
     getCarTypeOptions,

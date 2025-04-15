@@ -1,5 +1,5 @@
-import { useLocalStorage } from '@/lib/hooks/useLocalStorage';
-import useToggle from '@/lib/hooks/useToggle';
+import { useLocalStorage } from '@/lib/hooks/utils/use-local-storage';
+import useToggle from '@/lib/hooks/utils/use-toggle';
 import { City, defaultCity } from '@/lib/types/city';
 import { createContext, useEffect } from 'react';
 
