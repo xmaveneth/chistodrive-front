@@ -4,7 +4,7 @@ import TextField from '@/components/forms/text-field';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { loginUser } from '@/services/api/auth';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AxiosError } from 'axios';
 import { Button } from '@headlessui/react';
@@ -25,6 +25,7 @@ type LoginProps = {
     onClick: () => void;
 };
 export default function Login({ onClick }: LoginProps) {
+    const queryClient = useQueryClient();
     const navigate = useNavigate();
     const { toggleLoginDialog } = useAuthContext();
 
@@ -48,7 +49,8 @@ export default function Login({ onClick }: LoginProps) {
                 secure: true,
                 sameSite: 'Strict',
             });
-
+            
+            queryClient.invalidateQueries({ queryKey: ['current-user'] })
             navigate('/account');
             toggleLoginDialog(false);
         },

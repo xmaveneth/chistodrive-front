@@ -4,13 +4,14 @@ import TextField from '@/components/forms/text-field';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { signupUser } from '@/services/api/auth';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AxiosError } from 'axios';
 import { Button } from '@headlessui/react';
 import { useNavigate } from 'react-router-dom';
 import CheckboxField from '@/components/forms/checkbox-field';
 import { useAuthContext } from '@/lib/hooks/context/use-auth-context';
+import Cookies from 'js-cookie';
 const signupSchema = z
     .object({
         name: z.string().min(1, 'Введите имя'),
@@ -44,8 +45,9 @@ type SignupProps = {
 };
 
 export default function Signup({ onClick }: SignupProps) {
+    const queryClient = useQueryClient();
     const navigate = useNavigate();
-     const { toggleSignupDialog } = useAuthContext();
+    const { toggleSignupDialog } = useAuthContext();
 
     const {
         register,
@@ -60,14 +62,24 @@ export default function Signup({ onClick }: SignupProps) {
     const mutation = useMutation({
         mutationFn: ({ name, telephone, password }: SignupFormInputs) =>
             signupUser({ name, telephone, password }),
-        onSuccess: () => {
+        onSuccess: (data) => {
+            Cookies.set('access_token', data.access_token, {
+                secure: true,
+                sameSite: 'Strict',
+            });
+            Cookies.set('refresh_token', data.refresh_token, {
+                secure: true,
+                sameSite: 'Strict',
+            });
+
+            queryClient.invalidateQueries({ queryKey: ['current-user'] });
             navigate('/account');
             toggleSignupDialog(false);
         },
         onError: (error: unknown) => {
             if (error instanceof AxiosError && error.response) {
                 setError('telephone', {
-                    message: 'Пользователь с таким номером уже существует.',
+                    message: error.message,
                 });
             } else {
                 setError('telephone', {

@@ -19,7 +19,7 @@ export default function CheckboxField({
     onChange,
     onBlur,
     ref,
-    isChecked,
+    isChecked = false,
     error
 }: CheckboxFieldProps) {
     return (
