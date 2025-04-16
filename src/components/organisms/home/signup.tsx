@@ -12,6 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import CheckboxField from '@/components/forms/checkbox-field';
 import { useAuthContext } from '@/lib/hooks/context/use-auth-context';
 import Cookies from 'js-cookie';
+import { toast } from 'react-toastify';
 const signupSchema = z
     .object({
         name: z.string().min(1, 'Введите имя'),
@@ -63,7 +64,7 @@ export default function Signup({ onClick }: SignupProps) {
         mutationFn: ({ name, telephone, password }: SignupFormInputs) =>
             signupUser({ name, telephone, password }),
         onSuccess: (data) => {
-            Cookies.set('access_token', data.access_token, {
+             Cookies.set('access_token', data.access_token, {
                 secure: true,
                 sameSite: 'Strict',
             });
@@ -74,12 +75,17 @@ export default function Signup({ onClick }: SignupProps) {
 
             queryClient.invalidateQueries({ queryKey: ['current-user'] });
             navigate('/account');
+            toast("Пользователь успешно зарегистрирован!");
             toggleSignupDialog(false);
         },
         onError: (error: unknown) => {
             if (error instanceof AxiosError && error.response) {
+                const detail = error.response.data?.detail;
                 setError('telephone', {
-                    message: error.message,
+                    message:
+                        typeof detail === 'string'
+                            ? detail
+                            : 'Ошибка регистрации. Попробуйте позже.',
                 });
             } else {
                 setError('telephone', {

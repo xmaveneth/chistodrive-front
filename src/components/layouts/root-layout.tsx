@@ -8,6 +8,7 @@ import { CityProvider } from '@/lib/providers/city-provider';
 import { UserProvider } from '@/lib/providers/user-provider';
 import { ErrorBoundary } from 'react-error-boundary';
 import { Outlet, ScrollRestoration } from 'react-router-dom';
+import { ToastContainer, Zoom } from 'react-toastify';
 
 export function RootLayout() {
     const {
@@ -56,6 +57,20 @@ export function RootLayout() {
                         }}
                     />
                 </DialogLayout>
+
+                <ToastContainer
+                    position="top-center"
+                    autoClose={3000}
+                    hideProgressBar={true}
+                    newestOnTop={false}
+                    closeOnClick={false}
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                    theme="dark"
+                    transition={Zoom}
+                />
             </CityProvider>
         </UserProvider>
     );

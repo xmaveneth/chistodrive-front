@@ -44,7 +44,7 @@ export default function DialogLayout({
 
                     <div className="px-3 text-text-muted">
                         {title != null && (
-                            <DialogTitle className="text-center text-white mb-1 text-lg">
+                            <DialogTitle className="text-center text-white text-balance mb-1 text-lg">
                                 {title}
                             </DialogTitle>
                         )}

@@ -11,6 +11,7 @@ import { Button } from '@headlessui/react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthContext } from '@/lib/hooks/context/use-auth-context';
 import Cookies from 'js-cookie';
+import { toast } from 'react-toastify';
 
 const loginSchema = z.object({
     telephone: z
@@ -52,12 +53,17 @@ export default function Login({ onClick }: LoginProps) {
             
             queryClient.invalidateQueries({ queryKey: ['current-user'] })
             navigate('/account');
+            toast("Добро пожаловать!");
             toggleLoginDialog(false);
         },
         onError: (error: unknown) => {
             if (error instanceof AxiosError && error.response) {
+                const detail = error.response.data?.detail;
                 setError('telephone', {
-                    message: 'Данный пользователь не зарегистрирован.',
+                    message:
+                        typeof detail === 'string'
+                            ? detail
+                            : 'Ошибка входа в аккаунт. Попробуйте позже.',
                 });
             } else {
                 setError('telephone', {

@@ -51,3 +51,7 @@ export const getCurrentUser = async (): Promise<CurrentUserResponse> => {
 export const logoutCurrentUser = async (): Promise<void> => {
     await axiosInstance.post('/api/jwt/logout');
 };
+
+export const deleteCurrentUser = async (): Promise<void> => {
+    await axiosInstance.post('/api/profile/delete_account');
+};
