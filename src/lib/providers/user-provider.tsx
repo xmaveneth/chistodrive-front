@@ -1,11 +1,11 @@
 import { useCurrentUser } from '@/lib/hooks/auth/use-current-user';
-import { CurrentUserResponse } from '@/services/api/auth';
+import { User } from '@/lib/types/user';
 import { createContext } from 'react';
 
 type UserContextType = {
     isLoggedIn: boolean;
     isLoading: boolean;
-    user: CurrentUserResponse | undefined;
+    user: User | undefined;
 };
 
 export const UserContext = createContext<UserContextType | null>(null);

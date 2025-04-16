@@ -1,3 +1,4 @@
+import { User } from '@/lib/types/user';
 import { axiosInstance } from '@/services/api/axios-instance';
 
 type LoginCredentials = {
@@ -42,7 +43,7 @@ export type CurrentUserResponse = {
     telephone: string;
 };
 
-export const getCurrentUser = async (): Promise<CurrentUserResponse> => {
+export const getCurrentUser = async (): Promise<User> => {
     const response = await axiosInstance.get('/api/profile/me');
     return response.data;
 };
