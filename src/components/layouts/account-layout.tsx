@@ -20,7 +20,7 @@ export default function AccountLayout() {
         if (!isLoggedIn && isLoading === false) {
             navigate('/');
         }
-    }, []);
+    }, [isLoading]);
 
     return (
         <div className="primary-px primary-py">
