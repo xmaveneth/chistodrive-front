@@ -32,3 +32,8 @@ export function formatDateToDayMonthLabel(dateString: string): string {
     const parsed = parse(dateString, 'yyyy-MM-dd', new Date());
     return format(parsed, 'd MMMM', { locale: ru });
 }
+
+export function formatDateToHumanFormat(dateString: string): string {
+    const parsed = parse(dateString, 'yyyy-MM-dd', new Date());
+    return format(parsed, 'd MMMM', { locale: ru });
+}
