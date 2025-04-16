@@ -2,12 +2,12 @@ import { Appointment } from '@/lib/types/user';
 import { formatDateToDayMonthLabel } from '@/lib/utils/format-date';
 import { MapPinIcon } from '@heroicons/react/16/solid';
 
-type AccountEntryProsp = {
+type AccountEntryProps = {
     entry: Appointment;
     onClick: () => void;
 };
 
-export function AccountEntry({ entry, onClick }: AccountEntryProsp) {
+export function AccountEntry({ entry, onClick }: AccountEntryProps) {
     return (
             <button
                 onClick={onClick}

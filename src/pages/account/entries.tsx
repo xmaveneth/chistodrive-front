@@ -1,3 +1,4 @@
+import AccountAddBtn from '@/components/atoms/account-add-btn';
 import { AccountEntry } from '@/components/atoms/account-entry';
 import DialogLayout from '@/components/layouts/dialog-layout';
 import AccountEntryDialog from '@/components/molecules/account/account-entry-dialog';
@@ -5,7 +6,6 @@ import CancelEntryDialog from '@/components/molecules/account/cancel-entry-dialo
 import RedirectDialog from '@/components/molecules/account/redirect-dialog';
 import { fakeUser } from '@/lib/data/account-entries';
 import { Appointment } from '@/lib/types/user';
-import { PlusIcon } from '@heroicons/react/16/solid';
 import { useState } from 'react';
 
 export default function AccountEntries() {
@@ -15,7 +15,6 @@ export default function AccountEntries() {
     const [showAccountEntryDialog, setShowAccountEntryDialog] = useState(false);
     const [showCancelEntryDialog, setShowCancelEntryDialog] = useState(false);
     const [showRedirectModal, setShowRedirectModal] = useState(false);
-
 
     const user = fakeUser;
     return (
@@ -38,9 +37,7 @@ export default function AccountEntries() {
                     ))}
                 </div>
 
-                <button onClick={() => setShowRedirectModal(true)} className="rounded-full bg-input-bg p-1 mx-auto cursor-pointer transition-all duration-200 ease-in block hover:bg-zinc-700/60 hover:scale-105 focus-within:scale-110 focus-within:bg-zinc-700/60">
-                    <PlusIcon className="size-5 text-white" />
-                </button>
+                <AccountAddBtn onClick={() => setShowRedirectModal(true)} />
             </div>
 
             <div className="md:flex-1">
