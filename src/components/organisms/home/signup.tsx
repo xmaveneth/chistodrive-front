@@ -74,9 +74,12 @@ export default function Signup({ onClick }: SignupProps) {
             });
 
             queryClient.invalidateQueries({ queryKey: ['current-user'] });
-            navigate('/account');
-            toast("Пользователь успешно зарегистрирован!");
-            toggleSignupDialog(false);
+         
+            setTimeout(() => {
+                navigate('/account');
+                toast("Пользователь успешно зарегистрирован!");
+                toggleSignupDialog(false);
+            }, 500);
         },
         onError: (error: unknown) => {
             if (error instanceof AxiosError && error.response) {

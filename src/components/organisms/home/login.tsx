@@ -50,11 +50,13 @@ export default function Login({ onClick }: LoginProps) {
                 secure: true,
                 sameSite: 'Strict',
             });
-            
-            queryClient.invalidateQueries({ queryKey: ['current-user'] })
-            navigate('/account');
-            toast("Добро пожаловать!");
-            toggleLoginDialog(false);
+
+            queryClient.invalidateQueries({ queryKey: ['current-user'] });
+            setTimeout(() => {
+                navigate('/account');
+                toast('Добро пожаловать!');
+                toggleLoginDialog(false);
+            }, 500);
         },
         onError: (error: unknown) => {
             if (error instanceof AxiosError && error.response) {
