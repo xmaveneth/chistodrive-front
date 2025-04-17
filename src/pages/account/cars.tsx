@@ -1,4 +1,5 @@
 import AccountAddBtn from '@/components/atoms/account-add-btn';
+import AccountItemSkeleton from '@/components/atoms/account-item-skeleton';
 import { AccountVehicle } from '@/components/atoms/account-vehicle';
 import NoItemsMessage from '@/components/atoms/no-items-message';
 import DialogLayout from '@/components/layouts/dialog-layout';
@@ -40,7 +41,7 @@ export default function AccountCars() {
                               />
                           )) : <NoItemsMessage className='-mt-4' />)
                         : range(1, 5).map((index) => (
-                              <AccountVehicleSkeleton
+                              <AccountItemSkeleton
                                   key={`vehicle-skeleton-${index}`}
                               />
                           ))}
@@ -71,13 +72,5 @@ export default function AccountCars() {
                 />
             </DialogLayout>
         </section>
-    );
-}
-
-function AccountVehicleSkeleton() {
-    return (
-        <li className="w-full px-6 py-3 bg-gray-400 text-transparent animate-pulse flex items-center gap-5 rounded-full lg:py-5">
-            <div className="h-5 shrink-0 lg:h-8">Loading</div>
-        </li>
     );
 }
