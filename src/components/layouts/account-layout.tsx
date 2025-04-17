@@ -26,7 +26,7 @@ export default function AccountLayout() {
     return (
         <div className="primary-px primary-py">
             <header className="flex items-center justify-center mb-6 sm:mb-10 xl:mb-12">
-                <Logo className="w-33.5 sm:w-80 xl:w-123.5" />
+                <Logo className="w-33.5 sm:w-80 xl:w-123.5" isHeading={false} />
             </header>
             <section className="px-4 sm:px-8 sm:pb-9 xl:pb-8 xl:px-9 xl:pt-7 pt-5 pb-7 border border-border rounded-xl">
                 <div className="mb-4">

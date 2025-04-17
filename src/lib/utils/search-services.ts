@@ -33,5 +33,7 @@ export type ServiceResult = {
 
 export type SearchServicesResponse = {
     data: ServiceResult[];
+    page: number;
+    total: number;
 };
 

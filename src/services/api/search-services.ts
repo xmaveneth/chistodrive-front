@@ -19,3 +19,15 @@ export const fetchServices = async (filters: SearchFilters): Promise<SearchServi
     const response = await axiosInstance.post<SearchServicesResponse>('/api/search/services', filters);
     return response.data;
   };
+
+/* export const fetchServices = async (
+    filters: SearchFilters,
+    page: number
+): Promise<SearchServicesResponse> => {
+    const response = await axiosInstance.post<SearchServicesResponse>(
+        `/api/search/services?page=${page}`,
+        filters
+    );
+    return response.data;
+};
+ */
