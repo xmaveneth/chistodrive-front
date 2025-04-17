@@ -1,5 +1,6 @@
 import AccountAddBtn from '@/components/atoms/account-add-btn';
 import { AccountEntry } from '@/components/atoms/account-entry';
+import NoItemsMessage from '@/components/atoms/no-items-message';
 import DialogLayout from '@/components/layouts/dialog-layout';
 import AccountEntryDialog from '@/components/molecules/account/account-entry-dialog';
 import CancelEntryDialog from '@/components/molecules/account/cancel-entry-dialog';
@@ -25,7 +26,7 @@ export default function AccountEntries() {
                 </p>
 
                 <div className="space-y-3 mb-3.5 md:space-y-5">
-                    {user.appointments.actual.map((entry, idx) => (
+                    {user.appointments.actual.length > 0 ? user.appointments.actual.map((entry, idx) => (
                         <AccountEntry
                             key={`${entry.appointment_id}-${idx}`}
                             entry={entry}
@@ -34,7 +35,7 @@ export default function AccountEntries() {
                                 setShowAccountEntryDialog(true);
                             }}
                         />
-                    ))}
+                    )) : <NoItemsMessage className='-mt-4' />}
                 </div>
 
                 <AccountAddBtn onClick={() => setShowRedirectModal(true)} />
@@ -46,7 +47,7 @@ export default function AccountEntries() {
                 </p>
 
                 <div className="space-y-2 mb-3.5 md:space-y-5">
-                    {user.appointments.archive.map((entry, idx) => (
+                    {user.appointments.archive.length > 0 ? user.appointments.archive.map((entry, idx) => (
                         <AccountEntry
                             key={`${entry.appointment_id}-${idx}`}
                             entry={entry}
@@ -55,7 +56,7 @@ export default function AccountEntries() {
                                 setShowAccountEntryDialog(true);
                             }}
                         />
-                    ))}
+                    )) : <NoItemsMessage className='-mt-4' />}
                 </div>
             </div>
 

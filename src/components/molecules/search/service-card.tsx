@@ -1,5 +1,5 @@
+import { useCurrentUser } from '@/lib/hooks/auth/use-current-user';
 import { useAuthContext } from '@/lib/hooks/context/use-auth-context';
-import { useUserContext } from '@/lib/hooks/context/use-user-context';
 import { cn } from '@/lib/utils/cn';
 import { ServiceResult, Slot } from '@/lib/utils/search-services';
 import { MapPinIcon } from '@heroicons/react/24/solid';
@@ -29,10 +29,11 @@ export default function ServiceCard({
     service
 }: ServiceCardProps) {
     const [isImageLoading, setIsImageLoading] = useState(true);
-    const { isLoggedIn, isLoading } = useUserContext();
+    const { isError, data: user, isLoading } = useCurrentUser();
     const { toggleLoginDialog } = useAuthContext();
-    
 
+    const isLoggedIn = !(isError || !user);
+    
     return (
         <div className="rounded-lg bg-input-bg">
             <div className="overflow-clip relative aspect-[1.55/1] rounded-lg mb-1">

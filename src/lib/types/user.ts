@@ -18,9 +18,23 @@ export type Car = {
     vehicle_type_id: number;
 };
 
+export type FavouriteCarWash = {
+    favourite_car_wash_id: number;
+    car_wash_name: string;
+    location: string;
+};
+
+export type FavouriteSlot = {
+    favourite_slot_id: number;
+    car_wash_name: string;
+    location: string;
+    date: string;  // format: 'YYYY-MM-DD'
+    time: string;  // format: 'HH:mm'
+};
+
 export type Favourites = {
-    slot: unknown[]; 
-    car_wash: unknown[];
+    slot: FavouriteSlot[];
+    car_wash: FavouriteCarWash[];
 };
 
 export type Appointments = {

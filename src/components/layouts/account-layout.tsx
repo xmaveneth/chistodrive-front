@@ -1,26 +1,27 @@
 import Logo from '@/components/atoms/logo';
-import { useUserContext } from '@/lib/hooks/context/use-user-context';
-import { useEffect, useState } from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { Navigate, Outlet } from 'react-router-dom';
 
 import AccountNavLink from '@/components/atoms/account-nav-link';
 import DialogLayout from '@/components/layouts/dialog-layout';
 import DeleteUserDialog from '@/components/molecules/account/delete-user-dialog';
 import AccountHeader from '@/components/molecules/account/account-header';
 import UserData from '@/components/molecules/account/user-data';
+import { useCurrentUser } from '@/lib/hooks/auth/use-current-user';
 
 export default function AccountLayout() {
-    const { isLoading, isLoggedIn } = useUserContext();
-    const navigate = useNavigate();
+    const { data: user, isLoading, isError } = useCurrentUser();
 
     const [showDeleteAccountDialog, setShowDeleteAccountDialog] =
         useState(false);
 
-    useEffect(() => {
-        if (!isLoggedIn && isLoading === false) {
-            navigate('/');
-        }
-    }, [isLoading]);
+    const isLoggedIn = !(isError || !user);
+
+    if (isLoading) return null;
+
+    if (!isLoggedIn) {
+        return <Navigate to="/" replace />;
+    }
 
     return (
         <div className="primary-px primary-py">
@@ -29,7 +30,9 @@ export default function AccountLayout() {
             </header>
             <section className="px-4 sm:px-8 sm:pb-9 xl:pb-8 xl:px-9 xl:pt-7 pt-5 pb-7 border border-border rounded-xl">
                 <div className="mb-4">
-                    <AccountHeader openDialog={() => setShowDeleteAccountDialog(true)} />
+                    <AccountHeader
+                        openDialog={() => setShowDeleteAccountDialog(true)}
+                    />
 
                     <UserData />
 
@@ -51,7 +54,9 @@ export default function AccountLayout() {
                 isOpen={showDeleteAccountDialog}
                 closeDialog={() => setShowDeleteAccountDialog(false)}
             >
-                <DeleteUserDialog closeDialog={() => setShowDeleteAccountDialog(false)} />
+                <DeleteUserDialog
+                    closeDialog={() => setShowDeleteAccountDialog(false)}
+                />
             </DialogLayout>
         </div>
     );

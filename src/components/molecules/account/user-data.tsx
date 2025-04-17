@@ -1,7 +1,6 @@
-import { useUserContext } from '@/lib/hooks/context/use-user-context';
-
+import { useCurrentUser } from '@/lib/hooks/auth/use-current-user';
 export default function UserData() {
-    const { isLoading, user } = useUserContext();
+    const { isLoading, data: user } = useCurrentUser();
 
     return (
         <div className="space-y-2 mb-7 sm:mb-8">

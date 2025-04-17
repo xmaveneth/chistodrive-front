@@ -1,4 +1,3 @@
-import { useUserContext } from '@/lib/hooks/context/use-user-context';
 import { CreateVehiclePayload } from '@/lib/types/vehicles';
 import { createVehicle } from '@/services/api/vehicles';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -11,13 +10,11 @@ export const useCreateVehicle = (
     closeModal: () => void
 ) => {
     const queryClient = useQueryClient();
-    const { refetch } = useUserContext();
 
     return useMutation({
         mutationFn: (payload: CreateVehiclePayload) => createVehicle(payload),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['current-user'] });
-            refetch();
 
             toast('Авто успешно добавлено!');
             closeModal();

@@ -1,5 +1,5 @@
 import PrimaryBtn from '@/components/atoms/primary-btn';
-import { useUserContext } from '@/lib/hooks/context/use-user-context';
+import { useCurrentUser } from '@/lib/hooks/auth/use-current-user';
 import { UserIcon } from '@heroicons/react/16/solid';
 import { useNavigate } from 'react-router-dom';
 
@@ -8,7 +8,9 @@ type LoginBtnProps = {
 };
 export default function LoginBtn({ onClick }: LoginBtnProps) {
     const navigate = useNavigate();
-    const { isLoading, isLoggedIn } = useUserContext();
+    const { isLoading, isError, data: user } = useCurrentUser();
+
+    const isLoggedIn = !(isError || !user);
 
     const loginClick = () => {
         if (isLoggedIn) {
