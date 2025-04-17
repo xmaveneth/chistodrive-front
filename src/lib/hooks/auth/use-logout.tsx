@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { logoutCurrentUser } from '@/services/api/auth';
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import notify from '@/lib/utils/notify';
 
 export const useLogout = () => {
     const navigate = useNavigate();
@@ -15,7 +15,7 @@ export const useLogout = () => {
             Cookies.remove('refresh_token');
             queryClient.invalidateQueries({ queryKey: ['current-user'] })
             navigate('/');
-            toast("Вы вышли из личного кабинета");
+            notify("Вы вышли из личного кабинета");
         },
     });
 };

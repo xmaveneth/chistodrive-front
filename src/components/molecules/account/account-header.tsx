@@ -8,9 +8,13 @@ type AccountHeaderProp = {
 export default function AccountHeader({ openDialog }: AccountHeaderProp) {
     const { mutate: logout, isPending } = useLogout();
 
+
+
     return (
         <div className="flex items-center justify-between mb-4 gap-4 sm:mb-6">
-            <div className="w-10 sm:w-12 hidden xs:block">
+            <div
+                className="w-10 sm:w-12 hidden xs:block"
+            >
                 <img
                     src={UserSvg}
                     alt="Иконка пользователя"

@@ -1,6 +1,6 @@
 import { User } from "@/lib/types/user";
 
-export const fakeUser: User = {
+export const fakeUser: Omit<User, 'favourites'> = {
     name: 'Иван Иванов',
     telephone: '+79991234567',
     appointments: {
@@ -57,14 +57,4 @@ export const fakeUser: User = {
             vehicle_type_id: 2,
         },
     ],
-    favourites: {
-        slot: [
-            { id: 1, time: '10:00', car_wash_id: 1 },
-            { id: 2, time: '16:30', car_wash_id: 2 },
-        ],
-        car_wash: [
-            { id: 1, name: 'ЧистоDrive', address: 'ул. Тверская, 15' },
-            { id: 2, name: 'АвтоЧист', address: 'пр-т Ленина, 28' },
-        ],
-    },
 };

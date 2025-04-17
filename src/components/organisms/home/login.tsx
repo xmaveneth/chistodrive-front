@@ -11,7 +11,7 @@ import { Button } from '@headlessui/react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthContext } from '@/lib/hooks/context/use-auth-context';
 import Cookies from 'js-cookie';
-import { toast } from 'react-toastify';
+import notify from '@/lib/utils/notify';
 
 const loginSchema = z.object({
     telephone: z
@@ -54,7 +54,7 @@ export default function Login({ onClick }: LoginProps) {
             queryClient.invalidateQueries({ queryKey: ['current-user'] });
             setTimeout(() => {
                 navigate('/account');
-                toast('Добро пожаловать!');
+                notify('Добро пожаловать!');
                 toggleLoginDialog(false);
             }, 500);
         },

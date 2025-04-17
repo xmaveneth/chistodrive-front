@@ -1,9 +1,9 @@
 import { CreateVehiclePayload } from '@/lib/types/vehicles';
+import notify from '@/lib/utils/notify';
 import { createVehicle } from '@/services/api/vehicles';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { UseFormSetError } from 'react-hook-form';
-import { toast } from 'react-toastify';
 
 export const useCreateVehicle = (
     setError: UseFormSetError<any>,
@@ -16,7 +16,7 @@ export const useCreateVehicle = (
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['current-user'] });
 
-            toast('Авто успешно добавлено!');
+            notify('Авто успешно добавлено!');
             closeModal();
         },
         onError: (error: unknown) => {

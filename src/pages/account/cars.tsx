@@ -8,9 +8,9 @@ import DeleteVehicleDialog from '@/components/molecules/account/delete-vehicle-d
 import { useCurrentUser } from '@/lib/hooks/auth/use-current-user';
 import { Car } from '@/lib/types/user';
 import { hasVehicleInAppointments } from '@/lib/utils/check-vehicle-in-entries';
+import notify from '@/lib/utils/notify';
 import { range } from '@/lib/utils/range';
 import { useState } from 'react';
-import { toast } from 'react-toastify';
 
 export default function AccountCars() {
     const { data: user } = useCurrentUser();
@@ -32,7 +32,7 @@ export default function AccountCars() {
                                           car.reg_number,
                                           user
                                       )
-                                          ? toast(
+                                          ? notify(
                                                 'У вас есть активные записи, вы не можете удалить данный автомобиль'
                                             )
                                           : setSelectedVehicle(car)
