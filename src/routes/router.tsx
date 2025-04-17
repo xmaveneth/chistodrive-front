@@ -1,15 +1,15 @@
 import { RootLayout } from '@/components/layouts/root-layout';
-import { lazyLoad } from '@/lib/utils/lazy-load';
 import Home from '@/pages/home';
 import Policy from '@/pages/policy';
 import Rules from '@/pages/rules';
+import { lazy } from 'react';
 
-const Search = lazyLoad('../../pages/search');
-const About = lazyLoad('../../pages/about');
-const AccountLayout = lazyLoad('../../components/layouts/account-layout');
-const AccountCars = lazyLoad('../../pages/account/cars');
-const AccountEntries = lazyLoad('../../pages/account/entries');
-const AccountFavorite = lazyLoad('../../pages/account/favorite');
+const Search = lazy(() => import('@/pages/search'));
+const About = lazy(() => import('@/pages/about'));
+const AccountLayout = lazy(() => import('@/components/layouts/account-layout'));
+const AccountCars = lazy(() => import('@/pages/account/cars'));
+const AccountEntries = lazy(() => import('@/pages/account/entries'));
+const AccountFavorite = lazy(() => import('@/pages/account/favorite'));
 
 export const routes = [
     {
