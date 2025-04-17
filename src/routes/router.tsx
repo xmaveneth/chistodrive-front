@@ -1,13 +1,15 @@
-import AccountLayout from '@/components/layouts/account-layout';
 import { RootLayout } from '@/components/layouts/root-layout';
-import About from '@/pages/about';
-import AccountCars from '@/pages/account/cars';
-import AccountEntries from '@/pages/account/entries';
-import AccountFavorite from '@/pages/account/favorite';
+import { lazyLoad } from '@/lib/utils/lazy-load';
 import Home from '@/pages/home';
 import Policy from '@/pages/policy';
 import Rules from '@/pages/rules';
-import Search from '@/pages/search';
+
+const Search = lazyLoad('../../pages/search');
+const About = lazyLoad('../../pages/about');
+const AccountLayout = lazyLoad('../../components/layouts/account-layout');
+const AccountCars = lazyLoad('../../pages/account/cars');
+const AccountEntries = lazyLoad('../../pages/account/entries');
+const AccountFavorite = lazyLoad('../../pages/account/favorite');
 
 export const routes = [
     {
