@@ -8,6 +8,7 @@ type AccountVehicleProps = {
 };
 
 export function AccountVehicle({ vehicle, onClick, idx }: AccountVehicleProps) {
+    
     return (
         <li className="w-full px-6 py-3 bg-input-bg flex items-center gap-5 rounded-full lg:py-5">
             <span className='text-xs text-btn-bg sm:text-sm lg:text-base'>{idx < 10 ? `0${idx}` : idx}</span>

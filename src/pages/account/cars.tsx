@@ -5,8 +5,10 @@ import AddVehicleDialog from '@/components/molecules/account/add-vehicle-dialog'
 import DeleteVehicleDialog from '@/components/molecules/account/delete-vehicle-dialog';
 import { useUserContext } from '@/lib/hooks/context/use-user-context';
 import { Car } from '@/lib/types/user';
+import { hasVehicleInAppointments } from '@/lib/utils/check-vehicle-in-entries';
 import { range } from '@/lib/utils/range';
 import { useState } from 'react';
+import { toast } from 'react-toastify';
 
 export default function AccountCars() {
     const { user } = useUserContext();
@@ -23,7 +25,16 @@ export default function AccountCars() {
                               <AccountVehicle
                                   key={`${car.id}-${idx}`}
                                   vehicle={car}
-                                  onClick={() => setSelectedVehicle(car)}
+                                  onClick={() =>
+                                      hasVehicleInAppointments(
+                                          car.reg_number,
+                                          user
+                                      )
+                                          ? toast(
+                                                'У вас есть активные записи, вы не можете удалить данный автомобиль'
+                                            )
+                                          : setSelectedVehicle(car)
+                                  }
                                   idx={idx + 1}
                               />
                           ))
@@ -42,9 +53,10 @@ export default function AccountCars() {
                 isOpen={selectedVehicle != null}
                 closeDialog={() => setSelectedVehicle(null)}
             >
-                <DeleteVehicleDialog
+                {selectedVehicle != null && <DeleteVehicleDialog
                     closeDialog={() => setSelectedVehicle(null)}
-                />
+                    selectedVehicleId={selectedVehicle.id}
+                />}
             </DialogLayout>
 
             <DialogLayout

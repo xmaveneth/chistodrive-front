@@ -6,12 +6,13 @@ type UserContextType = {
     isLoggedIn: boolean;
     isLoading: boolean;
     user: User | undefined;
+    refetch: () => void;
 };
 
 export const UserContext = createContext<UserContextType | null>(null);
 
 export function UserProvider({ children }: { children: React.ReactNode }) {
-    const { data: user, isLoading, isError } = useCurrentUser();
+    const { data: user, isLoading, isError, refetch } = useCurrentUser();
 
     const isLoggedIn = !(isError || !user);
     
@@ -20,7 +21,8 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
             value={{
                 isLoggedIn,
                 isLoading,
-                user
+                user,
+                refetch
             }}
         >
             {children}
