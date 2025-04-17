@@ -6,6 +6,7 @@ import DialogLayout from '@/components/layouts/dialog-layout';
 import AddVehicleDialog from '@/components/molecules/account/add-vehicle-dialog';
 import DeleteVehicleDialog from '@/components/molecules/account/delete-vehicle-dialog';
 import { useCurrentUser } from '@/lib/hooks/auth/use-current-user';
+import { useVehicleTypes } from '@/lib/hooks/vehicles/use-vehicle-types';
 import { Car } from '@/lib/types/user';
 import { hasVehicleInAppointments } from '@/lib/utils/check-vehicle-in-entries';
 import notify from '@/lib/utils/notify';
@@ -13,6 +14,7 @@ import { range } from '@/lib/utils/range';
 import { useState } from 'react';
 
 export default function AccountCars() {
+    const { data: vehicleTypes } = useVehicleTypes();
     const { data: user } = useCurrentUser();
 
     const [selectedVehicle, setSelectedVehicle] = useState<Car | null>(null);
@@ -69,6 +71,7 @@ export default function AccountCars() {
             >
                 <AddVehicleDialog
                     closeDialog={() => setShowAddVehicleDialog(false)}
+                    vehicleTypes={vehicleTypes}
                 />
             </DialogLayout>
         </section>

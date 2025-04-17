@@ -5,10 +5,10 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useCreateVehicle } from '@/lib/hooks/vehicles/use-create-vehicle';
-import { useVehicleTypes } from '@/lib/hooks/vehicles/use-vehicle-types';
 import { Field, Label } from '@headlessui/react';
 import ErrorField from '@/components/forms/error-field';
 import { useEffect } from 'react';
+import { VehicleType } from '@/lib/types/vehicles';
 
 const vehicleSchema = z.object({
     brand: z.string().min(1, 'Введите марку автомобиля'),
@@ -24,10 +24,12 @@ type VehicleFormInput = z.infer<typeof vehicleSchema>;
 
 type AddVehicleDialogProps = {
     closeDialog: () => void;
+    vehicleTypes: VehicleType[] | undefined;
 };
 
 export default function AddVehicleDialog({
     closeDialog,
+    vehicleTypes,
 }: AddVehicleDialogProps) {
     const {
         register,
@@ -44,7 +46,7 @@ export default function AddVehicleDialog({
         setError,
         closeDialog
     );
-    const { data: vehicleTypes } = useVehicleTypes();
+    /* const { data: vehicleTypes } = useVehicleTypes(); */
 
     const onSubmit = (data: VehicleFormInput) => {
         createVehicle(data);
@@ -57,7 +59,9 @@ export default function AddVehicleDialog({
         })) ?? [];
 
     const vehicleType = watch('vehicle_type_id');
-    const currentVehicleType = vehicleTypeOptions.find(option => option.id === vehicleType);
+    const currentVehicleType = vehicleTypeOptions.find(
+        (option) => option.id === vehicleType
+    );
 
     useEffect(() => {
         if (vehicleTypeOptions.length <= 0) return;
@@ -83,7 +87,7 @@ export default function AddVehicleDialog({
                     placeholder="Модель автомобиля"
                     label="Модель автомобиля"
                 />
-                {(vehicleTypeOptions.length > 0 && currentVehicleType != null) ? (
+                {vehicleTypeOptions.length > 0 && currentVehicleType != null ? (
                     <Field>
                         <Label className="mb-1 flex items-center justify-between">
                             Тип автомобиля
@@ -93,6 +97,7 @@ export default function AddVehicleDialog({
                             value={currentVehicleType}
                             onChange={(val) => setValue('vehicle_type_id', val)}
                             className="w-full"
+                            hasBorder={true}
                         />
                         {errors.vehicle_type_id && (
                             <ErrorField>

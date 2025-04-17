@@ -9,16 +9,17 @@ import { CheckIcon, ChevronDownIcon } from '@heroicons/react/20/solid';
 
 type SelectFieldProps = {
     value: {
-        label: string,
-        id: number,
+        label: string;
+        id: number;
     };
     values: {
-        label: string,
-        id: number,
+        label: string;
+        id: number;
     }[];
     onChange: (val: number) => void;
     className?: string;
     placeholder?: string;
+    hasBorder?: boolean;
 };
 
 export default function SelectField({
@@ -26,14 +27,16 @@ export default function SelectField({
     onChange,
     values,
     className,
+    hasBorder,
 }: SelectFieldProps) {
     return (
         <div className={className}>
             <Listbox value={value.id} onChange={onChange}>
                 <ListboxButton
                     className={cn(
-                        'relative pr-8 pl-3 text-text-muted text-sm md:text-base input-field py-2 px-4 md:py-3 md:px-6 rounded-full w-full flex items-center justify-between shadow-sm gap-2 mb-3 bg-input-bg',
-                        'focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25'
+                        'relative pr-8 pl-3 text-text-muted text-sm md:text-base input-field px-4 py-3 md:py-3 md:px-6 rounded-full w-full flex items-center justify-between shadow-sm gap-2 mb-3 bg-input-bg',
+                        'focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25',
+                        hasBorder && 'ring-1 ring-text-muted'
                     )}
                 >
                     {value.label}

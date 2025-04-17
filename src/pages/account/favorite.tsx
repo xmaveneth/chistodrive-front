@@ -50,7 +50,7 @@ export default function AccountFavorite() {
                                 />
                             ))
                         ) : (
-                            <NoItemsMessage className="-mt-4" />
+                            <NoItemsMessage />
                         )
                     ) : (
                         range(1, 5).map((index) => (
@@ -78,7 +78,7 @@ export default function AccountFavorite() {
                                 />
                             ))
                         ) : (
-                            <NoItemsMessage className="-mt-4" />
+                            <NoItemsMessage />
                         )
                     ) : (
                         range(1, 5).map((index) => (
