@@ -4,12 +4,13 @@ import VehiclePlaceholder from '@/assets/images/account/car-display.webp';
 type AccountVehicleProps = {
     vehicle: Car;
     onClick: () => void;
+    idx: number;
 };
 
-export function AccountVehicle({ vehicle, onClick }: AccountVehicleProps) {
+export function AccountVehicle({ vehicle, onClick, idx }: AccountVehicleProps) {
     return (
         <li className="w-full px-6 py-3 bg-input-bg flex items-center gap-5 rounded-full lg:py-5">
-            <span className='text-xs text-btn-bg sm:text-sm lg:text-base'>01</span>
+            <span className='text-xs text-btn-bg sm:text-sm lg:text-base'>{idx < 10 ? `0${idx}` : idx}</span>
             <div className='h-5 shrink-0 lg:h-8 hidden sm:block'>
                 <img src={VehiclePlaceholder} alt="Вид серого автомобиля сбоку" className='w-full h-full object-contain object-center' />
             </div>
