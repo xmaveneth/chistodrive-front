@@ -29,10 +29,10 @@ export default function DialogLayout({
                 transition
                 className="fixed inset-0 backdrop-blur-sm duration-300 ease-out data-[closed]:opacity-0"
             />
-            <div className="fixed inset-0 flex w-screen items-center justify-center">
+            <div className="fixed inset-0 flex w-screen items-center flex-col justify-center overflow-y-auto">
                 <DialogPanel
                     transition
-                    className="bg-background max-w-90 w-full sm:w-90 rounded-2xl p-2 duration-300 ease-out data-[closed]:scale-40 data-[closed]:opacity-0"
+                    className="bg-background max-w-90 w-full sm:w-90 rounded-2xl p-2 duration-300 ease-out data-[closed]:scale-40 data-[closed]:opacity-0 overflow-y-auto"
                 >
                     <Button
                         onClick={closeDialog}

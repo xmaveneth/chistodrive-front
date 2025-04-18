@@ -34,6 +34,8 @@ type SearchServiceContextType = {
     areServicesLoading: boolean;
     isServicesError: boolean;
     handleSearchClick: () => void;
+    incrementCurrentPage: () => void;
+    showIncrementPageBtn: boolean;
 };
 
 export const SearchServiceContext =
@@ -57,37 +59,66 @@ export function SearchServiceProvider({
     const [startPrice, setStartPrice] = useState(100);
     const [endPrice, setEndPrice] = useState(9900);
     const [vehicleTypeId, setVehicleTypeId] = useState<number>(1);
+    const [servicesData, setServicesData] = useState<SearchServicesResponse>({ data: [], page: 0, total: 0 })
 
     const {
         mutate: searchServices,
-        data: servicesData,
         isPending: areServicesLoading,
         isError: isServicesError,
     } = useSearchServices();
 
-    const handleSearchClick = () => {
+    const handleSearchClick = (page = 0) => {
         if (!currentCity?.id) return;
 
-        searchServices({
+        const currentFilters = {
             city_id: currentCity.id,
             query: query.trim(),
             order_by_id: orderById ?? 0,
             service_category_id: serviceCategoryId ?? 0,
             service_type_id: serviceTypeId ?? 0,
-            date: date ?? '',
+            date: date,
             start_time: startTime,
             end_time: endTime,
             start_price: startPrice,
             end_price: endPrice,
             vehicle_type_id: vehicleTypeId ?? 1,
-        });
+            page: page,
+        };
+
+        console.table(currentFilters)
+
+        searchServices(
+            currentFilters,
+            {
+                onSuccess: (data) => {
+                    console.log("API", data)
+                    setServicesData((prev) =>
+                        page === 0
+                            ? data
+                            : {
+                                  data: [...prev.data, ...data.data],
+                                  page: data.page,
+                                  total: data.total,
+                              }
+                    );
+                },
+            }
+        );
     };
+
+    const incrementCurrentPage = () => {
+        if (servicesData.page >= servicesData.total - 1) return;
+
+        const nextPage = servicesData.page + 1;
+        handleSearchClick(nextPage);
+    };
+
 
     useEffect(() => setServiceTypeId(0), [serviceCategoryId]);
 
-    useEffect(() => handleSearchClick(), []);
+    useEffect(() => handleSearchClick(0), []);
 
-    useDebounce(() => handleSearchClick(), 750, [
+    useDebounce(() => handleSearchClick(0), 750, [
         currentCity.id,
         query,
         orderById,
@@ -129,7 +160,9 @@ export function SearchServiceProvider({
                 servicesData,
                 areServicesLoading,
                 isServicesError,
-                handleSearchClick,
+                handleSearchClick: () => handleSearchClick(0),
+                incrementCurrentPage,
+                showIncrementPageBtn: servicesData.page < (servicesData.total - 1)
             }}
         >
             {children}

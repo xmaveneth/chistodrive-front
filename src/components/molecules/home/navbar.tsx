@@ -15,7 +15,7 @@ export default function Navbar() {
             >
                 <Logo className="shrink-0 w-22 sm:w-32.25 hidden sm:block" />
 
-                <CitySelector className='sm:mr-auto sm:ml-5 min-w-55 sm:min-w-70 z-10' />
+                <CitySelector className='sm:mr-auto sm:ml-5 xs:min-w-55 sm:min-w-70 z-10' />
 
                 <div className="flex items-center gap-2 md:gap-4">
                     <Button

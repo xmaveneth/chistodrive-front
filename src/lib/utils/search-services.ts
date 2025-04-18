@@ -10,6 +10,7 @@ export type SearchFilters = {
     start_price: number;
     end_price: number;
     vehicle_type_id: number;
+    page: number;
 };
 
 export type Slot = {

@@ -7,7 +7,22 @@ export const useSearchServices = () => {
     });
 };
 
-
+/* export const useSearchServices = (filters: SearchFilters) => {
+    return useInfiniteQuery({
+        queryKey: ['services', filters],
+        queryFn: ({ pageParam = 0, queryKey }) => {
+            const [, filters] = queryKey as [string, SearchFilters];
+            return fetchServices(filters, pageParam);
+        },
+        initialPageParam: 0,
+        getNextPageParam: (lastPage, _allPages, lastPageParam) => {
+            return lastPage.page + 1 < lastPage.total
+                ? lastPageParam + 1
+                : undefined;
+        },
+    });
+};
+ */
 /* export const useInfiniteSearchServices = (filters: SearchFilters) => {
     return useInfiniteQuery({
         queryKey: ['services', filters],
