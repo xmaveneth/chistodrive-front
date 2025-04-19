@@ -18,3 +18,12 @@ export async function makeAppointment(
     const response = await axiosInstance.post('/api/appointment', payload);
     return response.data;
 }
+
+export async function deleteAppointment(
+    appointment_id: number
+): Promise<string> {
+    const response = await axiosInstance.delete('/api/appointment', {
+        params: { appointment_id },
+    });
+    return response.data;
+}

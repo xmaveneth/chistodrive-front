@@ -5,7 +5,7 @@ import DialogLayout from '@/components/layouts/dialog-layout';
 import AccountEntryDialog from '@/components/molecules/account/account-entry-dialog';
 import CancelEntryDialog from '@/components/molecules/account/cancel-entry-dialog';
 import RedirectDialog from '@/components/molecules/account/redirect-dialog';
-import { fakeUser } from '@/lib/data/account-entries';
+import { useCurrentUser } from '@/lib/hooks/auth/use-current-user';
 import { Appointment } from '@/lib/types/user';
 import { useState } from 'react';
 
@@ -17,7 +17,10 @@ export default function AccountEntries() {
     const [showCancelEntryDialog, setShowCancelEntryDialog] = useState(false);
     const [showRedirectModal, setShowRedirectModal] = useState(false);
 
-    const user = fakeUser;
+    const { data: user, isLoading } = useCurrentUser();
+
+    if (user == null || isLoading) return null;
+
     return (
         <section className="flex flex-col gap-4 md:flex-row md:justify-between md:pt-3 md:gap-6">
             <div className="md:flex-1">
@@ -82,6 +85,7 @@ export default function AccountEntries() {
             >
                 <CancelEntryDialog
                     closeDialog={() => setShowCancelEntryDialog(false)}
+                    entry={selectedEntry}
                 />
             </DialogLayout>
 

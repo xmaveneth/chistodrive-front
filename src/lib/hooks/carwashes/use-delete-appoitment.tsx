@@ -1,21 +1,18 @@
 import notify from '@/lib/utils/notify';
-import {
-    makeAppointment,
-    MakeAppointmentPayload,
-} from '@/services/api/carwashes-api';
+import { deleteAppointment } from '@/services/api/carwashes-api';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 
-export function useMakeAppointment(closeDialog: () => void) {
+export function useDeleteAppointment(closeDialog: () => void) {
     const queryClient = useQueryClient();
-    
     return useMutation({
-        mutationFn: (payload: MakeAppointmentPayload) =>
-            makeAppointment(payload),
+        mutationFn: (appointment_id: number) =>
+            deleteAppointment(appointment_id),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['current-user'] });
+            
             closeDialog();
-            notify('Запись успешно произведена!');
+            notify('Запись успешно удалена!');
         },
         onError: (error: unknown) => {
             if (error instanceof AxiosError && error.response) {
@@ -23,10 +20,10 @@ export function useMakeAppointment(closeDialog: () => void) {
                 notify(
                     typeof detail === 'string'
                         ? detail
-                        : 'Ошибка добавления записи. Попробуйте позже.'
+                        : 'Ошибка удаления записи. Попробуйте позже.'
                 );
             } else {
-                notify('Ошибка добавления записи. Попробуйте позже.');
+                notify('Ошибка удаления записи. Попробуйте позже.');
             }
         },
     });
