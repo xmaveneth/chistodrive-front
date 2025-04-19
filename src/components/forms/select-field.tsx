@@ -38,6 +38,7 @@ export default function SelectField({
                         'focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25',
                         hasBorder && 'ring-1 ring-text-muted'
                     )}
+                   
                 >
                     {value.label}
                     <ChevronDownIcon
@@ -49,7 +50,7 @@ export default function SelectField({
                     anchor="bottom"
                     transition
                     className={cn(
-                        'w-[var(--button-width)] rounded-xl z-10 border border-white/5 bg-background p-1 [--anchor-gap:var(--spacing-1)] focus:outline-none',
+                        'w-full rounded-xl z-10 border max-w-80 sm:w-80 border-white/5 bg-background p-1 [--anchor-gap:var(--spacing-1)] focus:outline-none',
                         'transition duration-100 ease-in data-[leave]:data-[closed]:opacity-0'
                     )}
                 >

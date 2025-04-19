@@ -3,7 +3,7 @@ import DialogLayout from '@/components/layouts/dialog-layout';
 import EntryDialog from '@/components/molecules/search/entry-dialog';
 import ServiceCard from '@/components/molecules/search/service-card';
 import { useSearchServicesContext } from '@/lib/hooks/context/use-search-services-context';
-import { ServiceResult } from '@/lib/utils/search-services';
+import { ServiceResult, Slot } from '@/lib/utils/search-services';
 import { useState } from 'react';
 
 export default function SearchResult() {
@@ -19,10 +19,13 @@ export default function SearchResult() {
     const [selectedCarwash, setSelectedCarwash] =
         useState<ServiceResult | null>(null);
 
+    const [selectedSlot, setSelectedSlot] = useState<Slot | null>(null);
+
     const [selectedTime, setSelectedTime] = useState('');
 
-    function handleTimeSelect(val: string, carwash: ServiceResult) {
+    function handleTimeSelect(val: string, carwash: ServiceResult, slot: Slot) {
         setSelectedTime(val);
+        setSelectedSlot(slot);
         setSelectedCarwash(carwash);
         setShowEntryDialog(true);
     }
@@ -77,7 +80,7 @@ export default function SearchResult() {
             {showIncrementPageBtn && (
                 <PrimaryBtn
                     onClick={incrementCurrentPage}
-                    className="mt-5 mx-auto"
+                    className="mt-10 sm:mt-12 mx-auto sm:py-5 sm:px-10"
                 >
                     Показать еще
                 </PrimaryBtn>
@@ -91,6 +94,8 @@ export default function SearchResult() {
                     carwash={selectedCarwash}
                     date={date}
                     time={selectedTime}
+                    slot={selectedSlot}
+                    closeDialog={() => setShowEntryDialog(false)}
                 />
             </DialogLayout>
         </>

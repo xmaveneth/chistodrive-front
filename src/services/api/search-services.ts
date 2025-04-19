@@ -16,10 +16,15 @@ export type SearchFilters = {
     page: number;
 };
 
-export const fetchServices = async (filters: SearchFilters): Promise<SearchServicesResponse> => {
-    const response = await axiosInstance.post<SearchServicesResponse>('/api/search/services', filters);
+export const fetchServices = async (
+    filters: SearchFilters
+): Promise<SearchServicesResponse> => {
+    const response = await axiosInstance.post<SearchServicesResponse>(
+        '/api/search/services',
+        filters
+    );
     return response.data;
-  };
+};
 
 /*   export const fetchServices = async (
     filters: SearchFilters,
@@ -35,7 +40,6 @@ export const fetchServices = async (filters: SearchFilters): Promise<SearchServi
     return response.data;
 };
  */
-  
 
 /* export const fetchServices = async (
     filters: SearchFilters,

@@ -1,4 +1,4 @@
-import { axiosInstance } from "@/services/api/axios-instance";
+import { axiosInstance } from '@/services/api/axios-instance';
 
 export const fetchCarwashes = async (city: string) => {
     const { data } = await axiosInstance.get(
@@ -6,3 +6,15 @@ export const fetchCarwashes = async (city: string) => {
     );
     return data;
 };
+
+export interface MakeAppointmentPayload {
+    slot_id: number;
+    vehicle_id: number;
+}
+
+export async function makeAppointment(
+    payload: MakeAppointmentPayload
+): Promise<string> {
+    const response = await axiosInstance.post('/api/appointment', payload);
+    return response.data;
+}
