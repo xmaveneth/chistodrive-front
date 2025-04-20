@@ -1,5 +1,4 @@
 import { cn } from '@/lib/utils';
-import { getCurrentClientTime } from '@/lib/utils/format-date';
 import { useState, useEffect } from 'react';
 import { Range } from 'react-range';
 
@@ -10,10 +9,8 @@ type TimeRangePickerProps = {
     className?: string;
 };
 
-const currentTime = getCurrentClientTime();
-
 const STEP = 1;
-const MIN = parseTime(currentTime);
+const MIN = 1;
 const MAX = 48;
 
 function convertToTime(value: number): string {
