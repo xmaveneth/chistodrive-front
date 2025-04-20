@@ -21,7 +21,7 @@ export default function AccountCars() {
     const [showAddVehicleDialog, setShowAddVehicleDialog] = useState(false);
 
     return (
-        <section className="pt-3">
+        <section className="md:pt-3">
             <div>
                 <p className="mb-3.5 text-sm sm:text-base md:text-lg md:mb-4.5">
                     Автомобили
