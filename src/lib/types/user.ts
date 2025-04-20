@@ -18,6 +18,8 @@ export type Car = {
     vehicle_type_id: number;
 };
 
+export type VehicleTypeMap = Record<number, Car[]>;
+
 export type FavouriteCarWash = {
     id: number;
     car_wash_id: number;
@@ -30,8 +32,8 @@ export type FavouriteSlot = {
     slot_id: number;
     car_wash_name: string;
     location: string;
-    date: string;  // format: 'YYYY-MM-DD'
-    time: string;  // format: 'HH:mm'
+    date: string; // format: 'YYYY-MM-DD'
+    time: string; // format: 'HH:mm'
 };
 
 export type Favourites = {

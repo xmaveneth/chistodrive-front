@@ -1,6 +1,6 @@
 import PrimaryBtn from '@/components/atoms/primary-btn';
 import { Appointment } from '@/lib/types/user';
-import { formatDateToDayMonthLabel } from '@/lib/utils/format-date';
+import { formatDateToDayMonthLabel, formatTimeToHHMM } from '@/lib/utils/format-date';
 import { MapPinIcon } from '@heroicons/react/16/solid';
 
 type AccountEntryDialogProps = {
@@ -21,10 +21,10 @@ export default function AccountEntryDialog({ entry, onClick }: AccountEntryDialo
             </p>
             <p>{entry.service_name}</p>
             <p>
-                {formatDateToDayMonthLabel(entry.date)} {entry.time}
+                {formatDateToDayMonthLabel(entry.date)} {formatTimeToHHMM(entry.time)}
             </p>
             <p>Цена {entry.price} ₽</p>
-            <p className="mb-6">{entry.reg_num} ₽</p>
+            <p className="mb-6">{entry.reg_num}</p>
 
             <PrimaryBtn onClick={onClick} type="button" className="w-full">
                 Отменить запись

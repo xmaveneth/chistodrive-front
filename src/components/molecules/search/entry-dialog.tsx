@@ -9,6 +9,8 @@ import { ServiceResult, Slot } from '@/lib/utils/search-services';
 import { MapPinIcon } from '@heroicons/react/16/solid';
 import { useState } from 'react';
 import { useDeleteFavouriteSlot } from '@/lib/hooks/carwashes/use-delete-favourite-slot';
+import { useSearchServicesContext } from '@/lib/hooks/context/use-search-services-context';
+import { useGroupedVehicles } from '@/lib/hooks/vehicles/use-vehicles';
 
 type EntryDialogProps = {
     carwash: ServiceResult | null;
@@ -31,6 +33,7 @@ export default function EntryDialog({
     closeDialog,
 }: EntryDialogProps) {
     const { isError, data: user, isLoading } = useCurrentUser();
+    const { vehicleTypeId } = useSearchServicesContext();
 
     const isLoggedIn = !(isError || !user);
 
@@ -51,6 +54,9 @@ export default function EntryDialog({
             false,
             () => setIsFavourite(isFavourite)
         );
+
+    const { data: userVehicles } =
+        useGroupedVehicles();
 
     function handleAddFavourite() {
         if (slot == null) return;
@@ -97,12 +103,16 @@ export default function EntryDialog({
     if (!isLoggedIn || user == null || user.cars == null || isLoading)
         return null;
 
-    const userCars: CarType[] = user.cars.map((car) => {
-        return {
+    function formatUserCars() {
+        if (userVehicles == null || !(vehicleTypeId in userVehicles)) return [];
+
+        return userVehicles[vehicleTypeId].map((car) => ({
             id: car.id,
             label: car.brand,
-        };
-    });
+          })) ?? [];
+    };
+
+    const userCars = formatUserCars();
 
     function isThisSlotFavourite() {
         if (slot == null || user == null) return false;
