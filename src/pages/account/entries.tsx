@@ -38,7 +38,7 @@ export default function AccountEntries() {
                                 setShowAccountEntryDialog(true);
                             }}
                         />
-                    )) : <NoItemsMessage className='-mt-4' />}
+                    )) : <NoItemsMessage />}
                 </div>
 
                 <AccountAddBtn onClick={() => setShowRedirectModal(true)} />

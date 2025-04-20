@@ -21,32 +21,41 @@ export default function AccountCars() {
     const [showAddVehicleDialog, setShowAddVehicleDialog] = useState(false);
 
     return (
-        <section className="pt-6">
+        <section className="pt-3">
             <div>
+                <p className="mb-3.5 text-sm sm:text-base md:text-lg md:mb-4.5">
+                    Автомобили
+                </p>
                 <ul className="space-y-3 mb-3.5 md:space-y-5">
-                    {user != null
-                        ? (user.cars.length > 0 ? user.cars.map((car, idx) => (
-                              <AccountVehicle
-                                  key={`${car.id}-${idx}`}
-                                  vehicle={car}
-                                  onClick={() =>
-                                      hasVehicleInAppointments(
-                                          car.reg_number,
-                                          user
-                                      )
-                                          ? notify(
-                                                'У вас есть активные записи, вы не можете удалить данный автомобиль'
-                                            )
-                                          : setSelectedVehicle(car)
-                                  }
-                                  idx={idx + 1}
-                              />
-                          )) : <NoItemsMessage className='-mt-4' />)
-                        : range(1, 5).map((index) => (
-                              <AccountItemSkeleton
-                                  key={`vehicle-skeleton-${index}`}
-                              />
-                          ))}
+                    {user != null ? (
+                        user.cars.length > 0 ? (
+                            user.cars.map((car, idx) => (
+                                <AccountVehicle
+                                    key={`${car.id}-${idx}`}
+                                    vehicle={car}
+                                    onClick={() =>
+                                        hasVehicleInAppointments(
+                                            car.reg_number,
+                                            user
+                                        )
+                                            ? notify(
+                                                  'У вас есть активные записи, вы не можете удалить данный автомобиль'
+                                              )
+                                            : setSelectedVehicle(car)
+                                    }
+                                    idx={idx + 1}
+                                />
+                            ))
+                        ) : (
+                            <NoItemsMessage className="-mt-4" />
+                        )
+                    ) : (
+                        range(1, 5).map((index) => (
+                            <AccountItemSkeleton
+                                key={`vehicle-skeleton-${index}`}
+                            />
+                        ))
+                    )}
                 </ul>
 
                 <AccountAddBtn onClick={() => setShowAddVehicleDialog(true)} />
@@ -57,10 +66,12 @@ export default function AccountCars() {
                 isOpen={selectedVehicle != null}
                 closeDialog={() => setSelectedVehicle(null)}
             >
-                {selectedVehicle != null && <DeleteVehicleDialog
-                    closeDialog={() => setSelectedVehicle(null)}
-                    selectedVehicleId={selectedVehicle.id}
-                />}
+                {selectedVehicle != null && (
+                    <DeleteVehicleDialog
+                        closeDialog={() => setSelectedVehicle(null)}
+                        selectedVehicleId={selectedVehicle.id}
+                    />
+                )}
             </DialogLayout>
 
             <DialogLayout
