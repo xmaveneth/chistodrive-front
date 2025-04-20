@@ -3,9 +3,10 @@ import { useFilters } from '@/lib/hooks/carwashes/use-filters';
 import { useSearchServices } from '@/lib/hooks/carwashes/use-search-services';
 import { FiltersResponse } from '@/lib/types/filters';
 import { SearchServicesResponse } from '@/lib/utils/search-services';
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useEffect, useMemo, useState } from 'react';
 import useDebounce from '@/lib/hooks/utils/use-debounce';
 import { formatDateToString } from '@/lib/utils/format-date';
+import { useGroupedVehicles } from '@/lib/hooks/vehicles/use-vehicles';
 
 type SearchServiceContextType = {
     areFiltersLoading: boolean;
@@ -36,6 +37,10 @@ type SearchServiceContextType = {
     handleSearchClick: () => void;
     incrementCurrentPage: () => void;
     showIncrementPageBtn: boolean;
+    userCars: {
+        id: number;
+        label: string;
+    }[];
 };
 
 export const SearchServiceContext =
@@ -59,7 +64,11 @@ export function SearchServiceProvider({
     const [startPrice, setStartPrice] = useState(100);
     const [endPrice, setEndPrice] = useState(9900);
     const [vehicleTypeId, setVehicleTypeId] = useState<number>(1);
-    const [servicesData, setServicesData] = useState<SearchServicesResponse>({ data: [], page: 0, total: 0 })
+    const [servicesData, setServicesData] = useState<SearchServicesResponse>({
+        data: [],
+        page: 0,
+        total: 0,
+    });
 
     const {
         mutate: searchServices,
@@ -85,22 +94,19 @@ export function SearchServiceProvider({
             page: page,
         };
 
-        searchServices(
-            currentFilters,
-            {
-                onSuccess: (data) => {
-                    setServicesData((prev) =>
-                        page === 0
-                            ? data
-                            : {
-                                  data: [...prev.data, ...data.data],
-                                  page: data.page,
-                                  total: data.total,
-                              }
-                    );
-                },
-            }
-        );
+        searchServices(currentFilters, {
+            onSuccess: (data) => {
+                setServicesData((prev) =>
+                    page === 0
+                        ? data
+                        : {
+                              data: [...prev.data, ...data.data],
+                              page: data.page,
+                              total: data.total,
+                          }
+                );
+            },
+        });
     };
 
     const incrementCurrentPage = () => {
@@ -110,6 +116,22 @@ export function SearchServiceProvider({
         handleSearchClick(nextPage);
     };
 
+    const { data: userVehicles } = useGroupedVehicles();
+
+    function formatUserCars() {
+        if (userVehicles == null || !(vehicleTypeId in userVehicles)) return [];
+
+        return (
+            userVehicles[vehicleTypeId].map((car) => ({
+                id: car.id,
+                label: car.brand,
+            })) ?? []
+        );
+    }
+
+    const userCars = useMemo(() => {
+        return formatUserCars();
+    }, [vehicleTypeId])
 
     useEffect(() => setServiceTypeId(0), [serviceCategoryId]);
 
@@ -159,7 +181,9 @@ export function SearchServiceProvider({
                 isServicesError,
                 handleSearchClick: () => handleSearchClick(0),
                 incrementCurrentPage,
-                showIncrementPageBtn: servicesData.page < (servicesData.total - 1)
+                showIncrementPageBtn:
+                    servicesData.page < servicesData.total - 1,
+                userCars: userCars,
             }}
         >
             {children}

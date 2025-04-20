@@ -10,7 +10,6 @@ import { MapPinIcon } from '@heroicons/react/16/solid';
 import { useState } from 'react';
 import { useDeleteFavouriteSlot } from '@/lib/hooks/carwashes/use-delete-favourite-slot';
 import { useSearchServicesContext } from '@/lib/hooks/context/use-search-services-context';
-import { useGroupedVehicles } from '@/lib/hooks/vehicles/use-vehicles';
 
 type EntryDialogProps = {
     carwash: ServiceResult | null;
@@ -33,7 +32,7 @@ export default function EntryDialog({
     closeDialog,
 }: EntryDialogProps) {
     const { isError, data: user, isLoading } = useCurrentUser();
-    const { vehicleTypeId } = useSearchServicesContext();
+    const { userCars } = useSearchServicesContext();
 
     const isLoggedIn = !(isError || !user);
 
@@ -54,9 +53,6 @@ export default function EntryDialog({
             false,
             () => setIsFavourite(isFavourite)
         );
-
-    const { data: userVehicles } =
-        useGroupedVehicles();
 
     function handleAddFavourite() {
         if (slot == null) return;
@@ -84,7 +80,6 @@ export default function EntryDialog({
         bookAppointment({ slot_id: slot.id, vehicle_id: selectedCar?.id });
     }
 
-    const userCars = formatUserCars();
 
     const [selectedCar, setSelectedCar] = useState<CarType | null>(() => {
         if (
@@ -98,15 +93,6 @@ export default function EntryDialog({
 
     if (!isLoggedIn || user == null || user.cars == null || isLoading)
         return null;
-
-    function formatUserCars() {
-        if (userVehicles == null || !(vehicleTypeId in userVehicles)) return [];
-
-        return userVehicles[vehicleTypeId].map((car) => ({
-            id: car.id,
-            label: car.brand,
-          })) ?? [];
-    };
 
     function isThisSlotFavourite() {
         if (slot == null || user == null) return false;
