@@ -27,3 +27,20 @@ export async function deleteAppointment(
     });
     return response.data;
 }
+
+export async function addFavouriteSlot(slot_id: number): Promise<string> {
+    const response = await axiosInstance.post('/api/slot/favourite', null, {
+        params: { slot_id },
+    });
+    return response.data;
+}
+
+export async function deleteFavouriteSlot(
+    fav_slot_id: number
+): Promise<string> {
+    const response = await axiosInstance.delete('/api/slot/favourite', {
+        params: { fav_slot_id },
+    });
+
+    return response.data;
+}

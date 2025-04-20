@@ -37,3 +37,8 @@ export function formatDateToHumanFormat(dateString: string): string {
     const parsed = parse(dateString, 'yyyy-MM-dd', new Date());
     return format(parsed, 'd MMMM', { locale: ru });
 }
+
+export function formatTimeToHHMM(time: string): string {
+    const [hours, minutes] = time.split(':');
+    return `${hours}:${minutes}`;
+  }

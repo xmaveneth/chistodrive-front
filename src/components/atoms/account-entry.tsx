@@ -1,5 +1,5 @@
 import { Appointment } from '@/lib/types/user';
-import { formatDateToDayMonthLabel } from '@/lib/utils/format-date';
+import { formatDateToDayMonthLabel, formatTimeToHHMM } from '@/lib/utils/format-date';
 import { MapPinIcon } from '@heroicons/react/16/solid';
 
 type AccountEntryProps = {
@@ -23,7 +23,7 @@ export function AccountEntry({ entry, onClick }: AccountEntryProps) {
                 </div>
                 <div className="flex items-start gap-1 flex-wrap text-xs sm:text-sm text-white/70 flex-1 md:justify-center">
                     <p>{entry.date && formatDateToDayMonthLabel(entry.date)}</p>
-                    <p>{entry.time && entry.time}</p>
+                    <p>{entry.time && formatTimeToHHMM(entry.time)}</p>
                     <p>{entry.reg_num && entry.reg_num}</p>
                 </div>
             </button>

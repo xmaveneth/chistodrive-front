@@ -1,11 +1,14 @@
+import AddFavouriteBtn from '@/components/atoms/add-favourite-btn';
 import PrimaryBtn from '@/components/atoms/primary-btn';
 import SelectField from '@/components/forms/select-field';
 import { useCurrentUser } from '@/lib/hooks/auth/use-current-user';
 import { useMakeAppointment } from '@/lib/hooks/carwashes/use-make-appoitment';
+import { useAddFavouriteSlot } from '@/lib/hooks/carwashes/use-add-favourite-slot';
 import { formatDateToDayMonthLabel } from '@/lib/utils/format-date';
 import { ServiceResult, Slot } from '@/lib/utils/search-services';
 import { MapPinIcon } from '@heroicons/react/16/solid';
 import { useState } from 'react';
+import { useDeleteFavouriteSlot } from '@/lib/hooks/carwashes/use-delete-favourite-slot';
 
 type EntryDialogProps = {
     carwash: ServiceResult | null;
@@ -20,15 +23,54 @@ type CarType = {
     id: number;
 };
 
-export default function EntryDialog({ carwash, date, time, slot, closeDialog }: EntryDialogProps) {
+export default function EntryDialog({
+    carwash,
+    date,
+    time,
+    slot,
+    closeDialog,
+}: EntryDialogProps) {
     const { isError, data: user, isLoading } = useCurrentUser();
 
     const isLoggedIn = !(isError || !user);
 
-    const {
-        mutate: bookAppointment,
-        isPending,
-    } = useMakeAppointment(closeDialog);
+    const { mutate: bookAppointment, isPending } =
+        useMakeAppointment(closeDialog);
+
+    const [isFavourite, setIsFavourite] = useState(() => isThisSlotFavourite());
+    const [optimisticAdded, setOptimisticAdded] = useState(isFavourite);
+
+    const { mutate: addFavouriteSlot, isPending: isFavoritePending } =
+        useAddFavouriteSlot(
+            () => setIsFavourite(true),
+            () => setIsFavourite(isFavourite)
+        );
+    const { mutate: deleteFavouriteSlot, isPending: isDeleteFavoritePending } =
+        useDeleteFavouriteSlot(
+            () => setIsFavourite(false),
+            false,
+            () => setIsFavourite(isFavourite)
+        );
+
+    function handleAddFavourite() {
+        if (slot == null) return;
+
+        setOptimisticAdded(true);
+        addFavouriteSlot(slot.id);
+    }
+
+    function handleDeleteFavourite() {
+        if (user == null || slot == null) return;
+
+        const favouriteSlot = user.favourites.slot.find(
+            (fav_slot) => fav_slot.slot_id === slot.id
+        );
+
+        if (favouriteSlot == null) return;
+
+        setOptimisticAdded(false);
+        deleteFavouriteSlot(favouriteSlot.id);
+    }
 
     function handleSubmit() {
         if (selectedCar == null || slot == null) return;
@@ -61,6 +103,16 @@ export default function EntryDialog({ carwash, date, time, slot, closeDialog }: 
             label: car.brand,
         };
     });
+
+    function isThisSlotFavourite() {
+        if (slot == null || user == null) return false;
+
+        return (
+            user.favourites.slot.find(
+                (fav_slot) => fav_slot.slot_id === slot.id
+            ) != null
+        );
+    }
 
     function handleChange(carId: number) {
         const newCar = userCars.find((car) => car.id === carId) ?? userCars[0];
@@ -103,11 +155,25 @@ export default function EntryDialog({ carwash, date, time, slot, closeDialog }: 
                         className="w-full"
                     />
 
-                    <PrimaryBtn disabled={isPending} onClick={handleSubmit} type="button" className="w-full">
+                    <PrimaryBtn
+                        disabled={isPending}
+                        onClick={handleSubmit}
+                        type="button"
+                        className="w-full"
+                    >
                         Записаться
                     </PrimaryBtn>
                 </>
             )}
+
+            <AddFavouriteBtn
+                addClick={handleAddFavourite}
+                deleteClick={handleDeleteFavourite}
+                disabled={isFavoritePending || isDeleteFavoritePending}
+                sizeClass="size-4"
+                className="absolute top-3 left-6"
+                isAdded={optimisticAdded}
+            />
         </div>
     );
 }

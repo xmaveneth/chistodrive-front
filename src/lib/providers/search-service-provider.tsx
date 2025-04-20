@@ -85,13 +85,10 @@ export function SearchServiceProvider({
             page: page,
         };
 
-        console.table(currentFilters)
-
         searchServices(
             currentFilters,
             {
                 onSuccess: (data) => {
-                    console.log("API", data)
                     setServicesData((prev) =>
                         page === 0
                             ? data

@@ -1,5 +1,5 @@
 import { FavouriteSlot } from '@/lib/types/user';
-import { formatDateToDayMonthLabel } from '@/lib/utils/format-date';
+import { formatDateToDayMonthLabel, formatTimeToHHMM } from '@/lib/utils/format-date';
 import { MapPinIcon, XMarkIcon } from '@heroicons/react/16/solid';
 
 type FavouriteEntryProps = {
@@ -22,7 +22,7 @@ export function FavouriteEntry({ slot, deleteSlot, showSlot }: FavouriteEntryPro
             </button>
             <div className="flex items-start gap-1 flex-wrap text-xs sm:text-sm text-white/70 basis-1/3 justify-center">
                 <p>{slot.date && formatDateToDayMonthLabel(slot.date)}</p>
-                <p>{slot.time && slot.time}</p>
+                <p>{slot.time && formatTimeToHHMM(slot.time)}</p>
             </div>
 
             <button onClick={deleteSlot} className="shrink-0 aspect-square p-1 rounded-full bg-background cursor-pointer mt-2 xs:mt-0 transition-all duration-200 ease-in block hover:bg-zinc-700/60 hover:scale-105 focus-within:scale-110">

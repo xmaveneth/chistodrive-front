@@ -19,13 +19,15 @@ export type Car = {
 };
 
 export type FavouriteCarWash = {
-    favourite_car_wash_id: number;
+    id: number;
+    car_wash_id: number;
     car_wash_name: string;
     location: string;
 };
 
 export type FavouriteSlot = {
-    favourite_slot_id: number;
+    id: number;
+    slot_id: number;
     car_wash_name: string;
     location: string;
     date: string;  // format: 'YYYY-MM-DD'

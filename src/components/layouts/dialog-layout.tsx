@@ -32,7 +32,7 @@ export default function DialogLayout({
             <div className="fixed inset-0 flex w-screen items-center flex-col justify-center overflow-y-auto">
                 <DialogPanel
                     transition
-                    className="bg-background max-w-90 w-full sm:w-90 rounded-2xl p-2 duration-300 ease-out data-[closed]:scale-40 data-[closed]:opacity-0 overflow-y-auto"
+                    className="bg-background relative max-w-90 w-full sm:w-90 rounded-2xl p-2 duration-300 ease-out data-[closed]:scale-40 data-[closed]:opacity-0 overflow-y-auto"
                 >
                     <Button
                         onClick={closeDialog}

@@ -19,7 +19,7 @@ export default function AccountFavorite() {
     );
     const [showSlotDialog, setShowSlotDialog] = useState(false);
 
-   /*  const [selectedCarwash, setSelectedCarwash] =
+    /*  const [selectedCarwash, setSelectedCarwash] =
         useState<FavouriteCarWash | null>(null); */
 
     const [showDeleteSlotDialog, setShowDeleteSlotDialog] = useState(false);
@@ -38,11 +38,12 @@ export default function AccountFavorite() {
                         user.favourites.slot.length > 0 ? (
                             user.favourites.slot.map((slot, idx) => (
                                 <FavouriteEntry
-                                    key={`${slot.favourite_slot_id}-${idx}`}
+                                    key={`${slot.id}-${idx}`}
                                     slot={slot}
-                                    deleteSlot={() =>
-                                        setShowDeleteSlotDialog(true)
-                                    }
+                                    deleteSlot={() => {
+                                        setShowDeleteSlotDialog(true);
+                                        setSelectedSlot(slot);
+                                    }}
                                     showSlot={() => {
                                         setSelectedSlot(slot);
                                         setShowSlotDialog(true);
@@ -72,9 +73,11 @@ export default function AccountFavorite() {
                         user.favourites.car_wash.length > 0 ? (
                             user.favourites.car_wash.map((carwash, idx) => (
                                 <FavouriteCarwash
-                                    key={`${carwash.favourite_car_wash_id}-${idx}`}
+                                    key={`${carwash.id}-${idx}`}
                                     carwash={carwash}
-                                    deleteCarwash={() => setShowDeleteCarwashDialog(true)}
+                                    deleteCarwash={() =>
+                                        setShowDeleteCarwashDialog(true)
+                                    }
                                 />
                             ))
                         ) : (
@@ -108,6 +111,7 @@ export default function AccountFavorite() {
                 closeDialog={() => setShowDeleteSlotDialog(false)}
             >
                 <DeleteSlotDialog
+                    selectedSlot={selectedSlot}
                     closeDialog={() => setShowDeleteSlotDialog(false)}
                 />
             </DialogLayout>
@@ -121,7 +125,6 @@ export default function AccountFavorite() {
                     closeDialog={() => setShowDeleteCarwashDialog(false)}
                 />
             </DialogLayout>
-
         </section>
     );
 }
