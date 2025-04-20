@@ -5,7 +5,7 @@ import { FiltersResponse } from '@/lib/types/filters';
 import { SearchServicesResponse } from '@/lib/utils/search-services';
 import { createContext, useEffect, useState } from 'react';
 import useDebounce from '@/lib/hooks/utils/use-debounce';
-import { formatDateToString, formatTimeToHHMM, getCurrentClientTime } from '@/lib/utils/format-date';
+import { formatDateToString, getCurrentClientTime } from '@/lib/utils/format-date';
 
 type SearchServiceContextType = {
     areFiltersLoading: boolean;
