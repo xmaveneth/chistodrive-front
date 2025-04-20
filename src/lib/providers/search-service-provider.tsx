@@ -5,7 +5,7 @@ import { FiltersResponse } from '@/lib/types/filters';
 import { SearchServicesResponse } from '@/lib/utils/search-services';
 import { createContext, useEffect, useState } from 'react';
 import useDebounce from '@/lib/hooks/utils/use-debounce';
-import { formatDateToString } from '@/lib/utils/format-date';
+import { formatDateToString, formatTimeToHHMM, getCurrentClientTime } from '@/lib/utils/format-date';
 
 type SearchServiceContextType = {
     areFiltersLoading: boolean;
@@ -54,7 +54,7 @@ export function SearchServiceProvider({
     const [serviceCategoryId, setServiceCategoryId] = useState<number>(0);
     const [serviceTypeId, setServiceTypeId] = useState<number>(0);
     const [date, setDate] = useState<string>(formatDateToString(new Date()));
-    const [startTime, setStartTime] = useState('00:00');
+    const [startTime, setStartTime] = useState(getCurrentClientTime());
     const [endTime, setEndTime] = useState('23:30');
     const [startPrice, setStartPrice] = useState(100);
     const [endPrice, setEndPrice] = useState(9900);

@@ -41,4 +41,15 @@ export function formatDateToHumanFormat(dateString: string): string {
 export function formatTimeToHHMM(time: string): string {
     const [hours, minutes] = time.split(':');
     return `${hours}:${minutes}`;
-  }
+}
+
+export function getCurrentClientTime() {
+    const now = new Date();
+    const timeString = now.toLocaleTimeString('en-GB', {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false, 
+    });
+
+    return formatTimeToHHMM(timeString);
+}

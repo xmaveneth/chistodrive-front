@@ -84,20 +84,16 @@ export default function EntryDialog({
         bookAppointment({ slot_id: slot.id, vehicle_id: selectedCar?.id });
     }
 
+    const userCars = formatUserCars();
+
     const [selectedCar, setSelectedCar] = useState<CarType | null>(() => {
         if (
             user == null ||
-            user.cars == null ||
-            user.cars[0] == null ||
-            user.cars.length === 0
+            userCars.length === 0
         )
             return null;
 
-        const firstUserCar = user.cars[0];
-        return {
-            id: firstUserCar.id,
-            label: firstUserCar.brand,
-        };
+        return userCars[0];
     });
 
     if (!isLoggedIn || user == null || user.cars == null || isLoading)
@@ -111,8 +107,6 @@ export default function EntryDialog({
             label: car.brand,
           })) ?? [];
     };
-
-    const userCars = formatUserCars();
 
     function isThisSlotFavourite() {
         if (slot == null || user == null) return false;
