@@ -4,6 +4,7 @@ import PrimaryBtn from '@/components/atoms/primary-btn';
 import { MagnifyingGlassIcon } from '@heroicons/react/16/solid';
 
 export default function Intro() {
+
     return (
         <section className="primary-px primary-py">
             <h2 className="uppercase text-2xl mb-4 sm:mb-5 sm:text-4xl">

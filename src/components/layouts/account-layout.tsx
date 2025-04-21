@@ -8,6 +8,8 @@ import DeleteUserDialog from '@/components/molecules/account/delete-user-dialog'
 import AccountHeader from '@/components/molecules/account/account-header';
 import UserData from '@/components/molecules/account/user-data';
 import { useCurrentUser } from '@/lib/hooks/auth/use-current-user';
+import { ErrorBoundary } from 'react-error-boundary';
+import ErrorFallback from '@/components/organisms/shared/error-boundary';
 
 export default function AccountLayout() {
     const { data: user, isLoading, isError } = useCurrentUser();
@@ -46,7 +48,9 @@ export default function AccountLayout() {
                         </AccountNavLink>
                     </nav>
                 </div>
-                <Outlet />
+                <ErrorBoundary FallbackComponent={ErrorFallback}>
+                    <Outlet />
+                </ErrorBoundary>
             </section>
 
             <DialogLayout

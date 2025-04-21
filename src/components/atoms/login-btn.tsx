@@ -23,7 +23,7 @@ export default function LoginBtn({ onClick }: LoginBtnProps) {
     return (
         <PrimaryBtn disabled={isLoading} onClick={loginClick} className="py-2">
             <UserIcon className="size-3" aria-hidden="true" />
-            Войти
+            {isLoggedIn ? 'Профиль' : 'Войти'}
         </PrimaryBtn>
     );
 }

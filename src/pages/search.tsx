@@ -4,6 +4,8 @@ import PrimaryFilters from '@/components/organisms/search/primary-filters';
 import { SearchServiceProvider } from '@/lib/providers/search-service-provider';
 import TopFilters from '@/components/organisms/search/top-filters';
 import SearchResult from '@/components/organisms/search/search-results';
+import { ErrorBoundary } from 'react-error-boundary';
+import ErrorFallback from '@/components/organisms/shared/error-boundary';
 
 export default function Search() {
     return (
@@ -12,10 +14,14 @@ export default function Search() {
                 <SearchHeader />
 
                 <section className="px-4 sm:px-8 sm:pb-9 xl:pb-8 xl:px-9 xl:pt-7 pt-5 pb-7 border border-border rounded-xl">
-                    <TopFilters />
+                    <ErrorBoundary FallbackComponent={ErrorFallback}>
+                        <TopFilters />
+                    </ErrorBoundary>
 
                     <div className="rounded-3xl overflow-clip z-0">
-                        <AddressMap />
+                        <ErrorBoundary FallbackComponent={ErrorFallback}>
+                            <AddressMap />
+                        </ErrorBoundary>
                     </div>
 
                     <div className="mt-3.5 mb-6 sm:mt-5 xl:mt-7 xl:mb-9.5">
@@ -23,10 +29,13 @@ export default function Search() {
                             Фильтры
                         </h2>
 
-                        <PrimaryFilters />
+                        <ErrorBoundary FallbackComponent={ErrorFallback}>
+                            <PrimaryFilters />
+                        </ErrorBoundary>
                     </div>
-
-                    <SearchResult />
+                    <ErrorBoundary FallbackComponent={ErrorFallback}>
+                        <SearchResult />
+                    </ErrorBoundary>
                 </section>
             </div>
         </SearchServiceProvider>

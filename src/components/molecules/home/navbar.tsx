@@ -3,9 +3,13 @@ import CitySelector from '@/components/molecules/shared/city-selector';
 import { useAuthContext } from '@/lib/hooks/context/use-auth-context';
 import LoginBtn from '@/components/atoms/login-btn';
 import Logo from '@/components/atoms/logo';
+import { useCurrentUser } from '@/lib/hooks/auth/use-current-user';
 
 export default function Navbar() {
     const { toggleLoginDialog, toggleSignupDialog } = useAuthContext();
+    const { isLoading, isError, data: user } = useCurrentUser();
+
+    const isLoggedIn = !(isError || !user);
 
     return (
         <>
@@ -15,16 +19,16 @@ export default function Navbar() {
             >
                 <Logo className="shrink-0 w-22 sm:w-32.25 hidden sm:block" />
 
-                <CitySelector className='sm:mr-auto sm:ml-5 xs:min-w-55 sm:min-w-70 z-10' />
+                <CitySelector className="sm:mr-auto sm:ml-5 xs:min-w-55 sm:min-w-70 z-10" />
 
                 <div className="flex items-center gap-2 md:gap-4">
-                    <Button
+                    {!isLoggedIn && !isLoading && <Button
                         onClick={() => toggleSignupDialog(true)}
                         className="hidden md:block hover:underline underline-offset-4 cursor-pointer"
                     >
                         Регистрация
-                    </Button>
-                    <LoginBtn onClick={() => toggleLoginDialog(true)}/>
+                    </Button>}
+                    <LoginBtn onClick={() => toggleLoginDialog(true)} />
                 </div>
             </nav>
         </>
