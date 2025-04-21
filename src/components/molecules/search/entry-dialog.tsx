@@ -1,6 +1,4 @@
 import AddFavouriteBtn from '@/components/atoms/add-favourite-btn';
-import PrimaryBtn from '@/components/atoms/primary-btn';
-import SelectField from '@/components/forms/select-field';
 import { useCurrentUser } from '@/lib/hooks/auth/use-current-user';
 import { useMakeAppointment } from '@/lib/hooks/carwashes/use-make-appoitment';
 import { useAddFavouriteSlot } from '@/lib/hooks/carwashes/use-add-favourite-slot';
@@ -10,6 +8,8 @@ import { MapPinIcon } from '@heroicons/react/16/solid';
 import { useState } from 'react';
 import { useDeleteFavouriteSlot } from '@/lib/hooks/carwashes/use-delete-favourite-slot';
 import { useSearchServicesContext } from '@/lib/hooks/context/use-search-services-context';
+import { SelectCarType } from '@/lib/types/filters';
+import AppoitmentEntryBtn from '@/components/atoms/appoitment-entry-btn';
 
 type EntryDialogProps = {
     carwash: ServiceResult | null;
@@ -17,11 +17,6 @@ type EntryDialogProps = {
     time: string;
     slot: Slot | null;
     closeDialog: () => void;
-};
-
-type CarType = {
-    label: string;
-    id: number;
 };
 
 export default function EntryDialog({
@@ -80,13 +75,8 @@ export default function EntryDialog({
         bookAppointment({ slot_id: slot.id, vehicle_id: selectedCar?.id });
     }
 
-
-    const [selectedCar, setSelectedCar] = useState<CarType | null>(() => {
-        if (
-            user == null ||
-            userCars.length === 0
-        )
-            return null;
+    const [selectedCar, setSelectedCar] = useState<SelectCarType | null>(() => {
+        if (user == null || userCars.length === 0) return null;
 
         return userCars[0];
     });
@@ -123,38 +113,14 @@ export default function EntryDialog({
             </p>
             <p className="mb-6">Цена {carwash?.price} ₽</p>
 
-            {userCars.length === 0 ? (
-                <>
-                    <p className="text-balance mb-4 text-center">
-                        Для записи необходимо добавить авто в личном кабинете
-                    </p>
-                    <PrimaryBtn
-                        route="/account"
-                        type="button"
-                        className="w-full"
-                    >
-                        Перейти в аккаунт
-                    </PrimaryBtn>
-                </>
-            ) : (
-                <>
-                    <SelectField
-                        values={userCars}
-                        value={selectedCar || userCars[0]}
-                        onChange={handleChange}
-                        className="w-full"
-                    />
-
-                    <PrimaryBtn
-                        disabled={isPending}
-                        onClick={handleSubmit}
-                        type="button"
-                        className="w-full"
-                    >
-                        Записаться
-                    </PrimaryBtn>
-                </>
-            )}
+            <AppoitmentEntryBtn
+                showShow={userCars.length === 0}
+                userCars={userCars}
+                selectedCar={selectedCar}
+                disabled={isPending}
+                handleChange={handleChange}
+                handleSubmit={handleSubmit}
+            />
 
             <AddFavouriteBtn
                 addClick={handleAddFavourite}

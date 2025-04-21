@@ -15,6 +15,7 @@ export const useCreateVehicle = (
         mutationFn: (payload: CreateVehiclePayload) => createVehicle(payload),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['current-user'] });
+            queryClient.invalidateQueries({ queryKey: ['vehicles'] });
 
             notify('Авто успешно добавлено!');
             closeModal();

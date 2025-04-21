@@ -9,6 +9,7 @@ export const useDeleteVehicle = (closeModal: () => void) => {
         mutationFn: (vehicle_id: number) => deleteVehicle(vehicle_id),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['current-user'] });
+            queryClient.invalidateQueries({ queryKey: ['vehicles'] });
             notify('Авто успешно удалено!');
             closeModal();
         },

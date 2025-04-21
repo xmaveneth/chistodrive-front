@@ -46,3 +46,8 @@ export function hasServiceTypes(
 ): category is Extract<ServiceCategory, { types: ServiceType[] }> {
     return 'types' in category && Array.isArray(category.types);
 }
+
+export type SelectCarType = {
+    label: string;
+    id: number;
+};

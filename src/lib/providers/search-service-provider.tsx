@@ -7,6 +7,7 @@ import { createContext, useEffect, useMemo, useState } from 'react';
 import useDebounce from '@/lib/hooks/utils/use-debounce';
 import { formatDateToString } from '@/lib/utils/format-date';
 import { useGroupedVehicles } from '@/lib/hooks/vehicles/use-vehicles';
+import { formatUserCars } from '@/lib/utils/format-user-cars';
 
 type SearchServiceContextType = {
     areFiltersLoading: boolean;
@@ -118,19 +119,8 @@ export function SearchServiceProvider({
 
     const { data: userVehicles } = useGroupedVehicles();
 
-    function formatUserCars() {
-        if (userVehicles == null || !(vehicleTypeId in userVehicles)) return [];
-
-        return (
-            userVehicles[vehicleTypeId].map((car) => ({
-                id: car.id,
-                label: car.brand,
-            })) ?? []
-        );
-    }
-
     const userCars = useMemo(() => {
-        return formatUserCars();
+        return formatUserCars(userVehicles, vehicleTypeId);
     }, [vehicleTypeId])
 
     useEffect(() => setServiceTypeId(0), [serviceCategoryId]);

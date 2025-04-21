@@ -34,6 +34,9 @@ export type FavouriteSlot = {
     location: string;
     date: string; // format: 'YYYY-MM-DD'
     time: string; // format: 'HH:mm'
+    price: number;
+    vehicle_type_id: number;
+    service_name: string;
 };
 
 export type Favourites = {
