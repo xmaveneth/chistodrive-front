@@ -8,7 +8,6 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AxiosError } from 'axios';
 import { Button } from '@headlessui/react';
-import { useNavigate } from 'react-router-dom';
 import { useAuthContext } from '@/lib/hooks/context/use-auth-context';
 import Cookies from 'js-cookie';
 import notify from '@/lib/utils/notify';
@@ -27,7 +26,6 @@ type LoginProps = {
 };
 export default function Login({ onClick }: LoginProps) {
     const queryClient = useQueryClient();
-    const navigate = useNavigate();
     const { toggleLoginDialog } = useAuthContext();
 
     const {
@@ -53,7 +51,6 @@ export default function Login({ onClick }: LoginProps) {
 
             queryClient.invalidateQueries({ queryKey: ['current-user'] });
             setTimeout(() => {
-                navigate('/account');
                 notify('Добро пожаловать!');
                 toggleLoginDialog(false);
             }, 500);
