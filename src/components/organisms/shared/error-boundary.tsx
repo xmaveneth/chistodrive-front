@@ -8,7 +8,7 @@ export default function ErrorFallback({
     return (
         <div
             role="alert"
-            className="primary-px py-6 sm:py-12.5 border-y border-border bg-[#20232c] sm:flex items-center justify-between"
+            className="primary-px py-6 sm:py-12.5 border-y border-border bg-light-bg sm:flex items-center justify-between"
         >
             <div>
                 <p className="mb-2">Что-то пошло не так:</p>

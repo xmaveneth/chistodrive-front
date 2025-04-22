@@ -27,6 +27,6 @@ export default function notify(message: string) {
         data: { content: message },
         autoClose: 3000,
         closeButton: false,
-        className: '!bg-[#20232c] !p-2 rounded-xl relative',
+        className: '!bg-light-bg !p-2 rounded-xl relative',
     });
 }

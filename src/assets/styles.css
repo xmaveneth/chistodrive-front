@@ -11,6 +11,8 @@
     --breakpoint-xs: 420px;
 
     --color-background: oklch(0.17 0.0175 268.55);
+    --color-light-bg: oklch(0.26 0.0175 270.65);
+    --color-lightest-bg: oklch(0.35 0.0284 273.89);
     --color-btn-bg: oklch(0.73 0.06 79.64);
     --color-btn-hover: oklch(0.68 0.0575 80.42);
     --color-text-muted: oklch(1 0 0 / 50%);
