@@ -44,3 +44,10 @@ export async function deleteFavouriteSlot(
 
     return response.data;
 }
+
+export const fetchAdminCarwashes = async () => {
+    const response = await axiosInstance.get(
+        `/api/profile/car_wash_admin_list`
+    );
+    return response.data;
+};

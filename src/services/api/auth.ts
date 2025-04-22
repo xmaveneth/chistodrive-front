@@ -57,11 +57,21 @@ export const getCurrentUser = async (): Promise<User> => {
     return response.data;
 };
 
-
 export const logoutCurrentUser = async (): Promise<void> => {
     await axiosInstance.post('/api/jwt/logout');
 };
 
 export const deleteCurrentUser = async (): Promise<void> => {
     await axiosInstance.post('/api/profile/delete_account');
+};
+
+export const isCurrentUserAdmin = async (): Promise<boolean> => {
+    try {
+        const response = await axiosInstance.get(
+            '/api/profile/is_car_wash_admin'
+        );
+        return response.data.is_admin;
+    } catch {
+        return false;
+    }
 };

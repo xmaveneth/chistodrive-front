@@ -121,7 +121,7 @@ export function SearchServiceProvider({
 
     const userCars = useMemo(() => {
         return formatUserCars(userVehicles, vehicleTypeId);
-    }, [vehicleTypeId])
+    }, [vehicleTypeId, userVehicles])
 
     useEffect(() => setServiceTypeId(0), [serviceCategoryId]);
 

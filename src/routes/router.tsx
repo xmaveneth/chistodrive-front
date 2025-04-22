@@ -1,4 +1,6 @@
+import AdminLayout from '@/components/layouts/admin-layout';
 import { RootLayout } from '@/components/layouts/root-layout';
+import AdminCarwashes from '@/pages/admin/admin-carwashes';
 import Home from '@/pages/home';
 import Policy from '@/pages/policy';
 import Rules from '@/pages/rules';
@@ -28,6 +30,13 @@ export const routes = [
                     { index: true, element: <AccountEntries /> },
                     { path: 'cars', element: <AccountCars /> },
                     { path: 'favorite', element: <AccountFavorite /> },
+                ],
+            },
+            {
+                path: 'admin',
+                element: <AdminLayout />,
+                children: [
+                    { index: true, element: <AdminCarwashes /> },
                 ],
             },
         ],
