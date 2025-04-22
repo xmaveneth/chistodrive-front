@@ -20,7 +20,7 @@ export default function DarkBtn({
     disabled = false,
 }: DarkBtnProps) {
     const baseClasses = cn(
-        'flex items-center justify-center cursor-pointer gap-[0.25em] bg-btn-bg rounded-full text-white px-[1.5em] py-[0.75em] transition-colors duration-200 ease-in hover:bg-btn-hover',
+        'flex items-center justify-center cursor-pointer gap-[0.25em] bg-light-bg rounded-full text-white px-[1em] py-[0.65em] transition-colors duration-200 ease-in hover:bg-lightest-bg',
         className
     );
 

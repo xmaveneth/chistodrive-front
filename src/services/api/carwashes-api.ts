@@ -1,3 +1,4 @@
+import { CarWashListResponse } from '@/lib/types/admin';
 import { axiosInstance } from '@/services/api/axios-instance';
 
 export const fetchCarwashes = async (city: string) => {
@@ -45,9 +46,9 @@ export async function deleteFavouriteSlot(
     return response.data;
 }
 
-export const fetchAdminCarwashes = async () => {
+export async function fetchAdminCarwashes(): Promise<CarWashListResponse> {
     const response = await axiosInstance.get(
         `/api/profile/car_wash_admin_list`
     );
     return response.data;
-};
+}
