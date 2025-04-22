@@ -1,6 +1,5 @@
 import AdminLayout from '@/components/layouts/admin-layout';
 import { RootLayout } from '@/components/layouts/root-layout';
-import AdminCarwashes from '@/pages/admin/admin-carwashes';
 import Home from '@/pages/home';
 import Policy from '@/pages/policy';
 import Rules from '@/pages/rules';
@@ -12,6 +11,9 @@ const AccountLayout = lazy(() => import('@/components/layouts/account-layout'));
 const AccountCars = lazy(() => import('@/pages/account/cars'));
 const AccountEntries = lazy(() => import('@/pages/account/entries'));
 const AccountFavorite = lazy(() => import('@/pages/account/favorite'));
+const AdminCarwashes = lazy(() => import('@/pages/admin/admin-carwashes'));
+const AdminCarwash = lazy(() => import('@/pages/admin/admin-carwash'));
+
 
 export const routes = [
     {
@@ -37,6 +39,7 @@ export const routes = [
                 element: <AdminLayout />,
                 children: [
                     { index: true, element: <AdminCarwashes /> },
+                    { path: 'carwash/:id', element: <AdminCarwash /> },
                 ],
             },
         ],
