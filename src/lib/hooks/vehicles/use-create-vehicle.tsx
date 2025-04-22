@@ -1,3 +1,4 @@
+import { QUERY_KEYS } from '@/lib/constants/queryKeys';
 import { CreateVehiclePayload } from '@/lib/types/vehicles';
 import notify from '@/lib/utils/notify';
 import { createVehicle } from '@/services/api/vehicles';
@@ -14,8 +15,8 @@ export const useCreateVehicle = (
     return useMutation({
         mutationFn: (payload: CreateVehiclePayload) => createVehicle(payload),
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['current-user'] });
-            queryClient.invalidateQueries({ queryKey: ['vehicles'] });
+            queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CURRENT_USER] });
+            queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.USER_VEHICLES] });
 
             notify('Авто успешно добавлено!');
             closeModal();

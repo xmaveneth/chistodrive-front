@@ -13,6 +13,7 @@ import CheckboxField from '@/components/forms/checkbox-field';
 import { useAuthContext } from '@/lib/hooks/context/use-auth-context';
 import Cookies from 'js-cookie';
 import notify from '@/lib/utils/notify';
+import { QUERY_KEYS } from '@/lib/constants/queryKeys';
 const signupSchema = z
     .object({
         name: z.string().min(1, 'Введите имя'),
@@ -73,7 +74,7 @@ export default function Signup({ onClick }: SignupProps) {
                 sameSite: 'Strict',
             });
 
-            queryClient.invalidateQueries({ queryKey: ['current-user'] });
+            queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CURRENT_USER] });
          
             setTimeout(() => {
                 navigate('/account');

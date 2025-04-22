@@ -31,7 +31,6 @@ export default function AdminLayout() {
                 <div className="w-15 md:w-50" aria-hidden={true}></div>
             </header>
             <section className="px-4 sm:px-8 sm:pb-9 xl:pb-8 xl:px-9 xl:pt-7 pt-5 pb-7 border border-border rounded-xl">
-                <div className="mb-4"></div>
                 <ErrorBoundary FallbackComponent={ErrorFallback}>
                     <Outlet />
                 </ErrorBoundary>

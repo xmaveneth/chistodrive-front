@@ -1,3 +1,4 @@
+import { QUERY_KEYS } from '@/lib/constants/queryKeys';
 import notify from '@/lib/utils/notify';
 import { deleteAppointment } from '@/services/api/carwashes-api';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -10,7 +11,7 @@ export function useDeleteAppointment(closeDialog: () => void) {
         mutationFn: (appointment_id: number) =>
             deleteAppointment(appointment_id),
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['current-user'] });
+            queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CURRENT_USER] });
             
             closeDialog();
             notify('Запись успешно удалена!');

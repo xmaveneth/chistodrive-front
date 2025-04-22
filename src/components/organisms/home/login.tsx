@@ -11,6 +11,7 @@ import { Button } from '@headlessui/react';
 import { useAuthContext } from '@/lib/hooks/context/use-auth-context';
 import Cookies from 'js-cookie';
 import notify from '@/lib/utils/notify';
+import { QUERY_KEYS } from '@/lib/constants/queryKeys';
 
 const loginSchema = z.object({
     telephone: z
@@ -49,7 +50,7 @@ export default function Login({ onClick }: LoginProps) {
                 sameSite: 'Strict',
             });
 
-            queryClient.invalidateQueries({ queryKey: ['current-user'] });
+            queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CURRENT_USER] });
             setTimeout(() => {
                 notify('Добро пожаловать!');
                 toggleLoginDialog(false);

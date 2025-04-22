@@ -1,3 +1,4 @@
+import { QUERY_KEYS } from '@/lib/constants/queryKeys';
 import notify from '@/lib/utils/notify';
 import {
     makeAppointment,
@@ -13,7 +14,7 @@ export function useMakeAppointment(closeDialog: () => void) {
         mutationFn: (payload: MakeAppointmentPayload) =>
             makeAppointment(payload),
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['current-user'] });
+            queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CURRENT_USER] });
             closeDialog();
             notify('Запись успешно произведена!');
         },

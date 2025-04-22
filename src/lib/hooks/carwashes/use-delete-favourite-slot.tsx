@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import notify from '@/lib/utils/notify';
 import { AxiosError } from 'axios';
 import { deleteFavouriteSlot } from '@/services/api/carwashes-api';
+import { QUERY_KEYS } from '@/lib/constants/queryKeys';
 
 export function useDeleteFavouriteSlot(
     closeDialog: () => void,
@@ -13,7 +14,7 @@ export function useDeleteFavouriteSlot(
     return useMutation({
         mutationFn: (fav_slot_id: number) => deleteFavouriteSlot(fav_slot_id),
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['current-user'] });
+            queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CURRENT_USER] });
 
             closeDialog();
             if (shouldNotify) {

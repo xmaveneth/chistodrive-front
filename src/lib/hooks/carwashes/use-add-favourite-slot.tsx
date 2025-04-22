@@ -1,3 +1,4 @@
+import { QUERY_KEYS } from '@/lib/constants/queryKeys';
 import notify from '@/lib/utils/notify';
 import { addFavouriteSlot } from '@/services/api/carwashes-api';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -12,7 +13,7 @@ export function useAddFavouriteSlot(onSuccess?: () => void, onError?: () => void
             if (onSuccess) {
                 onSuccess();
             }
-            queryClient.invalidateQueries({ queryKey: ['current-user'] });
+            queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CURRENT_USER] });
         },
         onError: (error: unknown) => {
             if (onError) {
