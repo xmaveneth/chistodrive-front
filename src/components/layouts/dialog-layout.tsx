@@ -1,3 +1,4 @@
+import { cn } from '@/lib/utils';
 import {
     Button,
     Description,
@@ -14,6 +15,7 @@ type DialogLayoutProps = {
     children: React.ReactNode;
     title?: string | null;
     description?: string | null;
+    widthClass?: string;
 };
 
 export default function DialogLayout({
@@ -22,6 +24,7 @@ export default function DialogLayout({
     children,
     title,
     description,
+    widthClass = "sm:w-90 max-w-90"
 }: DialogLayoutProps) {
     return (
         <Dialog open={isOpen} onClose={closeDialog} className="relative z-50">
@@ -32,7 +35,7 @@ export default function DialogLayout({
             <div className="fixed inset-0 flex w-screen items-center flex-col justify-center overflow-y-auto">
                 <DialogPanel
                     transition
-                    className="bg-background relative max-w-90 w-full sm:w-90 rounded-2xl p-2 duration-300 ease-out data-[closed]:scale-40 data-[closed]:opacity-0 overflow-y-auto"
+                    className={cn("bg-background relative w-full rounded-2xl p-2 duration-300 ease-out data-[closed]:scale-40 data-[closed]:opacity-0 overflow-y-auto", widthClass)}
                 >
                     <Button
                         onClick={closeDialog}

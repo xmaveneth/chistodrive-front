@@ -75,6 +75,7 @@ export default function CarwashLayout() {
                 description="Заполните поля, чтобы редактировать график работы"
                 isOpen={showScheduleDialog}
                 closeDialog={() => setShowScheduleDialog(false)}
+                widthClass='sm:w-100 max-w-100'
             >
                 <EditScheduleDialog
                     schedules={carwash?.schedule ?? null}

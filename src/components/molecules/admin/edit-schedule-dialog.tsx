@@ -103,11 +103,11 @@ export default function EditScheduleDialog({
     const weekDays = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
 
     return (
-        <form className="my-10 space-y-4" onSubmit={handleSubmit(onSubmit)}>
+        <form className="my-10 space-y-4 sm:space-y-6" onSubmit={handleSubmit(onSubmit)}>
             {fields.map((field, index) => (
-                <div key={field.id} className="flex items-start">
-                    <div className="text-white w-6">{weekDays[index]}:</div>
-                    <div className="xs:basis-4/5 basis-1/2 ml-auto flex items-center flex-wrap justify-between gap-x-4 gap-y-2 text-xs">
+                <div key={field.id} className="flex items-start flex-col gap-3 xs:flex-row">
+                    <div className="text-white w-6 sm:mt-1">{weekDays[index]}:</div>
+                    <div className="xs:basis-4/5 ml-auto flex items-center flex-wrap justify-between gap-x-4 gap-y-2 text-xs sm:text-base">
                         <Field className="flex items-center gap-2 xs:ml-auto">
                             <Label className="text-white text-xs">С</Label>
                             <Input
@@ -160,7 +160,7 @@ export default function EditScheduleDialog({
                                         ?.message
                                 }
                             >
-                                <span className="mt-0.5 block text-white">
+                                <span className="mt-0.5 block text-white sm:text-sm sm:mt-0">
                                     Выходной
                                 </span>
                             </CheckboxField>
@@ -169,17 +169,18 @@ export default function EditScheduleDialog({
                 </div>
             ))}
 
-            <PrimaryBtn type="submit" className="w-full" disabled={isPending}>
-                Сохранить
-            </PrimaryBtn>
-
-            <PrimaryBtn
-                type="button"
-                onClick={closeDialog}
-                className="w-full bg-input-bg hover:bg-zinc-800"
-            >
-                Вернуться назад
-            </PrimaryBtn>
+            <div>
+                <PrimaryBtn type="submit" className="w-full mb-4" disabled={isPending}>
+                    Сохранить
+                </PrimaryBtn>
+                <PrimaryBtn
+                    type="button"
+                    onClick={closeDialog}
+                    className="w-full bg-input-bg hover:bg-zinc-800"
+                >
+                    Вернуться назад
+                </PrimaryBtn>
+            </div>
         </form>
     );
 }
