@@ -16,7 +16,7 @@ export default function AdminItemBtn({
     routeName,
 }: AdminItemBtnProps) {
     const baseClasses = cn(
-        'bg-lightest-bg py-[0.5em] px-[1em] flex items-center gap-[0.75em] rounded-full cursor-pointer transition-scale duration-250 ease-in hover:scale-110',
+        'py-[0.5em] px-[1em] flex items-center gap-[0.75em] rounded-full cursor-pointer transition-scale duration-250 ease-in hover:scale-110',
         className
     );
 
@@ -25,7 +25,7 @@ export default function AdminItemBtn({
 
     if (routeName != null) {
         return (
-            <Link to={routeName} className={cn(baseClasses, isActive && 'ring-btn-bg ring-1')}>
+            <Link to={routeName} className={cn(baseClasses, isActive && 'bg-lightest-bg')}>
                 {children}
             </Link>
         );

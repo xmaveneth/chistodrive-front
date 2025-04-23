@@ -46,7 +46,7 @@ export default function AddVehicleDialog({
         setError,
         closeDialog
     );
-    /* const { data: vehicleTypes } = useVehicleTypes(); */
+
 
     const onSubmit = (data: VehicleFormInput) => {
         createVehicle(data);

@@ -47,7 +47,7 @@ export default function AccountCars() {
                                 />
                             ))
                         ) : (
-                            <NoItemsMessage className="-mt-4" />
+                            <NoItemsMessage />
                         )
                     ) : (
                         range(1, 5).map((index) => (

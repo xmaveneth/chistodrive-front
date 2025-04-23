@@ -3,6 +3,7 @@ export const QUERY_KEYS = {
     CURRENT_USER: 'current-user',
     IS_ADMIN: 'is-admin',
     SEARCH_CARWASHES: 'carwashes',
+    CURRENT_CARWASH: 'current-carwash',
     ADMIN_CARWASHES: 'admin-carwashes',
     ADMIN_CARWASH: 'admin-carwash',
     SEARCH_FILTERS: 'filters',

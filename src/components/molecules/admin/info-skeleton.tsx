@@ -4,7 +4,7 @@ import { range } from '@/lib/utils/range';
 export default function InfoSkeleton() {
     return (
         <div className="flex flex-col gap-8 mb-6 sm:mb-11 sm:flex-row sm:justify-between">
-            <div className="space-y-2 sm:order-2 sm:text-right">
+            <div className="space-y-2 sm:space-y-3 sm:order-2 sm:text-right">
                 <p className="text-2xl font-medium sm:text-3xl bg-gray-400 text-transparent animate-pulse rounded-sm w-max">
                     Loading... Loading...
                 </p>

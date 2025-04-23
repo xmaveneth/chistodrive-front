@@ -9,11 +9,11 @@ import useClickOutside from '@/lib/hooks/utils/use-click-outside';
 import { useCarwashById } from '@/lib/hooks/carwashes/use-fetch-carwash-by-id';
 import LayoutBottomNav from '@/components/molecules/admin/layout-bottom-nav';
 import LayoutTopNav from '@/components/molecules/admin/layout-top-nav';
-import PrimaryBtn from '@/components/atoms/primary-btn';
-import { workSchedule } from '@/lib/data/carwash-schedule';
-import { getWeekdayShortName } from '@/lib/utils/get-weekday-short-names';
 import { cn } from '@/lib/utils';
 import InfoSkeleton from '@/components/molecules/admin/info-skeleton';
+import CarwashInfo from '@/components/molecules/admin/carwash-info';
+import DialogLayout from '@/components/layouts/dialog-layout';
+import EditScheduleDialog from '@/components/molecules/admin/edit-schedule-dialog';
 
 export default function CarwashLayout() {
     const { id } = useParams();
@@ -22,6 +22,7 @@ export default function CarwashLayout() {
     const { data: carwash, isLoading, isError } = useCarwashById(parsedId);
 
     const [showActions, toggleActions] = useToggle(false);
+    const [showScheduleDialog, setShowScheduleDialog] = useToggle(false);
 
     const modalRef = useRef(null);
 
@@ -51,51 +52,36 @@ export default function CarwashLayout() {
                         <Ellipsis className="text-white size-6 sm:size-8" />
                     </button>
 
-                    <LayoutBottomNav carwashId={parsedId} isVisible={showActions} />
+                    <LayoutBottomNav
+                        carwashId={parsedId}
+                        isVisible={showActions}
+                    />
                 </div>
             </div>
             {isLoading || carwash == null ? (
                 <InfoSkeleton />
             ) : (
-                <div className="flex flex-col gap-8 mb-6 sm:mb-11 sm:flex-row sm:justify-between">
-                    <div className="space-y-2 sm:order-2 sm:text-right">
-                        <p className="text-2xl font-medium sm:text-3xl">
-                            {carwash.name}
-                        </p>
-                        <p>
-                            <span className="text-text-muted">Адрес:</span>{' '}
-                            {carwash.location}
-                        </p>
-                        {carwash?.telephone && (
-                            <p>
-                                <span className="text-text-muted">
-                                    Телефон:
-                                </span>{' '}
-                                {carwash.telephone}
-                            </p>
-                        )}
-
-                        <PrimaryBtn className="mt-8 text-sm sm:ml-auto">
-                            Редактировать график работы
-                        </PrimaryBtn>
-                    </div>
-                    <ul className="space-y-2">
-                        {workSchedule.map((weekday, idx) => (
-                            <li key={`weekday-${idx}`}>
-                                <span className="text-text-muted">
-                                    {getWeekdayShortName(idx)}:
-                                </span>{' '}
-                                {weekday.is_day_off
-                                    ? 'Выходной'
-                                    : `с ${weekday.start} до ${weekday.end}`}
-                            </li>
-                        ))}
-                    </ul>
-                </div>
+                <CarwashInfo
+                    carwash={carwash}
+                    onClick={() => setShowScheduleDialog(true)}
+                />
             )}
             <ErrorBoundary FallbackComponent={ErrorFallback}>
                 <Outlet />
             </ErrorBoundary>
+
+            <DialogLayout
+                title="Редактировать график работы"
+                description="Заполните поля, чтобы редактировать график работы"
+                isOpen={showScheduleDialog}
+                closeDialog={() => setShowScheduleDialog(false)}
+            >
+                <EditScheduleDialog
+                    schedules={carwash?.schedule ?? null}
+                    carWashId={parsedId}
+                    closeDialog={() => setShowScheduleDialog(false)}
+                />
+            </DialogLayout>
         </div>
     );
 }

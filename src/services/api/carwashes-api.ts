@@ -1,4 +1,8 @@
-import { CarWash, CarWashListResponse } from '@/lib/types/admin';
+import {
+    CarWash,
+    CarWashListResponse,
+    UpdateSchedulePayload,
+} from '@/lib/types/admin';
 import { axiosInstance } from '@/services/api/axios-instance';
 
 export const fetchCarwashes = async (city: string) => {
@@ -55,5 +59,19 @@ export async function fetchAdminCarwashes(): Promise<CarWashListResponse> {
 
 export const fetchCarwashById = async (id: number): Promise<CarWash> => {
     const response = await axiosInstance.get(`/api/car_wash/${id}`);
+    return response.data;
+};
+
+export const updateCarwashSchedule = async ({
+    car_wash_id,
+    data,
+}: UpdateSchedulePayload): Promise<string> => {
+    const response = await axiosInstance.put(
+        `/api/admin/car_wash/${car_wash_id}/schedule`,
+        {
+            data,
+        }
+    );
+
     return response.data;
 };
