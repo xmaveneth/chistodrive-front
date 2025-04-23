@@ -54,6 +54,6 @@ export async function fetchAdminCarwashes(): Promise<CarWashListResponse> {
 }
 
 export const fetchCarwashById = async (id: number): Promise<CarWash> => {
-    const response = await axiosInstance.get(`/api/carwashes/${id}`);
+    const response = await axiosInstance.get(`/api/car_wash/${id}`);
     return response.data;
 };
