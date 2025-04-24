@@ -62,7 +62,7 @@ export default function CarwashLayout() {
                 <InfoSkeleton />
             ) : (
                 <CarwashInfo
-                    carwash={carwash}
+                    carwash={carwash.data}
                     onClick={() => setShowScheduleDialog(true)}
                 />
             )}
@@ -78,7 +78,7 @@ export default function CarwashLayout() {
                 widthClass='sm:w-100 max-w-100'
             >
                 <EditScheduleDialog
-                    schedules={carwash?.schedule ?? null}
+                    schedules={carwash?.data.schedule ?? null}
                     carWashId={parsedId}
                     closeDialog={() => setShowScheduleDialog(false)}
                 />

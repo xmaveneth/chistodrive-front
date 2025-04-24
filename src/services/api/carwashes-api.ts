@@ -1,5 +1,5 @@
 import {
-    CarWash,
+    AdminCarWashResponse,
     CarWashListResponse,
     UpdateSchedulePayload,
 } from '@/lib/types/admin';
@@ -57,8 +57,8 @@ export async function fetchAdminCarwashes(): Promise<CarWashListResponse> {
     return response.data;
 }
 
-export const fetchCarwashById = async (id: number): Promise<CarWash> => {
-    const response = await axiosInstance.get(`/api/car_wash/${id}`);
+export const fetchCarwashById = async (id: number): Promise<AdminCarWashResponse> => {
+    const response = await axiosInstance.get(`/api/admin/car_wash/${id}`);
     return response.data;
 };
 

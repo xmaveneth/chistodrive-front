@@ -9,7 +9,7 @@ export const useUpdateCarwashSchedule = () => {
         mutationFn: updateCarwashSchedule,
         onSuccess: () => {
             queryClient.invalidateQueries({
-                queryKey: [QUERY_KEYS.CURRENT_CARWASH],
+                queryKey: [QUERY_KEYS.ADMIN_CARWASH],
             });
         },
     });

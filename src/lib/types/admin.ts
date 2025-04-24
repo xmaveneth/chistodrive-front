@@ -20,3 +20,8 @@ export type UpdateSchedulePayload = {
     car_wash_id: number;
     data: WorkDay[];
 };
+
+
+export type AdminCarWashResponse = {
+    data: CarWash;
+};

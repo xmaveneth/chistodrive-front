@@ -6,6 +6,7 @@ export const useCarwashById = (id: number) => {
     return useQuery({
         queryKey: [QUERY_KEYS.ADMIN_CARWASH, id],
         queryFn: () => fetchCarwashById(id),
+        staleTime: 1000 * 60 * 5, 
         enabled: !!id,
     });
 };
