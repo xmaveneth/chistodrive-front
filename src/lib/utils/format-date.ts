@@ -38,6 +38,10 @@ export function formatDateToHumanFormat(dateString: string): string {
     return format(parsed, 'd MMMM', { locale: ru });
 }
 
+export function formatDateForScripts(isoDate: string): string {
+    return new Intl.DateTimeFormat('ru-RU').format(new Date(isoDate));
+  }
+
 export function formatTimeToHHMM(time: string): string {
     const [hours, minutes] = time.split(':');
     return `${hours}:${minutes}`;

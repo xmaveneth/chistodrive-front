@@ -11,5 +11,5 @@ export const QUERY_KEYS = {
     GROUPED: 'grouped',
     FLAT: 'flat',
     VEHICLE_TYPES: 'vehicle-types',
-
+    SCRIPTS: 'scripts',
 };

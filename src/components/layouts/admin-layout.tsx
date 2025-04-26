@@ -1,5 +1,5 @@
 import Logo from '@/components/atoms/logo';
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet, useNavigate } from 'react-router-dom';
 
 import { ErrorBoundary } from 'react-error-boundary';
 import ErrorFallback from '@/components/organisms/shared/error-boundary';
@@ -9,6 +9,7 @@ import { ArrowBigLeft } from 'lucide-react';
 
 export default function AdminLayout() {
     const { data: isAdmin, isLoading } = useIsCurrentUserAdmin();
+    const navigate = useNavigate();
 
     if (isLoading) return null;
 
@@ -20,7 +21,7 @@ export default function AdminLayout() {
         <div className="primary-px primary-py">
             <header className="flex items-center justify-between mb-6 sm:mb-10 xl:mb-12">
                 <div className="w-15 md:w-50">
-                    <DarkBtn route="/account" className='mr-auto'>
+                    <DarkBtn onClick={() => navigate(-1)} className='mr-auto'>
                         <ArrowBigLeft className="size-4 text-white" />
                         <span className="hidden md:block text-sm ml-1 mr-2">Вернуться назад</span>
                     </DarkBtn>
