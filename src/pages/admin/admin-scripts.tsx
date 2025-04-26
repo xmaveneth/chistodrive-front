@@ -1,6 +1,7 @@
 import AccountAddBtn from '@/components/atoms/account-add-btn';
 import DialogLayout from '@/components/layouts/dialog-layout';
 import AddScriptDialog from '@/components/molecules/admin/add-script-dialog';
+import AddScriptVersionDialog from '@/components/molecules/admin/add-script-version-dialog';
 import DeleteScriptDialog from '@/components/molecules/admin/delete-script-dialog';
 import ScriptRow from '@/components/molecules/admin/script-row';
 import ScriptVersionRow from '@/components/molecules/admin/script-version-row';
@@ -14,6 +15,11 @@ import { useParams } from 'react-router-dom';
 
 export default function AdminScripts() {
     const [showAddScriptDialog, toggleAddScriptDialog] = useToggle(false);
+    const [showAddScriptVersionDialog, toggleAddScriptVersionDialog] =
+        useToggle(false);
+
+    const [showDeleteScriptDialog, toggleDeleteScriptDialog] = useToggle(false);
+
     const { id } = useParams();
     const parsedId = Number(id);
     const { data: scripts, isLoading } = useScripts(parsedId);
@@ -38,7 +44,14 @@ export default function AdminScripts() {
                             key={`script-${idx}`}
                             script={script}
                             index={idx + 1}
-                            onDelete={() => setSelectedScript(script)}
+                            onDelete={() => {
+                                setSelectedScript(script);
+                                toggleDeleteScriptDialog(true);
+                            }}
+                            onClick={() => {
+                                setSelectedScript(script);
+                                toggleAddScriptVersionDialog(true);
+                            }}
                         />
 
                         {script.versions.map((version, version_idx) => (
@@ -72,13 +85,25 @@ export default function AdminScripts() {
             </DialogLayout>
 
             <DialogLayout
-                title="Вы уверены что хотите удалить данное окно?"
-                isOpen={selectedScript != null}
-                closeDialog={() => setSelectedScript(null)}
+                title="Добавить версию скрипта"
+                description="Введите название версии скрипта"
+                isOpen={showAddScriptVersionDialog}
+                closeDialog={() => toggleAddScriptVersionDialog(false)}
+            >
+                <AddScriptVersionDialog
+                    closeDialog={() => toggleAddScriptVersionDialog(false)}
+                    scriptId={selectedScript?.script_id || null}
+                />
+            </DialogLayout>
+
+            <DialogLayout
+                title="Вы уверены что хотите удалить данный скрипт?"
+                isOpen={showDeleteScriptDialog}
+                closeDialog={() => toggleDeleteScriptDialog(false)}
             >
                 <DeleteScriptDialog
                     selectedScript={selectedScript}
-                    closeDialog={() => setSelectedScript(null)}
+                    closeDialog={() => toggleDeleteScriptDialog(false)}
                 />
             </DialogLayout>
         </div>

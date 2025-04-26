@@ -7,9 +7,10 @@ type ScriptRowProps = {
     script: Script;
     index: number;
     onDelete: () => void;
+    onClick: () => void;
 };
 
-export default function ScriptRow({ script, index, onDelete }: ScriptRowProps) {
+export default function ScriptRow({ script, index, onDelete, onClick }: ScriptRowProps) {
     return (
         <div className="w-180 sm:w-282 text-center grid grid-cols-[60px_1fr_1fr_1fr_60px] divide-x-1 mx-4 divide-white/20 border-y border-white/20">
             <button className="py-3 cursor-pointer sticky left-0 z-10 flex items-center gap-2 justify-center bg-background text-btn-bg">
@@ -17,7 +18,7 @@ export default function ScriptRow({ script, index, onDelete }: ScriptRowProps) {
                 {index}
             </button>
             <div className="py-3 flex items-center justify-center">
-                <AccountAddBtn className="ml-3" />
+                <AccountAddBtn onClick={onClick} className="ml-3" />
                 <span className="mr-auto">{script.script_name}</span>
                 <span className="ml-4" aria-hidden={true}></span>
             </div>

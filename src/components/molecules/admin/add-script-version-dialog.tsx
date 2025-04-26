@@ -3,34 +3,39 @@ import TextField from '@/components/forms/text-field';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useCreateScript } from '@/lib/hooks/scripts/use-create-script';
+import { useCreateScriptVersion } from '@/lib/hooks/scripts/use-create-script-version';
 
-const scriptSchema = z.object({
-    name: z.string().min(1, 'Введите название скрипта'),
+const ScriptVersionSchema = z.object({
+    name: z.string().min(1, 'Введите название версии скрипта'),
 });
 
-type ScriptFormInput = z.infer<typeof scriptSchema>;
+type ScriptVersionFormInput = z.infer<typeof ScriptVersionSchema>;
 
-type AddScriptDialogProps = {
+type AddScriptVersionDialogProps = {
     closeDialog: () => void;
-    carWashId: number;
+    scriptId: number | null;
 };
-export default function AddScriptDialog({
+export default function AddScriptVersionDialog({
     closeDialog,
-    carWashId,
-}: AddScriptDialogProps) {
+    scriptId,
+}: AddScriptVersionDialogProps) {
     const {
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm<ScriptFormInput>({
-        resolver: zodResolver(scriptSchema),
+    } = useForm<ScriptVersionFormInput>({
+        resolver: zodResolver(ScriptVersionSchema),
     });
 
-    const { mutate, isPending } = useCreateScript(carWashId, closeDialog);
+    const { mutate, isPending } =
+        useCreateScriptVersion(closeDialog);
 
-    const onSubmit = (data: ScriptFormInput) => {
-        mutate(data);
+
+    const onSubmit = (data: ScriptVersionFormInput) => {
+        if (scriptId == null) return;
+
+        mutate({ script_id: scriptId, name: data.name });
+
     };
 
     return (
@@ -40,14 +45,14 @@ export default function AddScriptDialog({
                     registration={register('name')}
                     type="text"
                     error={errors.name?.message}
-                    placeholder="Введите название скрипта"
-                    label="Название скрипта"
+                    placeholder="Введите название версии скрипта"
+                    label="Название версии скрипта"
                     shouldFocus
                 />
             </div>
 
             <PrimaryBtn type="submit" className="w-full" disabled={isPending}>
-                Добавить скрипт
+                Добавить версию скрипта
             </PrimaryBtn>
 
             <PrimaryBtn

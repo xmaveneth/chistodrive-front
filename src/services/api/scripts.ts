@@ -30,3 +30,12 @@ export async function deleteScript(script_id: number): Promise<string> {
 
     return response.data;
 }
+
+export async function createScriptVersion(script_id: number, name: string): Promise<string> {
+    const response = await axiosInstance.post<string>('/api/script_version/create', {
+        script_id,
+        name,
+    });
+
+    return response.data;
+}
