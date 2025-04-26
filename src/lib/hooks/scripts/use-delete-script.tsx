@@ -7,8 +7,8 @@ import { AxiosError } from 'axios';
 export function useDeleteScript(closeDialog: () => void) {
     const queryClient = useQueryClient();
 
-    return useMutation<string, Error, { script_id: number }>({
-        mutationFn: ({ script_id }) => deleteScript(script_id),
+    return useMutation({
+        mutationFn: (script_id: number) => deleteScript(script_id),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.SCRIPTS] });
             notify('Скрипт успешно удален!');

@@ -1,12 +1,15 @@
 import AccountAddBtn from '@/components/atoms/account-add-btn';
 import DialogLayout from '@/components/layouts/dialog-layout';
 import AddScriptDialog from '@/components/molecules/admin/add-script-dialog';
+import DeleteScriptDialog from '@/components/molecules/admin/delete-script-dialog';
 import ScriptRow from '@/components/molecules/admin/script-row';
 import ScriptVersionRow from '@/components/molecules/admin/script-version-row';
 import TableHead from '@/components/molecules/admin/table-head';
 import { useScripts } from '@/lib/hooks/scripts/use-scripts';
 import useToggle from '@/lib/hooks/utils/use-toggle';
+import { Script } from '@/lib/types/scripts';
 import { range } from '@/lib/utils/range';
+import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 export default function AdminScripts() {
@@ -14,6 +17,7 @@ export default function AdminScripts() {
     const { id } = useParams();
     const parsedId = Number(id);
     const { data: scripts, isLoading } = useScripts(parsedId);
+    const [selectedScript, setSelectedScript] = useState<Script | null>(null);
 
     return (
         <div className="overflow-auto scrollbar-hidden text-xs sm:text-base">
@@ -34,6 +38,7 @@ export default function AdminScripts() {
                             key={`script-${idx}`}
                             script={script}
                             index={idx + 1}
+                            onDelete={() => setSelectedScript(script)}
                         />
 
                         {script.versions.map((version, version_idx) => (
@@ -63,6 +68,17 @@ export default function AdminScripts() {
                 <AddScriptDialog
                     closeDialog={() => toggleAddScriptDialog(false)}
                     carWashId={parsedId}
+                />
+            </DialogLayout>
+
+            <DialogLayout
+                title="Вы уверены что хотите удалить данное окно?"
+                isOpen={selectedScript != null}
+                closeDialog={() => setSelectedScript(null)}
+            >
+                <DeleteScriptDialog
+                    selectedScript={selectedScript}
+                    closeDialog={() => setSelectedScript(null)}
                 />
             </DialogLayout>
         </div>
