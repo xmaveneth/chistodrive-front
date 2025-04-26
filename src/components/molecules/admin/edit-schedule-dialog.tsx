@@ -17,17 +17,45 @@ type EditScheduleDialogProps = {
 
 const russianTimeRegex = /^([01]\d|2[0-3]):([0-5]\d)$/;
 
-const workDaySchema = z.object({
-    start: z
-        .string()
-        .regex(russianTimeRegex, 'Неверный формат времени')
-        .nullable(),
-    end: z
-        .string()
-        .regex(russianTimeRegex, 'Неверный формат времени')
-        .nullable(),
-    is_day_off: z.boolean(),
-});
+const workDaySchema = z
+    .object({
+        start: z
+            .string()
+            .regex(russianTimeRegex, 'Неверный формат времени')
+            .nullable(),
+        end: z
+            .string()
+            .regex(russianTimeRegex, 'Неверный формат времени')
+            .nullable(),
+        is_day_off: z.boolean(),
+    })
+    .superRefine((data, ctx) => {
+        if (data.is_day_off === false) {
+            if (
+                data.start == null ||
+                data.start === '' ||
+                data.end == null ||
+                data.end === ''
+            ) {
+                ctx.addIssue({
+                    code: z.ZodIssueCode.custom,
+                    message: 'Укажите время начала и окончания работы',
+                    path: ['is_day_off'],
+                });
+                return; 
+            }
+
+            if (data.start >= data.end) {
+                ctx.addIssue({
+                    code: z.ZodIssueCode.custom,
+                    message:
+                        'Время начала должно быть раньше времени окончания',
+                    path: ['is_day_off'],
+                });
+            }
+        }
+    });
+
 
 const schema = z.object({
     schedule: z.array(workDaySchema).length(7, 'Должно быть ровно 7 дней'),
@@ -103,10 +131,18 @@ export default function EditScheduleDialog({
     const weekDays = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
 
     return (
-        <form className="my-10 space-y-4 sm:space-y-6" onSubmit={handleSubmit(onSubmit)}>
+        <form
+            className="my-10 space-y-4 sm:space-y-6"
+            onSubmit={handleSubmit(onSubmit)}
+        >
             {fields.map((field, index) => (
-                <div key={field.id} className="flex items-start flex-col gap-3 xs:flex-row">
-                    <div className="text-white w-6 sm:mt-1">{weekDays[index]}:</div>
+                <div
+                    key={field.id}
+                    className="flex items-start flex-col gap-3 xs:flex-row"
+                >
+                    <div className="text-white w-6 sm:mt-1">
+                        {weekDays[index]}:
+                    </div>
                     <div className="xs:basis-4/5 ml-auto flex items-center flex-wrap justify-between gap-x-4 gap-y-2 text-xs sm:text-base">
                         <Field className="flex items-center gap-2 xs:ml-auto">
                             <Label className="text-white text-xs">С</Label>
@@ -138,7 +174,7 @@ export default function EditScheduleDialog({
                                 disabled={watchedSchedule[index]?.is_day_off}
                             />
                         </Field>
-                        <div className="xs:ml-auto mt-2 mr-4">
+                        <div className="xs:ml-14 sm:ml-8 mt-2 mr-4">
                             <CheckboxField
                                 name={`schedule.${index}.is_day_off`}
                                 ref={
@@ -170,7 +206,11 @@ export default function EditScheduleDialog({
             ))}
 
             <div>
-                <PrimaryBtn type="submit" className="w-full mb-4" disabled={isPending}>
+                <PrimaryBtn
+                    type="submit"
+                    className="w-full mb-4"
+                    disabled={isPending}
+                >
                     Сохранить
                 </PrimaryBtn>
                 <PrimaryBtn
