@@ -8,6 +8,6 @@ export const useCurrentUser = () => {
         queryFn: getCurrentUser,
         staleTime: 1000 * 60 * 5,
         refetchOnWindowFocus: false,
-        retry: false,
+        retry: true,
     });
 };

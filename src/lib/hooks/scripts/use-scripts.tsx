@@ -7,6 +7,7 @@ export function useScripts(carWashId: number) {
     return useQuery<ScriptsResponse>({
         queryKey: [QUERY_KEYS.SCRIPTS, carWashId],
         queryFn: () => fetchScripts(carWashId),
+        staleTime: 1000 * 60 * 5,
         enabled: !!carWashId,
     });
 }

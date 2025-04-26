@@ -43,7 +43,7 @@ export default function AccountHeader({ openDialog }: AccountHeaderProp) {
                 </button>
                 <Transition show={showActions}>
                     <div
-                        className="bg-light-bg absolute top-0 right-12 sm:right-16 flex flex-wrap items-center gap-4 sm:gap-6 rounded-xl px-4 py-3 transition duration-200 ease-in data-[closed]:opacity-0 data-[closed]:scale-x-50 origin-right"
+                        className="bg-light-bg absolute top-0 right-12 sm:right-16 flex flex-wrap items-center gap-4 sm:gap-6 rounded-xl p-4 transition duration-200 ease-in data-[closed]:opacity-0 data-[closed]:scale-x-50 origin-right"
                     >
                         <AdminItemBtn
                             disabled={isPending}

@@ -10,3 +10,23 @@ export async function fetchScripts(
 
     return response.data;
 }
+
+export async function createScript(
+    name: string,
+    car_wash_id: number
+): Promise<string> {
+    const response = await axiosInstance.post<string>('/api/create_script', {
+        name,
+        car_wash_id,
+    });
+
+    return response.data;
+}
+
+export async function deleteScript(script_id: number): Promise<string> {
+    const response = await axiosInstance.delete<string>('/api/delete_script', {
+        params: { script_id },
+    });
+
+    return response.data;
+}

@@ -1,9 +1,20 @@
+import AccountAddBtn from '@/components/atoms/account-add-btn';
+import DialogLayout from '@/components/layouts/dialog-layout';
+import AddScriptDialog from '@/components/molecules/admin/add-script-dialog';
 import ScriptRow from '@/components/molecules/admin/script-row';
 import ScriptVersionRow from '@/components/molecules/admin/script-version-row';
 import TableHead from '@/components/molecules/admin/table-head';
-import { dummyScripts } from '@/lib/data/scripts';
+import { useScripts } from '@/lib/hooks/scripts/use-scripts';
+import useToggle from '@/lib/hooks/utils/use-toggle';
+import { range } from '@/lib/utils/range';
+import { useParams } from 'react-router-dom';
 
 export default function AdminScripts() {
+    const [showAddScriptDialog, toggleAddScriptDialog] = useToggle(false);
+    const { id } = useParams();
+    const parsedId = Number(id);
+    const { data: scripts, isLoading } = useScripts(parsedId);
+
     return (
         <div className="overflow-auto scrollbar-hidden text-xs sm:text-base">
             <TableHead gridClass="grid-cols-[60px_1fr_1fr_1fr_60px]">
@@ -13,23 +24,58 @@ export default function AdminScripts() {
                 <div></div>
             </TableHead>
 
-            {dummyScripts.data.map((script, idx) => (
-                <>
-                    <ScriptRow
-                        key={`script-${idx}`}
-                        script={script}
-                        index={idx + 1}
-                    />
-
-                    {script.versions.map((version, version_idx) => (
-                        <ScriptVersionRow
-                            key={`script-version-${idx}-${version_idx}`}
-                            version={version}
-                            order={`${idx + 1}.${version_idx + 1}`}
+            {isLoading ? (
+                <Skeleton />
+            ) : (
+                scripts &&
+                scripts.data.map((script, idx) => (
+                    <>
+                        <ScriptRow
+                            key={`script-${idx}`}
+                            script={script}
+                            index={idx + 1}
                         />
-                    ))}
-                </>
-            ))}
+
+                        {script.versions.map((version, version_idx) => (
+                            <ScriptVersionRow
+                                key={`script-version-${idx}-${version_idx}`}
+                                version={version}
+                                order={`${idx + 1}.${version_idx + 1}`}
+                            />
+                        ))}
+                    </>
+                ))
+            )}
+
+            <div className="py-3 mt-1 w-188 sm:w-290">
+                <AccountAddBtn
+                    onClick={() => toggleAddScriptDialog(true)}
+                    className="sticky left-40 sm:left-52 mx-0 z-20"
+                />
+            </div>
+
+            <DialogLayout
+                title="Добавить скрипт"
+                description="Введите название, чтобы добавить скрипт"
+                isOpen={showAddScriptDialog}
+                closeDialog={() => toggleAddScriptDialog(false)}
+            >
+                <AddScriptDialog
+                    closeDialog={() => toggleAddScriptDialog(false)}
+                    carWashId={parsedId}
+                />
+            </DialogLayout>
         </div>
     );
+}
+
+function Skeleton() {
+    return range(1, 5).map((number) => (
+        <div
+            key={`skeleton-${number}`}
+            className="w-180 sm:w-282 text-center py-3 mx-4 bg-gray-400 text-transparent animate-pulse rounded-sm mb-1"
+        >
+            Loading
+        </div>
+    ));
 }
