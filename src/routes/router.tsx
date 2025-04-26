@@ -6,6 +6,7 @@ import AdminEmployees from '@/pages/admin/admin-employees';
 import AdminEntries from '@/pages/admin/admin-entries';
 import AdminReviews from '@/pages/admin/admin-reviews';
 import Home from '@/pages/home';
+import NotFound from '@/pages/not-found';
 import Policy from '@/pages/policy';
 import Rules from '@/pages/rules';
 import { lazy } from 'react';
@@ -58,4 +59,5 @@ export const routes = [
             },
         ],
     },
+    { path: '*', element: <NotFound /> },
 ];
