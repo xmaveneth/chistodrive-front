@@ -12,4 +12,6 @@ export const QUERY_KEYS = {
     FLAT: 'flat',
     VEHICLE_TYPES: 'vehicle-types',
     SCRIPTS: 'scripts',
+    SCRIPT_SERVICES: 'script_services',
+    SCRIPT_SERVICE_PARAMS: 'script_service_params',
 };

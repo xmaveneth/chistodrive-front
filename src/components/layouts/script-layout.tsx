@@ -40,7 +40,7 @@ export default function ScriptLayout() {
                 <div className="w-15 md:w-50" aria-hidden={true}></div>
             </header>
             <section className="px-4 sm:px-8 sm:pb-9 xl:pb-8 xl:px-9 xl:pt-7 pt-5 pb-7 border border-border rounded-xl">
-                <div className="mb-8 text-lg sm:text-xl md:text-2xl md:mb-12">{scriptNamesMap[parsedId] }</div>
+                <div className="mb-8 text-lg sm:text-xl md:text-2xl md:mb-12">{scriptNamesMap[parsedId]}</div>
                 <div className="mb-4">
                     <nav className="flex items-center flex-col gap-3 xs:flex-row xs:gap-0">
                         <AccountNavLink
