@@ -31,11 +31,26 @@ export async function deleteScript(script_id: number): Promise<string> {
     return response.data;
 }
 
-export async function createScriptVersion(script_id: number, name: string): Promise<string> {
-    const response = await axiosInstance.post<string>('/api/script_version/create', {
-        script_id,
-        name,
-    });
+export async function createScriptVersion(
+    script_id: number,
+    name: string
+): Promise<string> {
+    const response = await axiosInstance.post<string>(
+        '/api/script_version/create',
+        {
+            script_id,
+            name,
+        }
+    );
 
+    return response.data;
+}
+
+export async function deleteScriptVersion(
+    script_version_id: number
+): Promise<string> {
+    const response = await axiosInstance.delete<string>(
+        `/api/script_version/${script_version_id}/delete`
+    );
     return response.data;
 }

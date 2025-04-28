@@ -4,9 +4,10 @@ import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/solid';
 type ScriptVersionRowProps = {
     version: ScriptVersion;
     order: string;
+    onDelete: () => void;
 };
 
-export default function ScriptVersionRow({ version, order }: ScriptVersionRowProps) {
+export default function ScriptVersionRow({ version, order, onDelete }: ScriptVersionRowProps) {
     return (
         <div className="w-180 sm:w-282 text-center relative grid grid-cols-[60px_100px_100px_1fr_1fr_60px] sm:grid-cols-[60px_100px_236px_1fr_1fr_60px] divide-x-1 mx-4 divide-white/20 border-b border-white/20">
             <div></div>
@@ -25,7 +26,7 @@ export default function ScriptVersionRow({ version, order }: ScriptVersionRowPro
             <div className="py-3">{version.version_status}</div>
             <div className="py-3">
                 {' '}
-                <button className="cursor-pointer">
+                <button onClick={onDelete} className="cursor-pointer">
                     <TrashIcon className="text-btn-bg size-4 mx-auto" />
                 </button>
             </div>
