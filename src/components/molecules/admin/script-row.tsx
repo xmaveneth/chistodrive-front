@@ -2,21 +2,23 @@ import AccountAddBtn from '@/components/atoms/account-add-btn';
 import { Script } from '@/lib/types/scripts';
 import { formatDateForScripts } from '@/lib/utils/format-date';
 import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/solid';
+import { Link } from 'react-router-dom';
 
 type ScriptRowProps = {
     script: Script;
     index: number;
+    id: number;
     onDelete: () => void;
     onClick: () => void;
 };
 
-export default function ScriptRow({ script, index, onDelete, onClick }: ScriptRowProps) {
+export default function ScriptRow({ script, index, onDelete, onClick, id }: ScriptRowProps) {
     return (
         <div className="w-180 sm:w-282 text-center grid grid-cols-[60px_1fr_1fr_1fr_60px] divide-x-1 mx-4 divide-white/20 border-y border-white/20">
-            <button className="py-3 cursor-pointer sticky left-0 z-10 flex items-center gap-2 justify-center bg-background text-btn-bg">
+            <Link to={`/script/${id}/vehicle_types`} className="py-3 cursor-pointer sticky left-0 z-10 flex items-center gap-2 justify-center bg-background text-btn-bg">
                 <PencilSquareIcon className="size-4" />
                 {index}
-            </button>
+            </Link>
             <div className="py-3 flex items-center justify-center">
                 <AccountAddBtn onClick={onClick} className="ml-3" />
                 <span className="mr-auto">{script.script_name}</span>

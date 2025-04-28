@@ -211,7 +211,7 @@ export default function EditScheduleDialog({
                     className="w-full mb-4"
                     disabled={isPending}
                 >
-                    Сохранить
+                    {isPending ? 'Загрузка...' : 'Сохранить'}
                 </PrimaryBtn>
                 <PrimaryBtn
                     type="button"

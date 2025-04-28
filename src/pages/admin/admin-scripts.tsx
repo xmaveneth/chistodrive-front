@@ -8,10 +8,12 @@ import ScriptRow from '@/components/molecules/admin/script-row';
 import ScriptVersionRow from '@/components/molecules/admin/script-version-row';
 import TableHead from '@/components/molecules/admin/table-head';
 import { useScripts } from '@/lib/hooks/scripts/use-scripts';
+import { useLocalStorage } from '@/lib/hooks/utils/use-local-storage';
 import useToggle from '@/lib/hooks/utils/use-toggle';
 import { Script, ScriptVersion } from '@/lib/types/scripts';
+import { createScriptNameMap } from '@/lib/utils/create-script-name-map';
 import { range } from '@/lib/utils/range';
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 export default function AdminScripts() {
@@ -28,6 +30,13 @@ export default function AdminScripts() {
     const [selectedScript, setSelectedScript] = useState<Script | null>(null);
     const [selectedScriptVersion, setSelectedScriptVersion] = useState<ScriptVersion | null>(null);
 
+    const [, setScriptNamesMap] = useLocalStorage<Record<number, string>>('script_names_map', {});
+
+    const scriptMap = useMemo(() => createScriptNameMap(scripts), [scripts]);
+    
+    useEffect(() => {
+        setScriptNamesMap(scriptMap);
+    }, [scriptMap, isLoading]);
 
     return (
         <div className="overflow-auto scrollbar-hidden text-xs sm:text-base">
@@ -48,6 +57,7 @@ export default function AdminScripts() {
                             key={`script-${idx}`}
                             script={script}
                             index={idx + 1}
+                            id={script.script_id}
                             onDelete={() => {
                                 setSelectedScript(script);
                                 toggleDeleteScriptDialog(true);

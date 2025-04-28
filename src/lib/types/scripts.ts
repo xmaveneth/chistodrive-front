@@ -17,3 +17,4 @@ export type Script = {
 export type ScriptsResponse = {
     data: Script[];
 };
+

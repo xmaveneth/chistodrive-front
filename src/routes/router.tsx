@@ -1,10 +1,4 @@
-import AdminLayout from '@/components/layouts/admin-layout';
-import CarwashLayout from '@/components/layouts/carwash-layout';
 import { RootLayout } from '@/components/layouts/root-layout';
-import AdminBoxes from '@/pages/admin/admin-boxes';
-import AdminEmployees from '@/pages/admin/admin-employees';
-import AdminEntries from '@/pages/admin/admin-entries';
-import AdminReviews from '@/pages/admin/admin-reviews';
 import Home from '@/pages/home';
 import NotFound from '@/pages/not-found';
 import Policy from '@/pages/policy';
@@ -19,6 +13,19 @@ const AccountEntries = lazy(() => import('@/pages/account/entries'));
 const AccountFavorite = lazy(() => import('@/pages/account/favorite'));
 const AdminCarwashes = lazy(() => import('@/pages/admin/admin-carwashes'));
 const AdminScripts = lazy(() => import('@/pages/admin/admin-scripts'));
+const AdminEmployees = lazy(() => import('@/pages/admin/admin-employees'));
+const AdminBoxes = lazy(() => import('@/pages/admin/admin-boxes'));
+const AdminEntries = lazy(() => import('@/pages/admin/admin-entries'));
+const AdminReviews = lazy(() => import('@/pages/admin/admin-reviews'));
+const CarwashLayout = lazy(() => import('@/components/layouts/carwash-layout'));
+const AdminLayout = lazy(() => import('@/components/layouts/admin-layout'));
+const ScriptLayout = lazy(() => import('@/components/layouts/script-layout'));
+
+const ScriptBoxes = lazy(() => import('@/pages/script/script-boxes'));
+const ScriptIntervals = lazy(() => import('@/pages/script/script-intervals'));
+const ScriptServices = lazy(() => import('@/pages/script/script-services'));
+const ScriptVehicles = lazy(() => import('@/pages/script/script-vehicles'));
+const ScriptWorkers = lazy(() => import('@/pages/script/script-workers'));
 
 export const routes = [
     {
@@ -55,6 +62,17 @@ export const routes = [
                             { path: 'reviews', element: <AdminReviews /> },
                         ],
                     },
+                ],
+            },
+            {
+                path: 'script/:id',
+                element: <ScriptLayout />,
+                children: [
+                    { path: 'vehicle_types', element: <ScriptVehicles /> },
+                    { path: 'services', element: <ScriptServices /> },
+                    { path: 'intervals', element: <ScriptIntervals /> },
+                    { path: 'boxes', element: <ScriptBoxes /> },
+                    { path: 'workers', element: <ScriptWorkers /> },
                 ],
             },
         ],
