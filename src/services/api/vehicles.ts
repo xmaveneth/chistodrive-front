@@ -1,5 +1,9 @@
 import { Car, VehicleTypeMap } from '@/lib/types/user';
-import { CreateVehiclePayload, VehicleType } from '@/lib/types/vehicles';
+import {
+    CreateVehiclePayload,
+    ScriptVehicleTypesResponse,
+    VehicleType,
+} from '@/lib/types/vehicles';
 import { axiosInstance } from '@/services/api/axios-instance';
 
 export const fetchVehicleTypes = async (): Promise<VehicleType[]> => {
@@ -15,16 +19,16 @@ export const createVehicle = async (
     await axiosInstance.post('/api/create_vehicle', payload);
 };
 
-// Overloads
 export function fetchVehicles(isGrouped: true): Promise<VehicleTypeMap>;
 export function fetchVehicles(isGrouped?: false): Promise<Car[]>;
 
-// Implementation
-export async function fetchVehicles(isGrouped: boolean = false): Promise<Car[] | VehicleTypeMap> {
-  const response = await axiosInstance.get<Car[] | VehicleTypeMap>(
-    `/api/vehicles?is_grouped=${isGrouped}`
-  );
-  return response.data;
+export async function fetchVehicles(
+    isGrouped: boolean = false
+): Promise<Car[] | VehicleTypeMap> {
+    const response = await axiosInstance.get<Car[] | VehicleTypeMap>(
+        `/api/vehicles?is_grouped=${isGrouped}`
+    );
+    return response.data;
 }
 
 export const deleteVehicle = async (vehicle_id: number): Promise<void> => {
@@ -32,3 +36,12 @@ export const deleteVehicle = async (vehicle_id: number): Promise<void> => {
         params: { vehicle_id },
     });
 };
+
+export async function getScriptVehicleTypes(
+    script_id: number
+): Promise<ScriptVehicleTypesResponse> {
+    const response = await axiosInstance.get<ScriptVehicleTypesResponse>(
+        `/api/script/${script_id}/vehicle_types`
+    );
+    return response.data;
+}

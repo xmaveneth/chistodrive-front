@@ -14,4 +14,5 @@ export const QUERY_KEYS = {
     SCRIPTS: 'scripts',
     SCRIPT_SERVICES: 'script_services',
     SCRIPT_SERVICE_PARAMS: 'script_service_params',
+    SCRIPT_VEHICLE_TYPES: 'script_vehicle_types',
 };
