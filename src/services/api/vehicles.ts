@@ -45,3 +45,14 @@ export async function getScriptVehicleTypes(
     );
     return response.data;
 }
+
+export async function updateScriptVehicleTypes(
+    script_id: number,
+    vehicleTypeIds: number[]
+): Promise<string> {
+    const response = await axiosInstance.patch<string>(
+        `/api/script/${script_id}/vehicle_types`,
+        { data: vehicleTypeIds }
+    );
+    return response.data;
+}
