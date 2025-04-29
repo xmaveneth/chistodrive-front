@@ -7,6 +7,7 @@ import {
     calculateTableWidth,
     generateColumnClass,
 } from '@/lib/utils/generate-column-class';
+import { range } from '@/lib/utils/range';
 import { useParams } from 'react-router-dom';
 
 export default function ScriptServices() {
@@ -14,7 +15,7 @@ export default function ScriptServices() {
     const { data, isLoading } = useGetScriptServiceParams(Number(id));
     const isMobile = useMediaQuery('(max-width: 640px)');
 
-    if (isLoading) return <p>Loading...</p>;
+    if (isLoading) return <Skeleton />;
 
     if (data == null) return null;
 
@@ -81,8 +82,12 @@ export default function ScriptServices() {
                                                 key={`parameter-${parameterIndex}-${serviceIndex}-${serviceCategoryIndex}`}
                                                 className="flex divide-x-1 divide-white/20"
                                             >
-                                                <div className='flex-1 flex items-center justify-center'>{parameter.price} ₽</div>
-                                                <div className='flex-1 flex items-center justify-center'>{parameter.duration} мин</div>
+                                                <div className="flex-1 flex items-center justify-center">
+                                                    {parameter.price} ₽
+                                                </div>
+                                                <div className="flex-1 flex items-center justify-center">
+                                                    {parameter.duration} мин
+                                                </div>
                                             </div>
                                         )
                                     )}
@@ -92,6 +97,45 @@ export default function ScriptServices() {
                     </div>
                 );
             })}
+        </div>
+    );
+}
+
+function Skeleton() {
+    return (
+        <div>
+            {range(1, 3).map((skeleton) => (
+                <div
+                    key={`skeleton-item-${skeleton}`}
+                    className="overflow-auto scrollbar-hidden"
+                >
+                    <div className="my-6 md:text-lg text-transparent w-max bg-gray-200 animate-pulse rounded-sm">
+                        loading loading
+                    </div>
+
+                    <TableHeadSkeleton />
+
+                    {range(1, 3).map((index) => (
+                        <TableRowSkeleton key={`table-row-skeleton-${index}`} />
+                    ))}
+                </div>
+            ))}
+        </div>
+    );
+}
+
+function TableHeadSkeleton() {
+    return (
+        <div className="mb-4 bg-gray-200 text-transparent rounded-full h-20 sm:h-22 w-full animate-pulse">
+            Loading
+        </div>
+    );
+}
+
+function TableRowSkeleton() {
+    return (
+        <div className="mx-auto mb-2 text-sm md:text-base py-2 bg-gray-200 text-transparent rounded-sm w-[calc(100%-32px)] animate-pulse">
+            Loading
         </div>
     );
 }
