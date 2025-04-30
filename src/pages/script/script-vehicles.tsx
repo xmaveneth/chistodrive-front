@@ -1,8 +1,9 @@
+import SecondaryBtn from '@/components/atoms/secondary-btn';
 import ScriptCheckbox from '@/components/forms/script-checkbox';
-import useDebounce from '@/lib/hooks/utils/use-debounce';
 import { useGetScriptVehicleTypes } from '@/lib/hooks/vehicles/use-get-script-vehicle-types';
 import { useUpdateScriptVehicleTypes } from '@/lib/hooks/vehicles/use-update-script-vehicle-types';
 import { useVehicleTypes } from '@/lib/hooks/vehicles/use-vehicle-types';
+import { range } from '@/lib/utils/range';
 import {
     createAllVehiclesArray,
     createSelectedVehiclesArray,
@@ -41,20 +42,11 @@ export default function ScriptVehicles() {
         setAllVehicleNames(createAllVehiclesArray(allVehicles));
     }, [isLoadingAllVehicles]);
 
-    useDebounce(
-        () => {
-            if (isLoadingSelectedVehicles === false) {
-                updateVehicles(
-                    generateSelectedVehicleIds(
-                        allVehicles,
-                        selectedVehicleNames
-                    )
-                );
-            }
-        },
-        3000,
-        [selectedVehicleNames]
-    );
+    function handleClick() {
+        updateVehicles(
+            generateSelectedVehicleIds(allVehicles, selectedVehicleNames)
+        );
+    }
 
     function handleChange(vehicleName: string) {
         if (selectedVehicleNames.includes(vehicleName)) {
@@ -67,22 +59,46 @@ export default function ScriptVehicles() {
     }
 
     if (isLoadingSelectedVehicles || isLoadingAllVehicles)
-        return <p>Loading...</p>;
+        return <Skeleton />;
     if (selectedVehiclesError || allVehiclesError)
         return <p>Error loading vehicle types</p>;
 
     return (
-        <div className="grid gap-3 mt-6 md:mt-8">
-            {allVehicleNames?.map((vehicleName) => (
-                <ScriptCheckbox
-                    name={vehicleName}
-                    onChange={() => handleChange(vehicleName)}
-                    onBlur={() => {}}
-                    key={vehicleName}
-                    isChecked={selectedVehicleNames.includes(vehicleName)}
+        <div className="mt-6 md:mt-8">
+            <div className="grid gap-3">
+                {allVehicleNames?.map((vehicleName) => (
+                    <ScriptCheckbox
+                        name={vehicleName}
+                        onChange={() => handleChange(vehicleName)}
+                        onBlur={() => {}}
+                        key={vehicleName}
+                        isChecked={selectedVehicleNames.includes(vehicleName)}
+                    >
+                        {vehicleName}
+                    </ScriptCheckbox>
+                ))}
+            </div>
+
+            <SecondaryBtn
+                onClick={handleClick}
+                className="mt-6 py-2 rounded-lg"
+            >
+                Сохранить
+            </SecondaryBtn>
+        </div>
+    );
+}
+
+function Skeleton() {
+    return (
+        <div className="mt-6 md:mt-8 grid gap-3">
+            {range(1, 7).map((index) => (
+                <div
+                    key={`skeleton-${index}`}
+                    className="rounded-sm bg-gray-200 text-transparent animate-pulse w-max text-sm md:text-base"
                 >
-                    {vehicleName}
-                </ScriptCheckbox>
+                    loading loading loading
+                </div>
             ))}
         </div>
     );
