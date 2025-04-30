@@ -19,7 +19,7 @@ export default function AccountNavLink({
         <Link
             className={cn(
                 'border-b pb-4 flex-1 text-center text-sm transition-colors ease-in duration-200 sm:text-base xl:text-lg',
-                isActive ? 'border-white text-white' : 'border-text-muted text-text-muted hover:text-zinc-400 hover:border-zinc-400', className
+                isActive ? 'border-white text-white' : 'border-text-muted text-text-muted hover:text-zinc-300 hover:border-zinc-300', className
             )}
             to={path}
         >
