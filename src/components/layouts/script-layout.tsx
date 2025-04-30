@@ -96,16 +96,16 @@ export default function ScriptLayout() {
                                 Тип авто
                             </AccountNavLink>
                             <AccountNavLink
-                                path={`/script/${parsedId}/workers`}
-                                className="pb-2 w-full xs:w-auto xs:text-xs sm:text-sm md:text-base"
-                            >
-                                Сотрудники
-                            </AccountNavLink>
-                            <AccountNavLink
                                 path={`/script/${parsedId}/boxes`}
                                 className="pb-2 w-full xs:w-auto xs:text-xs sm:text-sm md:text-base"
                             >
                                 Боксы
+                            </AccountNavLink>
+                            <AccountNavLink
+                                path={`/script/${parsedId}/workers`}
+                                className="pb-2 w-full xs:w-auto xs:text-xs sm:text-sm md:text-base"
+                            >
+                                Сотрудники
                             </AccountNavLink>
 
                             <AccountNavLink

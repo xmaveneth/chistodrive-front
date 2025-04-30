@@ -15,4 +15,8 @@ export const QUERY_KEYS = {
     SCRIPT_SERVICES: 'script_services',
     SCRIPT_SERVICE_PARAMS: 'script_service_params',
     SCRIPT_VEHICLE_TYPES: 'script_vehicle_types',
+    CAR_WASH_BOXES: 'car_wash_boxes',
+    SCRIPT_BOXES: 'script_boxes',
+    SCRIPT_WORKERS: 'script_workers',
+    CAR_WASH_WORKERS: 'car_wash_workers',
 };

@@ -61,7 +61,7 @@ export default function ScriptVehicles() {
     if (isLoadingSelectedVehicles || isLoadingAllVehicles)
         return <Skeleton />;
     if (selectedVehiclesError || allVehiclesError)
-        return <p>Error loading vehicle types</p>;
+        return <p>Произошла ошибка загрузки типов авто, попробуйте позже</p>;
 
     return (
         <div className="mt-6 md:mt-8">
