@@ -69,6 +69,7 @@ export default function ScriptServices() {
                         {serviceCategory.services.map(
                             (service, serviceIndex) => (
                                 <ScriptServiceRow
+                                    key={`script-service-row-${serviceIndex}`}
                                     columns={columnClass}
                                     width={tableWidth - 30}
                                     index={serviceIndex + 1}

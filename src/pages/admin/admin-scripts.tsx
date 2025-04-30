@@ -52,9 +52,8 @@ export default function AdminScripts() {
             ) : (
                 scripts &&
                 scripts.data.map((script, idx) => (
-                    <>
+                    <div key={`script-${idx}`}>
                         <ScriptRow
-                            key={`script-${idx}`}
                             script={script}
                             index={idx + 1}
                             id={script.script_id}
@@ -79,7 +78,7 @@ export default function AdminScripts() {
                                 }}
                             />
                         ))}
-                    </>
+                    </div>
                 ))
             )}
 

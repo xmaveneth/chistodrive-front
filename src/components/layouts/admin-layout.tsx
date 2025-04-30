@@ -1,5 +1,11 @@
 import Logo from '@/components/atoms/logo';
-import { Navigate, Outlet, useNavigate } from 'react-router-dom';
+import {
+    Navigate,
+    Outlet,
+    useLocation,
+    useNavigate,
+    useParams,
+} from 'react-router-dom';
 
 import { ErrorBoundary } from 'react-error-boundary';
 import ErrorFallback from '@/components/organisms/shared/error-boundary';
@@ -10,6 +16,8 @@ import { ArrowBigLeft } from 'lucide-react';
 export default function AdminLayout() {
     const { data: isAdmin, isLoading } = useIsCurrentUserAdmin();
     const navigate = useNavigate();
+    const location = useLocation();
+    const carwashId = useParams();
 
     if (isLoading) return null;
 
@@ -17,13 +25,39 @@ export default function AdminLayout() {
         return <Navigate to="/" replace />;
     }
 
+    if (location.pathname.startsWith('/admin/carwash')) {
+        if (carwashId.id != null) {
+            localStorage.setItem('admin-carwash-id', carwashId.id);
+        }
+    }
+
+    const handleBackClick = () => {
+        const path = location.pathname;
+
+        switch (true) {
+            case path === '/admin':
+                navigate('/account');
+                break;
+
+            case path.startsWith('/admin'):
+                navigate('/admin');
+                break;
+
+            default:
+                navigate(-1);
+                break;
+        }
+    };
+
     return (
         <div className="primary-px primary-py">
             <header className="flex items-center justify-between mb-6 sm:mb-10 xl:mb-12">
                 <div className="w-15 md:w-50">
-                    <DarkBtn onClick={() => navigate(-1)} className='mr-auto'>
+                    <DarkBtn onClick={handleBackClick} className="mr-auto">
                         <ArrowBigLeft className="size-4 text-white" />
-                        <span className="hidden md:block text-sm ml-1 mr-2">Вернуться назад</span>
+                        <span className="hidden md:block text-sm ml-1 mr-2">
+                            Вернуться назад
+                        </span>
                     </DarkBtn>
                 </div>
 

@@ -11,7 +11,10 @@ import { useLocalStorage } from '@/lib/hooks/utils/use-local-storage';
 
 export default function ScriptLayout() {
     const { data: isAdmin, isLoading } = useIsCurrentUserAdmin();
-     const [scriptNamesMap,] = useLocalStorage<Record<number, string>>('script_names_map', {});
+    const [scriptNamesMap] = useLocalStorage<Record<number, string>>(
+        'script_names_map',
+        {}
+    );
     const navigate = useNavigate();
     const { id } = useParams();
 
@@ -23,11 +26,31 @@ export default function ScriptLayout() {
         return <Navigate to="/" replace />;
     }
 
+    const handleBackClick = () => {
+        const path = location.pathname;
+
+        switch (true) {
+            case path.startsWith('/script'): {
+                const savedId = localStorage.getItem('admin-carwash-id');
+                if (savedId) {
+                    navigate(`/admin/carwash/${savedId}`);
+                } else {
+                    navigate('/admin');
+                }
+                break;
+            }
+
+            default:
+                navigate(-1);
+                break;
+        }
+    };
+
     return (
         <div className="primary-px primary-py">
             <header className="flex items-center justify-between mb-6 sm:mb-10 xl:mb-12">
                 <div className="w-15 md:w-50">
-                    <DarkBtn onClick={() => navigate(-1)} className="mr-auto">
+                    <DarkBtn onClick={handleBackClick} className="mr-auto">
                         <ArrowBigLeft className="size-4 text-white" />
                         <span className="hidden md:block text-sm ml-1 mr-2">
                             Вернуться назад
@@ -40,7 +63,9 @@ export default function ScriptLayout() {
                 <div className="w-15 md:w-50" aria-hidden={true}></div>
             </header>
             <section className="px-4 sm:px-8 sm:pb-9 xl:pb-8 xl:px-9 xl:pt-7 pt-5 pb-7 border border-border rounded-xl">
-                <div className="mb-8 text-lg sm:text-xl md:text-2xl md:mb-12">{scriptNamesMap[parsedId]}</div>
+                <div className="mb-8 text-lg sm:text-xl md:text-2xl md:mb-12">
+                    {scriptNamesMap[parsedId]}
+                </div>
                 <div className="mb-4">
                     <nav className="flex items-center flex-col gap-3 xs:flex-row xs:gap-0">
                         <AccountNavLink
