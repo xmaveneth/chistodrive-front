@@ -1,14 +1,15 @@
 import SecondaryBtn from '@/components/atoms/secondary-btn';
 import ScriptCheckbox from '@/components/forms/script-checkbox';
+import ScriptCheckboxSkeleton from '@/components/molecules/scripts/script-checkbox-skeleton';
 import { useGetScriptVehicleTypes } from '@/lib/hooks/vehicles/use-get-script-vehicle-types';
 import { useUpdateScriptVehicleTypes } from '@/lib/hooks/vehicles/use-update-script-vehicle-types';
 import { useVehicleTypes } from '@/lib/hooks/vehicles/use-vehicle-types';
-import { range } from '@/lib/utils/range';
+
 import {
     createAllVehiclesArray,
     createSelectedVehiclesArray,
     generateSelectedVehicleIds,
-} from '@/lib/utils/script-vehicles';
+} from '@/lib/utils/sort-script-vehicles';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -59,7 +60,7 @@ export default function ScriptVehicles() {
     }
 
     if (isLoadingSelectedVehicles || isLoadingAllVehicles)
-        return <Skeleton />;
+        return <ScriptCheckboxSkeleton />;
     if (selectedVehiclesError || allVehiclesError)
         return <p>Произошла ошибка загрузки типов авто, попробуйте позже</p>;
 
@@ -85,21 +86,6 @@ export default function ScriptVehicles() {
             >
                 Сохранить
             </SecondaryBtn>
-        </div>
-    );
-}
-
-function Skeleton() {
-    return (
-        <div className="mt-6 md:mt-8 grid gap-3">
-            {range(1, 7).map((index) => (
-                <div
-                    key={`skeleton-${index}`}
-                    className="rounded-sm bg-gray-200 text-transparent animate-pulse w-max text-sm md:text-base"
-                >
-                    loading loading loading
-                </div>
-            ))}
         </div>
     );
 }

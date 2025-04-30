@@ -13,6 +13,7 @@ import { Transition } from '@headlessui/react';
 import useToggle from '@/lib/hooks/utils/use-toggle';
 import useMediaQuery from '@/lib/hooks/utils/use-media-query';
 import { cn } from '@/lib/utils';
+import { STORAGE_KEYS } from '@/lib/constants/storageKeys';
 
 export default function ScriptLayout() {
     const { data: isAdmin, isLoading } = useIsCurrentUserAdmin();
@@ -20,7 +21,7 @@ export default function ScriptLayout() {
         'script_names_map',
         {}
     );
-    const [showMenu, toggleShowMenu] = useToggle(true);
+    const [showMenu, toggleShowMenu] = useToggle(false);
     const isMobile = useMediaQuery('(max-width: 420px)');
     const navigate = useNavigate();
     const { id } = useParams();
@@ -37,7 +38,7 @@ export default function ScriptLayout() {
 
         switch (true) {
             case path.startsWith('/script'): {
-                const savedId = localStorage.getItem('admin-carwash-id');
+                const savedId = localStorage.getItem(STORAGE_KEYS.ADMIN_CARWASH_ID);
                 if (savedId) {
                     navigate(`/admin/carwash/${savedId}`);
                 } else {

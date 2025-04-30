@@ -12,6 +12,7 @@ import ErrorFallback from '@/components/organisms/shared/error-boundary';
 import { useIsCurrentUserAdmin } from '@/lib/hooks/auth/use-is-current-user-admin';
 import DarkBtn from '@/components/atoms/dark-btn';
 import { ArrowBigLeft } from 'lucide-react';
+import { STORAGE_KEYS } from '@/lib/constants/storageKeys';
 
 export default function AdminLayout() {
     const { data: isAdmin, isLoading } = useIsCurrentUserAdmin();
@@ -27,7 +28,7 @@ export default function AdminLayout() {
 
     if (location.pathname.startsWith('/admin/carwash')) {
         if (carwashId.id != null) {
-            localStorage.setItem('admin-carwash-id', carwashId.id);
+            localStorage.setItem(STORAGE_KEYS.ADMIN_CARWASH_ID, carwashId.id);
         }
     }
 
