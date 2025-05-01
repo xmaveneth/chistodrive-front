@@ -16,3 +16,14 @@ export type Worker = {
 export type WorkersResponse = {
     data: Worker[];
 };
+
+export type WorkerAssignment = {
+    assignment_id: number;
+    script_worker_id: number;
+    script_box_id: number;
+    script_box_name: string;
+};
+
+export type WorkerAssignmentsResponse = {
+    data: WorkerAssignment[];
+};
