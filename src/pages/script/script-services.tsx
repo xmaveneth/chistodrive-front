@@ -28,7 +28,7 @@ export default function ScriptServices() {
                         ? serviceCategory.services[0].service_params.length
                         : 0;
 
-                const columns = serviceParamsCount + 2;
+                const columns = serviceParamsCount + 1;
                 const columnClass = generateColumnClass(columns);
                 const tableWidth =
                     calculateTableWidth(columns) * (isMobile ? 0.65 : 1);
@@ -48,9 +48,6 @@ export default function ScriptServices() {
                         >
                             <div className="flex items-center justify-center md:text-lg">
                                 Название
-                            </div>
-                            <div className="flex items-center justify-center md:text-lg">
-                                Тип услуги
                             </div>
 
                             {serviceCategory.services.length > 0 &&
@@ -73,7 +70,6 @@ export default function ScriptServices() {
                                     columns={columnClass}
                                     width={tableWidth - 30}
                                     index={serviceIndex + 1}
-                                    serviceType={service.service_type_name}
                                     scriptName={service.service_name}
                                     onDelete={() => {}}
                                 >

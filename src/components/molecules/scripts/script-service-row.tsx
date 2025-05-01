@@ -2,7 +2,6 @@ import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/solid';
 
 type ScriptServiceRowProps = {
     scriptName: string;
-    serviceType: string;
     index: number;
     children: React.ReactNode;
     columns: string;
@@ -12,7 +11,6 @@ type ScriptServiceRowProps = {
 
 export default function ScriptServiceRow({
     scriptName,
-    serviceType,
     index,
     onDelete,
     children,
@@ -33,9 +31,6 @@ export default function ScriptServiceRow({
             </button>
             <div className="py-3 flex items-center justify-center">
                 {scriptName}
-            </div>
-            <div className="py-3 flex items-center justify-center">
-                {serviceType}
             </div>
             {children}
             <div className="py-3 flex items-center justify-center">

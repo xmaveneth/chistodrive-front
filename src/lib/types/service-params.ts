@@ -1,4 +1,5 @@
 export type ServiceParam = {
+    service_param_id: number;
     script_vehicle_type_id: number;
     vehicle_type_name: string;
     price: number;
@@ -6,9 +7,7 @@ export type ServiceParam = {
 };
 
 export type Service = {
-    service_type_id: number;
-    service_type_name: string;
-    service_id: number;
+    script_service_id: number;
     service_name: string;
     service_params: ServiceParam[];
 };
