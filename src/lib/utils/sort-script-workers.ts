@@ -1,0 +1,35 @@
+import { ScriptWorkersResponse, WorkersResponse } from '@/lib/types/workers';
+
+export function createAllWOrkersArray(rawWorkers: WorkersResponse | undefined) {
+    if (rawWorkers == null || rawWorkers.data == null) return [];
+
+    return rawWorkers.data.map((worker) => worker.full_name);
+}
+
+export function createSelectedWorkersArray(
+    rawWorkers: ScriptWorkersResponse | undefined
+) {
+    if (rawWorkers == null || rawWorkers.data == null) return [];
+
+    return rawWorkers.data.map((worker) => worker.full_name);
+}
+
+export function generateSelectedWorkerIds(
+    rawWorkers: WorkersResponse | undefined,
+    selectedWorkerNames: string[]
+) {
+    const result: number[] = [];
+    if (rawWorkers == null || rawWorkers.data == null) return result;
+
+    selectedWorkerNames.forEach((workerName) => {
+        const detectedWorker = rawWorkers.data.find(
+            (rawWorker) => rawWorker.full_name === workerName
+        );
+
+        if (detectedWorker != null) {
+            result.push(detectedWorker.id);
+        }
+    });
+
+    return result;
+}
