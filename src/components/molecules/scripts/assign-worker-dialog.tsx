@@ -43,7 +43,7 @@ export default function AssignWorkerDialog({
                         className="basis-2/3"
                         hasMargin={false}
                         onChange={(val) => setSelectedBoxId(val)}
-                        value={selectFieldBoxes[0]}
+                        value={selectFieldBoxes.find(box => box.id === selectedBoxId) || selectFieldBoxes[0]}
                         values={selectFieldBoxes}
                     />
                 )}

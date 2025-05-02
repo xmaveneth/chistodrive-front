@@ -106,6 +106,8 @@ export default function ScriptWorkers() {
     )
         return <p>Произошла ошибка загрузки сотрудников, попробуйте позже</p>;
 
+    console.log(assignedWorkers);
+
     return (
         <div className="mt-6 md:mt-8">
             <div className="grid gap-3">
