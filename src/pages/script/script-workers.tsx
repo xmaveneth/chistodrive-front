@@ -1,9 +1,11 @@
+import ScriptUnassignWorker from '@/components/atoms/script-unassign-worker';
 import SecondaryBtn from '@/components/atoms/secondary-btn';
 import ScriptCheckbox from '@/components/forms/script-checkbox';
 import DialogLayout from '@/components/layouts/dialog-layout';
 import AssignWorkerDialog from '@/components/molecules/scripts/assign-worker-dialog';
 import ScriptCheckboxSkeleton from '@/components/molecules/scripts/script-checkbox-skeleton';
 import { STORAGE_KEYS } from '@/lib/constants/storageKeys';
+import { mockWorkerAssignments } from '@/lib/data/workers';
 import { useCarWashBoxes } from '@/lib/hooks/boxes/use-carwash-boxes';
 import useToggle from '@/lib/hooks/utils/use-toggle';
 import { useAssignedScriptWorkers } from '@/lib/hooks/workers/use-assigned-script-workers';
@@ -13,6 +15,7 @@ import { useUpdateScriptWorkers } from '@/lib/hooks/workers/use-update-script-wo
 import { Worker } from '@/lib/types/workers';
 import {
     createAllWOrkersArray,
+    createScriptWorkerBoxList,
     createSelectedWorkersArray,
     generateSelectedWorkerIds,
 } from '@/lib/utils/sort-script-workers';
@@ -110,7 +113,7 @@ export default function ScriptWorkers() {
 
     return (
         <div className="mt-6 md:mt-8">
-            <div className="grid gap-3">
+            <div className="grid gap-x-3 gap-y-6">
                 {allWorkerNames?.map((workerName) => {
                     const isChecked = selectedWorkerNames.includes(workerName);
                     const isSelected =
@@ -119,27 +122,56 @@ export default function ScriptWorkers() {
                                 selectedWorker.full_name === workerName
                         ) || false;
 
+                    const worker = allWorkers?.data.find(
+                        (worker) => worker.full_name === workerName
+                    );
+
+                    const boxList = createScriptWorkerBoxList(
+                        mockWorkerAssignments,
+                        worker ? worker.id : undefined
+                    );
+
                     return (
                         <div
                             key={workerName}
-                            className="flex items-start xs:items-center justify-between gap-2 flex-col xs:flex-row"
+                            className="flex items-start xs:items-center justify-between gap-x-2 gap-y-3 flex-col xs:flex-row"
                         >
-                            <ScriptCheckbox
-                                name={workerName}
-                                onChange={() => handleChange(workerName)}
-                                onBlur={() => {}}
-                                key={workerName}
-                                isChecked={isChecked}
-                            >
-                                {workerName}
-                            </ScriptCheckbox>
+                            <div className="flex flex-wrap items-center gap-x-2 gap-y-3">
+                                <div className="min-w-66">
+                                    <ScriptCheckbox
+                                        name={workerName}
+                                        onChange={() =>
+                                            handleChange(workerName)
+                                        }
+                                        onBlur={() => {}}
+                                        key={workerName}
+                                        isChecked={isChecked}
+                                    >
+                                        {workerName}
+                                    </ScriptCheckbox>
+                                </div>
+
+                                {isSelected && (
+                                    <div className="flex items-center gap-x-2 gap-y-3 flex-wrap">
+                                        {boxList.map((boxItem) => (
+                                            <ScriptUnassignWorker
+                                                key={`${workerName}-${boxItem.assignmentId}`}
+                                                boxName={boxItem.boxName}
+                                                assignmentId={
+                                                    boxItem.assignmentId
+                                                }
+                                            />
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
 
                             {isSelected && (
                                 <button
                                     onClick={() =>
                                         handleDialogClick(workerName)
                                     }
-                                    className="cursor-pointer text-text-muted text-sm md:text-base hover:underline underline-offset-4"
+                                    className="cursor-pointer shrink-0 text-text-muted text-sm md:text-base hover:underline underline-offset-4"
                                 >
                                     Добавить в бокс
                                 </button>

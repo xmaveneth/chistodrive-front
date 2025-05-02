@@ -1,9 +1,14 @@
 import PrimaryBtn from '@/components/atoms/primary-btn';
+import ScriptBoxListGroup from '@/components/atoms/script-box-list-group';
 import SelectField from '@/components/forms/select-field';
+import { mockWorkerAssignments } from '@/lib/data/workers';
 import { useAssignScriptWorker } from '@/lib/hooks/workers/use-assign-script-worker';
 import { Box } from '@/lib/types/boxes';
 import { Worker } from '@/lib/types/workers';
-import { createSelectFieldBoxes } from '@/lib/utils/sort-script-workers';
+import {
+    createScriptWorkerBoxList,
+    createSelectFieldBoxes,
+} from '@/lib/utils/sort-script-workers';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -27,8 +32,16 @@ export default function AssignWorkerDialog({
     function handleClick() {
         if (selectedBoxId == null || currentWorker == null) return;
 
-        mutate({script_worker_id: currentWorker.id, script_box_id: selectedBoxId});
+        mutate({
+            script_worker_id: currentWorker.id,
+            script_box_id: selectedBoxId,
+        });
     }
+
+    const boxList = createScriptWorkerBoxList(
+        mockWorkerAssignments,
+        currentWorker?.id
+    );
 
     return (
         <div className="my-6">
@@ -36,20 +49,44 @@ export default function AssignWorkerDialog({
                 {currentWorker?.full_name}
             </div>
 
-            <div className="flex items-center w-full gap-2 text-sm mb-6">
-                <div className="text-white text-center basis-1/3">Бокс, №</div>
+            <div className="mb-6">
+                {boxList.map((boxItem, index) => (
+                    <ScriptBoxListGroup
+                        key={`box-item-${index}`}
+                        className="mb-4"
+                    >
+                        <div className="w-full basis-2/3 py-3 px-6 bg-input-bg rounded-full">
+                            {boxItem.boxName}
+                        </div>
+                    </ScriptBoxListGroup>
+                ))}
                 {selectFieldBoxes.length > 0 && (
-                    <SelectField
-                        className="basis-2/3"
-                        hasMargin={false}
-                        onChange={(val) => setSelectedBoxId(val)}
-                        value={selectFieldBoxes.find(box => box.id === selectedBoxId) || selectFieldBoxes[0]}
-                        values={selectFieldBoxes}
-                    />
+                    <ScriptBoxListGroup
+                        key={`box-item-select-field`}
+                        className="mb-4"
+                    >
+                        <SelectField
+                            className="basis-2/3"
+                            hasMargin={false}
+                            onChange={(val) => setSelectedBoxId(val)}
+                            value={
+                                selectFieldBoxes.find(
+                                    (box) => box.id === selectedBoxId
+                                ) || selectFieldBoxes[0]
+                            }
+                            values={selectFieldBoxes}
+                        />
+                    </ScriptBoxListGroup>
                 )}
             </div>
 
-            <PrimaryBtn disabled={isPending} onClick={handleClick} className="w-full mb-3">Добавить сотрудника</PrimaryBtn>
+            <PrimaryBtn
+                disabled={isPending}
+                onClick={handleClick}
+                className="w-full mb-3"
+            >
+                Добавить сотрудника
+            </PrimaryBtn>
 
             <PrimaryBtn
                 type="button"

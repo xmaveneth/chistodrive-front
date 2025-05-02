@@ -1,5 +1,9 @@
 import { Box } from '@/lib/types/boxes';
-import { ScriptWorkersResponse, WorkersResponse } from '@/lib/types/workers';
+import {
+    ScriptWorkersResponse,
+    WorkerAssignmentsResponse,
+    WorkersResponse,
+} from '@/lib/types/workers';
 
 export function createAllWOrkersArray(rawWorkers: WorkersResponse | undefined) {
     if (rawWorkers == null || rawWorkers.data == null) return [];
@@ -42,4 +46,20 @@ export function createSelectFieldBoxes(allBoxes: Box[]) {
             id: box.id,
         };
     });
+}
+
+export function createScriptWorkerBoxList(
+    data: WorkerAssignmentsResponse,
+    workerId: number | undefined
+) {
+    if (data == null || data.data == null || workerId == null) return [];
+
+    return data.data
+        .filter((assigment) => assigment.script_worker_id === workerId)
+        .map((workerAssigment) => {
+            return {
+                boxName: workerAssigment.script_box_name,
+                assignmentId: workerAssigment.assignment_id,
+            };
+        });
 }
