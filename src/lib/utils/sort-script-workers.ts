@@ -1,3 +1,4 @@
+import { Box } from '@/lib/types/boxes';
 import { ScriptWorkersResponse, WorkersResponse } from '@/lib/types/workers';
 
 export function createAllWOrkersArray(rawWorkers: WorkersResponse | undefined) {
@@ -32,4 +33,13 @@ export function generateSelectedWorkerIds(
     });
 
     return result;
+}
+
+export function createSelectFieldBoxes(allBoxes: Box[]) {
+    return allBoxes.map((box) => {
+        return {
+            label: box.name,
+            id: box.id,
+        };
+    });
 }

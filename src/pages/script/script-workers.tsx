@@ -4,7 +4,9 @@ import DialogLayout from '@/components/layouts/dialog-layout';
 import AssignWorkerDialog from '@/components/molecules/scripts/assign-worker-dialog';
 import ScriptCheckboxSkeleton from '@/components/molecules/scripts/script-checkbox-skeleton';
 import { STORAGE_KEYS } from '@/lib/constants/storageKeys';
+import { useCarWashBoxes } from '@/lib/hooks/boxes/use-carwash-boxes';
 import useToggle from '@/lib/hooks/utils/use-toggle';
+import { useAssignedScriptWorkers } from '@/lib/hooks/workers/use-assigned-script-workers';
 import { useCarWashWorkers } from '@/lib/hooks/workers/use-carwash-workers';
 import { useScriptWorkers } from '@/lib/hooks/workers/use-script-workers';
 import { useUpdateScriptWorkers } from '@/lib/hooks/workers/use-update-script-workers';
@@ -38,6 +40,16 @@ export default function ScriptWorkers() {
         isLoading: isLoadingAllWorkers,
         error: allWorkersError,
     } = useCarWashWorkers(Number(currentCarwashId));
+    const {
+        data: allBoxes,
+        isLoading: isLoadingAllBoxes,
+        error: allBoxesError,
+    } = useCarWashBoxes(Number(currentCarwashId));
+    const {
+        data: assignedWorkers,
+        isLoading: isLoadingAssignedWorkers,
+        error: assignedWorkersError,
+    } = useAssignedScriptWorkers(Number(id));
 
     const [allWorkerNames, setAllWorkerNames] = useState(
         createAllWOrkersArray(allWorkers)
@@ -79,9 +91,19 @@ export default function ScriptWorkers() {
         toggleShowAddModal(true);
     }
 
-    if (isLoadingSelectedWorkers || isLoadingAllWorkers)
+    if (
+        isLoadingSelectedWorkers ||
+        isLoadingAllWorkers ||
+        isLoadingAssignedWorkers ||
+        isLoadingAllBoxes
+    )
         return <ScriptCheckboxSkeleton />;
-    if (selectedWorkersError || allWorkersError)
+    if (
+        selectedWorkersError ||
+        allWorkersError ||
+        assignedWorkersError ||
+        allBoxesError
+    )
         return <p>Произошла ошибка загрузки сотрудников, попробуйте позже</p>;
 
     return (
@@ -96,7 +118,10 @@ export default function ScriptWorkers() {
                         ) || false;
 
                     return (
-                        <div className="flex items-start xs:items-center justify-between gap-2 flex-col xs:flex-row">
+                        <div
+                            key={workerName}
+                            className="flex items-start xs:items-center justify-between gap-2 flex-col xs:flex-row"
+                        >
                             <ScriptCheckbox
                                 name={workerName}
                                 onChange={() => handleChange(workerName)}
@@ -136,6 +161,7 @@ export default function ScriptWorkers() {
                 closeDialog={() => toggleShowAddModal(false)}
             >
                 <AssignWorkerDialog
+                    allBoxes={allBoxes?.data || []}
                     currentWorker={currentWorker}
                     closeDialog={() => toggleShowAddModal(false)}
                 />
