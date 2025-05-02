@@ -7,12 +7,14 @@ type ScriptServiceRowProps = {
     columns: string;
     width: number;
     onDelete: () => void;
+    onEdit: () => void;
 };
 
 export default function ScriptServiceRow({
     scriptName,
     index,
     onDelete,
+    onEdit,
     children,
     columns,
     width,
@@ -25,7 +27,7 @@ export default function ScriptServiceRow({
                 width: `${width}px`,
             }}
         >
-            <button className="py-3 cursor-pointer sticky left-0 z-10 flex items-center gap-2 justify-center bg-background text-btn-bg">
+            <button onClick={onEdit} className="py-3 cursor-pointer sticky left-0 z-10 flex items-center gap-2 justify-center bg-background text-btn-bg">
                 <PencilSquareIcon className="size-4" />
                 {index}
             </button>

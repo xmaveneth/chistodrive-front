@@ -1,5 +1,8 @@
 import { ScriptsResponse } from '@/lib/types/scripts';
-import { ServiceCategoriesResponse } from '@/lib/types/service-params';
+import {
+    ServiceCategoriesResponse,
+    UpdateServiceParamsRequest,
+} from '@/lib/types/service-params';
 import { axiosInstance } from '@/services/api/axios-instance';
 
 export async function fetchScripts(
@@ -61,6 +64,44 @@ export async function getScriptServiceParams(
 ): Promise<ServiceCategoriesResponse> {
     const response = await axiosInstance.get<ServiceCategoriesResponse>(
         `/api/script/${script_id}/service_params`
+    );
+    return response.data;
+}
+
+export async function updateScriptServiceParams(
+    script_id: number,
+    data: UpdateServiceParamsRequest
+): Promise<string> {
+    const response = await axiosInstance.patch<string>(
+        `/api/script/${script_id}/service_params`,
+        data
+    );
+    return response.data;
+}
+
+export async function deleteScriptService(
+    script_id: number,
+    script_service_id: number
+): Promise<string> {
+    const response = await axiosInstance.delete<string>(
+        `/api/script/${script_id}/services`,
+        {
+            params: { script_service_id },
+        }
+    );
+    return response.data;
+}
+
+export async function addScriptService(
+    script_id: number,
+    service_id: number
+): Promise<string> {
+    const response = await axiosInstance.post<string>(
+        `/api/script/${script_id}/service`,
+        null, 
+        {
+            params: { service_id },
+        }
     );
     return response.data;
 }

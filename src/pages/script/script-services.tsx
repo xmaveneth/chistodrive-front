@@ -1,19 +1,30 @@
 import ScriptTableHeadItem from '@/components/atoms/script-table-head-item';
+import DialogLayout from '@/components/layouts/dialog-layout';
+import EditServiceParamDialog from '@/components/molecules/scripts/edit-service-param-dialog';
 import ScriptServiceRow from '@/components/molecules/scripts/script-service-row';
 import ScriptTableHead from '@/components/molecules/scripts/script-table-head';
 import { useGetScriptServiceParams } from '@/lib/hooks/scripts/use-get-script-service-params';
 import useMediaQuery from '@/lib/hooks/utils/use-media-query';
+import { Service, ServiceParam } from '@/lib/types/service-params';
 import {
     calculateTableWidth,
     generateColumnClass,
 } from '@/lib/utils/generate-column-class';
 import { range } from '@/lib/utils/range';
+import { useState } from 'react';
 import { useParams } from 'react-router-dom';
+
+export type ScriptService = {
+    script_service: Service;
+    vehicles: ServiceParam[];
+};
 
 export default function ScriptServices() {
     const { id } = useParams<{ id: string }>();
     const { data, isLoading } = useGetScriptServiceParams(Number(id));
     const isMobile = useMediaQuery('(max-width: 640px)');
+    const [selectedScriptService, setSelectedScriptService] =
+        useState<ScriptService | null>(null);
 
     if (isLoading) return <Skeleton />;
 
@@ -72,6 +83,12 @@ export default function ScriptServices() {
                                     index={serviceIndex + 1}
                                     scriptName={service.service_name}
                                     onDelete={() => {}}
+                                    onEdit={() =>
+                                        setSelectedScriptService({
+                                            script_service: service,
+                                            vehicles: service.service_params,
+                                        })
+                                    }
                                 >
                                     {service.service_params.map(
                                         (parameter, parameterIndex) => (
@@ -94,6 +111,17 @@ export default function ScriptServices() {
                     </div>
                 );
             })}
+
+            <DialogLayout
+                isOpen={selectedScriptService != null}
+                title="Редактировать услугу"
+                closeDialog={() => setSelectedScriptService(null)}
+            >
+                <EditServiceParamDialog
+                    closeDialog={() => setSelectedScriptService(null)}
+                    selectedScriptService={selectedScriptService || null}
+                />
+            </DialogLayout>
         </div>
     );
 }

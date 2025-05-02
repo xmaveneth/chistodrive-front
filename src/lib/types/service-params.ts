@@ -21,3 +21,15 @@ export type ServiceCategory = {
 export type ServiceCategoriesResponse = {
     data: ServiceCategory[];
 };
+
+export type ServiceParamUpdate = {
+    service_param_id: number;
+    script_vehicle_type_id: number;
+    price: number | null;
+    duration: number | null;
+};
+
+export type UpdateServiceParamsRequest = {
+    script_service_id: number;
+    service_params: ServiceParamUpdate[];
+};
