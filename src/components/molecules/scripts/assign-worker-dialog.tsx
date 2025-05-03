@@ -1,12 +1,10 @@
 import PrimaryBtn from '@/components/atoms/primary-btn';
 import ScriptBoxListGroup from '@/components/atoms/script-box-list-group';
 import SelectField from '@/components/forms/select-field';
-import { mockWorkerAssignments } from '@/lib/data/workers';
 import { useAssignScriptWorker } from '@/lib/hooks/workers/use-assign-script-worker';
-import { Box } from '@/lib/types/boxes';
-import { Worker } from '@/lib/types/workers';
+import { BoxListType, ScriptBox } from '@/lib/types/boxes';
+import { ScriptWorker } from '@/lib/types/workers';
 import {
-    createScriptWorkerBoxList,
     createSelectFieldBoxes,
 } from '@/lib/utils/sort-script-workers';
 import { useState } from 'react';
@@ -14,34 +12,31 @@ import { useParams } from 'react-router-dom';
 
 type AssignWorkerDialogProps = {
     closeDialog: () => void;
-    currentWorker: Worker | null;
-    allBoxes: Box[];
+    currentWorker: ScriptWorker | null;
+    allBoxes: ScriptBox[];
+    boxList: BoxListType
 };
 export default function AssignWorkerDialog({
     currentWorker,
     closeDialog,
     allBoxes,
+    boxList
 }: AssignWorkerDialogProps) {
     const { id } = useParams<{ id: string }>();
-    const selectFieldBoxes = createSelectFieldBoxes(allBoxes);
+    const selectFieldBoxes = createSelectFieldBoxes(allBoxes, boxList);
     const [selectedBoxId, setSelectedBoxId] = useState(
         selectFieldBoxes.length > 0 ? selectFieldBoxes[0].id : null
     );
-    const { mutate, isPending } = useAssignScriptWorker(Number(id));
+    const { mutate, isPending } = useAssignScriptWorker(Number(id), closeDialog);
 
     function handleClick() {
         if (selectedBoxId == null || currentWorker == null) return;
 
         mutate({
-            script_worker_id: currentWorker.id,
+            script_worker_id: currentWorker.script_worker_id,
             script_box_id: selectedBoxId,
         });
     }
-
-    const boxList = createScriptWorkerBoxList(
-        mockWorkerAssignments,
-        currentWorker?.id
-    );
 
     return (
         <div className="my-6">

@@ -16,3 +16,8 @@ export type ScriptBox = {
 export type ScriptBoxesResponse = {
     data: ScriptBox[];
 };
+
+export type BoxListType = {
+    boxName: string;
+    assignmentId: number;
+}[];

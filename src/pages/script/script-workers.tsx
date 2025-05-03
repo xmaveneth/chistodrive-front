@@ -5,14 +5,13 @@ import DialogLayout from '@/components/layouts/dialog-layout';
 import AssignWorkerDialog from '@/components/molecules/scripts/assign-worker-dialog';
 import ScriptCheckboxSkeleton from '@/components/molecules/scripts/script-checkbox-skeleton';
 import { STORAGE_KEYS } from '@/lib/constants/storageKeys';
-import { mockWorkerAssignments } from '@/lib/data/workers';
-import { useCarWashBoxes } from '@/lib/hooks/boxes/use-carwash-boxes';
+import { useScriptBoxes } from '@/lib/hooks/boxes/use-script-boxes';
 import useToggle from '@/lib/hooks/utils/use-toggle';
 import { useAssignedScriptWorkers } from '@/lib/hooks/workers/use-assigned-script-workers';
 import { useCarWashWorkers } from '@/lib/hooks/workers/use-carwash-workers';
 import { useScriptWorkers } from '@/lib/hooks/workers/use-script-workers';
 import { useUpdateScriptWorkers } from '@/lib/hooks/workers/use-update-script-workers';
-import { Worker } from '@/lib/types/workers';
+import { ScriptWorker } from '@/lib/types/workers';
 import {
     createAllWOrkersArray,
     createScriptWorkerBoxList,
@@ -27,7 +26,9 @@ export default function ScriptWorkers() {
     const { mutate: updateBoxes } = useUpdateScriptWorkers(Number(id));
 
     const [showAddModal, toggleShowAddModal] = useToggle(false);
-    const [currentWorker, setCurrentWorker] = useState<Worker | null>(null);
+    const [currentWorker, setCurrentWorker] = useState<ScriptWorker | null>(
+        null
+    );
 
     const currentCarwashId = localStorage.getItem(
         STORAGE_KEYS.ADMIN_CARWASH_ID
@@ -47,7 +48,7 @@ export default function ScriptWorkers() {
         data: allBoxes,
         isLoading: isLoadingAllBoxes,
         error: allBoxesError,
-    } = useCarWashBoxes(Number(currentCarwashId));
+    } = useScriptBoxes(Number(id));
     const {
         data: assignedWorkers,
         isLoading: isLoadingAssignedWorkers,
@@ -84,9 +85,9 @@ export default function ScriptWorkers() {
     }
 
     function handleDialogClick(workerName: string) {
-        if (allWorkers == null || allWorkers.data == null) return;
+        if (selectedWorkers == null || selectedWorkers.data == null) return;
 
-        const currentWorker = allWorkers.data.find(
+        const currentWorker = selectedWorkers.data.find(
             (worker) => worker.full_name === workerName
         );
 
@@ -109,8 +110,6 @@ export default function ScriptWorkers() {
     )
         return <p>Произошла ошибка загрузки сотрудников, попробуйте позже</p>;
 
-    console.log(assignedWorkers);
-
     return (
         <div className="mt-6 md:mt-8">
             <div className="grid gap-x-3 gap-y-6">
@@ -122,13 +121,13 @@ export default function ScriptWorkers() {
                                 selectedWorker.full_name === workerName
                         ) || false;
 
-                    const worker = allWorkers?.data.find(
+                    const worker = selectedWorkers?.data.find(
                         (worker) => worker.full_name === workerName
                     );
 
                     const boxList = createScriptWorkerBoxList(
-                        mockWorkerAssignments,
-                        worker ? worker.id : undefined
+                        assignedWorkers,
+                        worker ? worker.script_worker_id : undefined
                     );
 
                     return (
@@ -198,6 +197,12 @@ export default function ScriptWorkers() {
                     allBoxes={allBoxes?.data || []}
                     currentWorker={currentWorker}
                     closeDialog={() => toggleShowAddModal(false)}
+                    boxList={createScriptWorkerBoxList(
+                        assignedWorkers,
+                        currentWorker
+                            ? currentWorker.script_worker_id
+                            : undefined
+                    )}
                 />
             </DialogLayout>
         </div>

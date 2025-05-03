@@ -4,7 +4,7 @@ import { assignScriptWorker } from '@/services/api/workers';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 
-export function useAssignScriptWorker(script_id: number) {
+export function useAssignScriptWorker(script_id: number, closeModal: () => void) {
     const queryClient = useQueryClient();
 
     return useMutation({
@@ -18,9 +18,10 @@ export function useAssignScriptWorker(script_id: number) {
 
         onSuccess: () => {
             notify('Сотрудник успешно привязан к боксу!');
-            queryClient.invalidateQueries({
-                queryKey: [QUERY_KEYS.SCRIPT_WORKERS, script_id],
-            });
+            closeModal();
+            queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.SCRIPT_WORKERS, script_id] });
+            queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ASSIGNED_WORKERS, script_id] });
+            queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CAR_WASH_WORKERS, script_id] });
         },
 
         onError: (error: unknown) => {

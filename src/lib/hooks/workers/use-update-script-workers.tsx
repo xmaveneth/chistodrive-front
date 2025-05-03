@@ -12,9 +12,9 @@ export function useUpdateScriptWorkers(script_id: number) {
             updateScriptWorkers(script_id, workerIds),
         onSuccess: () => {
             notify('Сотрудники успешно обновлены!');
-            queryClient.invalidateQueries({
-                queryKey: [QUERY_KEYS.SCRIPT_WORKERS, script_id],
-            });
+            queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.SCRIPT_WORKERS, script_id] });
+            queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ASSIGNED_WORKERS, script_id] });
+            queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CAR_WASH_WORKERS, script_id] });
         },
         onError: (error: unknown) => {
             if (error instanceof AxiosError && error.response) {

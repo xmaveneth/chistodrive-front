@@ -1,4 +1,4 @@
-import { Box } from '@/lib/types/boxes';
+import { BoxListType, ScriptBox } from '@/lib/types/boxes';
 import {
     ScriptWorkersResponse,
     WorkerAssignmentsResponse,
@@ -39,17 +39,24 @@ export function generateSelectedWorkerIds(
     return result;
 }
 
-export function createSelectFieldBoxes(allBoxes: Box[]) {
-    return allBoxes.map((box) => {
-        return {
-            label: box.name,
-            id: box.id,
-        };
-    });
+export function createSelectFieldBoxes(
+    allBoxes: ScriptBox[],
+    boxList: BoxListType
+) {
+    return allBoxes
+        .filter((box) =>
+            boxList.every((boxListItem) => boxListItem.boxName !== box.name)
+        )
+        .map((box) => {
+            return {
+                label: box.name,
+                id: box.script_box_id,
+            };
+        });
 }
 
 export function createScriptWorkerBoxList(
-    data: WorkerAssignmentsResponse,
+    data: WorkerAssignmentsResponse | undefined,
     workerId: number | undefined
 ) {
     if (data == null || data.data == null || workerId == null) return [];

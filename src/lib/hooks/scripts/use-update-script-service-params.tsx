@@ -5,7 +5,7 @@ import { updateScriptServiceParams } from '@/services/api/scripts';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 
-export function useUpdateScriptServiceParams(script_id: number) {
+export function useUpdateScriptServiceParams(script_id: number, closeModal: () => void) {
     const queryClient = useQueryClient();
 
     return useMutation({
@@ -14,6 +14,7 @@ export function useUpdateScriptServiceParams(script_id: number) {
 
         onSuccess: () => {
             notify('Параметры услуги успешно обновлены!');
+            closeModal();
             queryClient.invalidateQueries({
                 queryKey: [QUERY_KEYS.SCRIPT_SERVICE_PARAMS, script_id],
             });

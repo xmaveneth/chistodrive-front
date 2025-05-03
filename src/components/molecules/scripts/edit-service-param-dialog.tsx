@@ -35,7 +35,7 @@ export default function EditServiceParamDialog({
         })) ?? []
     );
     const { id } = useParams();
-    const { mutate, isPending } = useUpdateScriptServiceParams(Number(id));
+    const { mutate, isPending } = useUpdateScriptServiceParams(Number(id), closeDialog);
 
     const validate = (v: FormVehicle) => {
         const errors: { price?: string; duration?: string } = {};
@@ -98,6 +98,10 @@ export default function EditServiceParamDialog({
             price: v.price.trim() === '' ? null : Number(v.price),
             duration: v.duration.trim() === '' ? null : Number(v.duration),
         }));
+
+        console.log('serviceParamId: ', serviceParamId);
+        console.table(payload);
+
 
         mutate({ script_service_id: serviceParamId, service_params: payload });
     };

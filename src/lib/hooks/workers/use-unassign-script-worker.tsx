@@ -13,9 +13,9 @@ export function useUnassignScriptWorker(script_id: number) {
 
         onSuccess: () => {
             notify('Сотрудник успешно отвязан от бокса!');
-            queryClient.invalidateQueries({
-                queryKey: [QUERY_KEYS.SCRIPT_WORKERS, script_id],
-            });
+            queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.SCRIPT_WORKERS, script_id] });
+            queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ASSIGNED_WORKERS, script_id] });
+            queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CAR_WASH_WORKERS, script_id] });
         },
 
         onError: (error: unknown) => {
