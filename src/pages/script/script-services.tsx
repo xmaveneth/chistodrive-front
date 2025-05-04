@@ -1,7 +1,8 @@
 import AccountAddBtn from '@/components/atoms/account-add-btn';
 import ScriptTableHeadItem from '@/components/atoms/script-table-head-item';
 import DialogLayout from '@/components/layouts/dialog-layout';
-import AddServiceParamDialog from '@/components/molecules/scripts/add-service-params-dialog';
+import AddServiceParamDialog from '@/components/molecules/scripts/add-service-param-dialog';
+import DeleteServiceParamDialog from '@/components/molecules/scripts/delete-service-param-dialog';
 import EditServiceParamDialog from '@/components/molecules/scripts/edit-service-param-dialog';
 import ScriptServiceRow from '@/components/molecules/scripts/script-service-row';
 import ScriptTableHead from '@/components/molecules/scripts/script-table-head';
@@ -34,6 +35,9 @@ export default function ScriptServices() {
 
     const [selectedServiceCategory, setSelectedServiceCategory] =
         useState<ServiceCategory | null>(null);
+
+    const [deleteScriptService, setDeleteScriptService] =
+        useState<Service | null>(null);
 
     if (isLoading) return <Skeleton />;
 
@@ -91,7 +95,7 @@ export default function ScriptServices() {
                                     width={tableWidth - 30}
                                     index={serviceIndex + 1}
                                     scriptName={service.service_name}
-                                    onDelete={() => {}}
+                                    onDelete={() => setDeleteScriptService(service)}
                                     onEdit={() =>
                                         setSelectedScriptService({
                                             script_service: service,
@@ -106,10 +110,14 @@ export default function ScriptServices() {
                                                 className="flex divide-x-1 divide-white/20"
                                             >
                                                 <div className="flex-1 flex items-center justify-center">
-                                                    {parameter.price != null ? `${parameter.price} ₽` : ''}
+                                                    {parameter.price != null
+                                                        ? `${parameter.price} ₽`
+                                                        : ''}
                                                 </div>
                                                 <div className="flex-1 flex items-center justify-center">
-                                                    {parameter.duration != null ? `${parameter.duration} мин` : ''}
+                                                    {parameter.duration != null
+                                                        ? `${parameter.duration} мин`
+                                                        : ''}
                                                 </div>
                                             </div>
                                         )
@@ -120,7 +128,9 @@ export default function ScriptServices() {
 
                         <div className="py-3 mt-1 w-188 sm:w-290">
                             <AccountAddBtn
-                                onClick={() => setSelectedServiceCategory(serviceCategory)}
+                                onClick={() =>
+                                    setSelectedServiceCategory(serviceCategory)
+                                }
                                 className="sticky left-40 sm:left-52 mx-0 z-20"
                             />
                         </div>
@@ -149,6 +159,18 @@ export default function ScriptServices() {
                 <AddServiceParamDialog
                     closeDialog={() => setSelectedServiceCategory(null)}
                     selectedServiceCategory={selectedServiceCategory || null}
+                />
+            </DialogLayout>
+
+            <DialogLayout
+                isOpen={deleteScriptService != null}
+                title="Удаление услуги"
+                description="Вы уверены что хотите удалить данную услугу?"
+                closeDialog={() => setDeleteScriptService(null)}
+            >
+                <DeleteServiceParamDialog
+                    closeDialog={() => setDeleteScriptService(null)}
+                    deleteScriptService={deleteScriptService || null}
                 />
             </DialogLayout>
         </div>
