@@ -1,3 +1,4 @@
+import { CarWashServicesResponse } from '@/lib/types/service-params';
 import {
     ScriptWorkersResponse,
     WorkerAssignmentsResponse,
@@ -34,6 +35,23 @@ export async function getCarWashWorkers(
     );
     return response.data;
 }
+
+export const getCarWashServices = async (
+    car_wash_id: number,
+    service_category_id?: number | null
+): Promise<CarWashServicesResponse> => {
+    const response = await axiosInstance.get<CarWashServicesResponse>(
+        `/api/car_wash/${car_wash_id}/services`,
+        {
+            params:
+                service_category_id != null
+                    ? { service_category_id }
+                    : undefined,
+        }
+    );
+
+    return response.data;
+};
 
 export async function assignScriptWorker(
     script_id: number,

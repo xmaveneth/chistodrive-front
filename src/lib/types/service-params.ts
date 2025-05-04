@@ -33,3 +33,15 @@ export type UpdateServiceParamsRequest = {
     script_service_id: number;
     service_params: ServiceParamUpdate[];
 };
+
+export interface CarWashService {
+    id: number;
+    name: string;
+    description: string;
+    service_type_id: number;
+    car_wash_id: number;
+}
+
+export interface CarWashServicesResponse {
+    data: CarWashService[];
+}
