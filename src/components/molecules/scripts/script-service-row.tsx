@@ -31,11 +31,11 @@ export default function ScriptServiceRow({
                 <PencilSquareIcon className="size-4" />
                 {index}
             </button>
-            <div className="py-3 flex items-center justify-center">
+            <div className="py-3 flex items-center justify-center sticky left-15 z-20 bg-background">
                 {scriptName}
             </div>
             {children}
-            <div className="py-3 flex items-center justify-center">
+            <div className="py-3 flex items-center justify-center sticky right-0 z-20 bg-background border-l border-white/20">
                 {' '}
                 <button onClick={onDelete} className="cursor-pointer">
                     <TrashIcon className="text-btn-bg size-4 mx-auto" />

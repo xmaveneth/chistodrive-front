@@ -47,7 +47,7 @@ export default function AddServiceParamDialog({
         carwashServices == null ||
         carwashServices.data == null;
 
-    if (isError) return  <div className="my-6">Произошла ошибка загрузки услуг, попробуйте позже</div>
+    if (isError) return  <div className="my-6 text-center text-balance">Произошла ошибка загрузки услуг, попробуйте позже</div>
 
     return (
         <div className="my-6">
