@@ -12,6 +12,7 @@ import {
     calculateTableWidth,
     generateColumnClass,
 } from '@/lib/utils/generate-column-class';
+import { pluralizeBox, pluralizeMaster } from '@/lib/utils/pluralizer';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -128,13 +129,17 @@ export default function ScriptIntervals() {
                                                                     {`${interval.start_time} - ${interval.end_time}`}
                                                                 </div>
                                                                 <div className="flex-1 flex items-center justify-center">
-                                                                    {`${interval.workers.length} мастера`}
+                                                                    {`${pluralizeMaster(
+                                                                        interval
+                                                                            .workers
+                                                                            .length
+                                                                    )}`}
                                                                 </div>
                                                                 <div className="flex-1 flex items-center justify-center">
                                                                     {`${interval.price} ₽`}
                                                                 </div>
                                                                 <div className="flex-1 flex items-center justify-center">
-                                                                    {`${interval.boxes.length} бокса`}
+                                                                    {`${pluralizeBox(interval.boxes.length)}`}
                                                                 </div>
                                                             </ScriptIntervalRow>
                                                         )
