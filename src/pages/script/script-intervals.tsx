@@ -2,11 +2,12 @@ import AccountAddBtn from '@/components/atoms/account-add-btn';
 import ScriptBtn from '@/components/atoms/script-btn';
 import DialogLayout from '@/components/layouts/dialog-layout';
 import AddIntervalDialog from '@/components/molecules/scripts/add-interval-dialog';
+import DeleteIntervalDialog from '@/components/molecules/scripts/delete-interval-dialog';
 import ScriptIntervalRow from '@/components/molecules/scripts/script-interval-row';
 import ScriptTableHead from '@/components/molecules/scripts/script-table-head';
 import { useScriptIntervals } from '@/lib/hooks/scripts/use-script-intervals';
 import useMediaQuery from '@/lib/hooks/utils/use-media-query';
-import { ServiceWithIntervals } from '@/lib/types/intervals';
+import { Interval, ServiceWithIntervals } from '@/lib/types/intervals';
 import {
     calculateTableWidth,
     generateColumnClass,
@@ -22,6 +23,10 @@ export default function ScriptIntervals() {
 
     const [selectServiceWithIntervals, setSelectServiceWithIntervals] =
         useState<ServiceWithIntervals | null>(null);
+
+    const [selectIntervalForDeletion, setSelectIntervalForDeletion] =
+        useState<Interval | null>(null);
+
     const vehicleIntervals =
         data?.intervals.map((vehicleInterval, idx) => ({
             vehicleName: vehicleInterval.vehicle_type_name,
@@ -112,7 +117,11 @@ export default function ScriptIntervals() {
                                                                     tableWidth -
                                                                     30
                                                                 }
-                                                                onDelete={() => {}}
+                                                                onDelete={() =>
+                                                                    setSelectIntervalForDeletion(
+                                                                        interval
+                                                                    )
+                                                                }
                                                                 onEdit={() => {}}
                                                             >
                                                                 <div className="flex-1 flex items-center justify-center">
@@ -133,7 +142,11 @@ export default function ScriptIntervals() {
                                                 </div>
                                                 <div className="py-3 mt-1 w-188 sm:w-290">
                                                     <AccountAddBtn
-                                                        onClick={() => setSelectServiceWithIntervals(service)}
+                                                        onClick={() =>
+                                                            setSelectServiceWithIntervals(
+                                                                service
+                                                            )
+                                                        }
                                                         className="sticky left-40 sm:left-52 mx-0 z-20 ml-40"
                                                     />
                                                 </div>
@@ -154,7 +167,23 @@ export default function ScriptIntervals() {
             >
                 <AddIntervalDialog
                     closeDialog={() => setSelectServiceWithIntervals(null)}
-                    selectServiceWithIntervals={selectServiceWithIntervals || null}
+                    selectServiceWithIntervals={
+                        selectServiceWithIntervals || null
+                    }
+                />
+            </DialogLayout>
+
+            <DialogLayout
+                isOpen={selectIntervalForDeletion != null}
+                title="Удалить интервал"
+                description={`Вы уверены что хотите удалить интервал с ${selectIntervalForDeletion?.start_time} по ${selectIntervalForDeletion?.end_time}?`}
+                closeDialog={() => setSelectIntervalForDeletion(null)}
+            >
+                <DeleteIntervalDialog
+                    closeDialog={() => setSelectIntervalForDeletion(null)}
+                    selectIntervalForDeletion={
+                        selectIntervalForDeletion || null
+                    }
                 />
             </DialogLayout>
         </div>
