@@ -36,6 +36,7 @@ export type SelectValues = {
 export type ScriptWorker = {
     script_worker_id: number;
     worker_name: string;
+    prio_num: number;
 };
 
 export type ScriptBox = {

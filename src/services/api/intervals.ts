@@ -10,3 +10,33 @@ export const getScriptIntervals = async (
 
     return response.data;
 };
+
+export const createScriptInterval = async (
+    script_id: number,
+    service_param_id: number,
+    start_time: string,
+    end_time: string
+): Promise<string> => {
+    const response = await axiosInstance.post<string>(
+        `/api/script/${script_id}/intervals`,
+        {
+            service_param_id,
+            start_time,
+            end_time,
+        }
+    );
+
+    return response.data;
+};
+
+export const deleteScriptInterval = async (
+    script_id: number,
+    interval_id: number
+): Promise<string> => {
+    const response = await axiosInstance.delete<string>(
+        `/api/script/${script_id}/intervals`,
+        { params: { interval_id } }
+    );
+
+    return response.data;
+};
