@@ -18,11 +18,9 @@ export default function AddressMap() {
 
     const addresses = convertToAddresses(servicesData?.data);
 
-    if (addresses.length === 0) return null;
-
     return (
         <MapContainer
-            center={[addresses[0].lat, addresses[0].lng]}
+            center={addresses.length > 0 ? [addresses[0].lat, addresses[0].lng] : [55.751244, 37.618423]}
             zoom={12}
             scrollWheelZoom={true}
             style={{ height: '500px', width: '100%', zIndex: '0' }}
