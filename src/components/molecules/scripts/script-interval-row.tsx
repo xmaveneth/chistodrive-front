@@ -1,8 +1,6 @@
 import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/solid';
 
-type ScriptServiceRowProps = {
-    scriptName: string;
-    index: number;
+type ScriptIntervalRowProps = {
     children: React.ReactNode;
     columns: string;
     width: number;
@@ -10,15 +8,13 @@ type ScriptServiceRowProps = {
     onEdit: () => void;
 };
 
-export default function ScriptServiceRow({
-    scriptName,
-    index,
+export default function ScriptIntervalRow({
     onDelete,
     onEdit,
     children,
     columns,
     width,
-}: ScriptServiceRowProps) {
+}: ScriptIntervalRowProps) {
     return (
         <div
             className="text-center grid divide-x-1 mx-4 divide-white/20 border-y border-white/20 text-sm md:text-base"
@@ -29,11 +25,7 @@ export default function ScriptServiceRow({
         >
             <button onClick={onEdit} className="py-3 cursor-pointer sticky left-0 z-10 flex items-center gap-2 justify-center bg-background text-btn-bg">
                 <PencilSquareIcon className="size-4" />
-                {index}
             </button>
-            <div className="py-3 flex items-center justify-center">
-                {scriptName}
-            </div>
             {children}
             <div className="py-3 flex items-center justify-center border-l border-white/20">
                 {' '}

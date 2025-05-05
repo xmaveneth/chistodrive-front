@@ -70,7 +70,7 @@ export default function ScriptServices() {
                             columns={columnClass}
                             width={tableWidth}
                         >
-                            <div className="flex items-center justify-center md:text-lg sticky left-15 z-20 bg-light-bg">
+                            <div className="flex items-center justify-center md:text-lg">
                                 Название
                             </div>
 
