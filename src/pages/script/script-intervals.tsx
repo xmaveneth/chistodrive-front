@@ -1,9 +1,12 @@
 import AccountAddBtn from '@/components/atoms/account-add-btn';
 import ScriptBtn from '@/components/atoms/script-btn';
+import DialogLayout from '@/components/layouts/dialog-layout';
+import AddIntervalDialog from '@/components/molecules/scripts/add-interval-dialog';
 import ScriptIntervalRow from '@/components/molecules/scripts/script-interval-row';
 import ScriptTableHead from '@/components/molecules/scripts/script-table-head';
 import { useScriptIntervals } from '@/lib/hooks/scripts/use-script-intervals';
 import useMediaQuery from '@/lib/hooks/utils/use-media-query';
+import { ServiceWithIntervals } from '@/lib/types/intervals';
 import {
     calculateTableWidth,
     generateColumnClass,
@@ -16,6 +19,9 @@ export default function ScriptIntervals() {
     const { data, isLoading } = useScriptIntervals(Number(id));
     const isMobile = useMediaQuery('(max-width: 640px)');
     const [currentVehicleInterval, setCurrentVehicleInterval] = useState(0);
+
+    const [selectServiceWithIntervals, setSelectServiceWithIntervals] =
+        useState<ServiceWithIntervals | null>(null);
     const vehicleIntervals =
         data?.intervals.map((vehicleInterval, idx) => ({
             vehicleName: vehicleInterval.vehicle_type_name,
@@ -32,9 +38,11 @@ export default function ScriptIntervals() {
                 {vehicleIntervals.map((interval, vehicleIntervalIdx) => (
                     <ScriptBtn
                         key={`vehicle-interval-btn-${vehicleIntervalIdx}`}
-                        onClick={() => setCurrentVehicleInterval(vehicleIntervalIdx)}
+                        onClick={() =>
+                            setCurrentVehicleInterval(vehicleIntervalIdx)
+                        }
                         isAcitve={currentVehicleInterval === vehicleIntervalIdx}
-                        className='text-sm md:text-base'
+                        className="text-sm md:text-base"
                     >
                         {interval.vehicleName}
                     </ScriptBtn>
@@ -125,7 +133,7 @@ export default function ScriptIntervals() {
                                                 </div>
                                                 <div className="py-3 mt-1 w-188 sm:w-290">
                                                     <AccountAddBtn
-                                                        onClick={() => {}}
+                                                        onClick={() => setSelectServiceWithIntervals(service)}
                                                         className="sticky left-40 sm:left-52 mx-0 z-20 ml-40"
                                                     />
                                                 </div>
@@ -137,6 +145,18 @@ export default function ScriptIntervals() {
                         }
                     )}
             </div>
+
+            <DialogLayout
+                isOpen={selectServiceWithIntervals != null}
+                title="Добавить интервал"
+                description="Заполните форму, чтобы добавить интервал"
+                closeDialog={() => setSelectServiceWithIntervals(null)}
+            >
+                <AddIntervalDialog
+                    closeDialog={() => setSelectServiceWithIntervals(null)}
+                    selectServiceWithIntervals={selectServiceWithIntervals || null}
+                />
+            </DialogLayout>
         </div>
     );
 }
