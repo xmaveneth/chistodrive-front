@@ -8,6 +8,7 @@ import ScriptTableHead from '@/components/molecules/scripts/script-table-head';
 import { useScriptIntervals } from '@/lib/hooks/scripts/use-script-intervals';
 import useMediaQuery from '@/lib/hooks/utils/use-media-query';
 import { Interval, ServiceWithIntervals } from '@/lib/types/intervals';
+import { formatTimeToHHMM } from '@/lib/utils/format-date';
 import {
     calculateTableWidth,
     generateColumnClass,
@@ -58,14 +59,8 @@ export default function ScriptIntervals() {
                 {data.intervals.length > 0 &&
                     data.intervals[currentVehicleInterval].interval_data.map(
                         (serviceInterval, serviceIntervalIdx) => {
-                            const serviceCount =
-                                serviceInterval.services.length;
-                            const serviceParamsCount =
-                                serviceCount > 0
-                                    ? serviceInterval.services[0].intervals
-                                          .length
-                                    : 0;
-                            const columns = serviceParamsCount + 1;
+                   
+                            const columns = 4;
                             const columnClass = generateColumnClass(columns);
                             const tableWidth =
                                 calculateTableWidth(columns) *
@@ -126,7 +121,7 @@ export default function ScriptIntervals() {
                                                                 onEdit={() => {}}
                                                             >
                                                                 <div className="flex-1 flex items-center justify-center">
-                                                                    {`${interval.start_time} - ${interval.end_time}`}
+                                                                    {`${formatTimeToHHMM(interval.start_time)} - ${formatTimeToHHMM(interval.end_time)}`}
                                                                 </div>
                                                                 <div className="flex-1 flex items-center justify-center">
                                                                     {`${pluralizeMaster(
