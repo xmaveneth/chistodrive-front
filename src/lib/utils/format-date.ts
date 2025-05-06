@@ -40,9 +40,10 @@ export function formatDateToHumanFormat(dateString: string): string {
 
 export function formatDateForScripts(isoDate: string): string {
     return new Intl.DateTimeFormat('ru-RU').format(new Date(isoDate));
-  }
+}
 
-export function formatTimeToHHMM(time: string): string {
+export function formatTimeToHHMM(time: string | null | undefined): string {
+    if (time == null) return '';
     const [hours, minutes] = time.split(':');
     return `${hours}:${minutes}`;
 }
@@ -52,7 +53,7 @@ export function getCurrentClientTime() {
     const timeString = now.toLocaleTimeString('en-GB', {
         hour: '2-digit',
         minute: '2-digit',
-        hour12: false, 
+        hour12: false,
     });
 
     return formatTimeToHHMM(timeString);

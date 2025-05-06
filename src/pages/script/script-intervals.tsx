@@ -59,7 +59,6 @@ export default function ScriptIntervals() {
                 {data.intervals.length > 0 &&
                     data.intervals[currentVehicleInterval].interval_data.map(
                         (serviceInterval, serviceIntervalIdx) => {
-                   
                             const columns = 4;
                             const columnClass = generateColumnClass(columns);
                             const tableWidth =
@@ -121,7 +120,11 @@ export default function ScriptIntervals() {
                                                                 onEdit={() => {}}
                                                             >
                                                                 <div className="flex-1 flex items-center justify-center">
-                                                                    {`${formatTimeToHHMM(interval.start_time)} - ${formatTimeToHHMM(interval.end_time)}`}
+                                                                    {`${formatTimeToHHMM(
+                                                                        interval.start_time
+                                                                    )} - ${formatTimeToHHMM(
+                                                                        interval.end_time
+                                                                    )}`}
                                                                 </div>
                                                                 <div className="flex-1 flex items-center justify-center">
                                                                     {`${pluralizeMaster(
@@ -134,7 +137,11 @@ export default function ScriptIntervals() {
                                                                     {`${interval.price} ₽`}
                                                                 </div>
                                                                 <div className="flex-1 flex items-center justify-center">
-                                                                    {`${pluralizeBox(interval.boxes.length)}`}
+                                                                    {`${pluralizeBox(
+                                                                        interval
+                                                                            .boxes
+                                                                            .length
+                                                                    )}`}
                                                                 </div>
                                                             </ScriptIntervalRow>
                                                         )
@@ -176,7 +183,11 @@ export default function ScriptIntervals() {
             <DialogLayout
                 isOpen={selectIntervalForDeletion != null}
                 title="Удалить интервал"
-                description={`Вы уверены что хотите удалить интервал с ${selectIntervalForDeletion?.start_time} по ${selectIntervalForDeletion?.end_time}?`}
+                description={`Вы уверены что хотите удалить интервал с ${formatTimeToHHMM(
+                    selectIntervalForDeletion?.start_time
+                )} по ${formatTimeToHHMM(
+                    selectIntervalForDeletion?.end_time
+                )}?`}
                 closeDialog={() => setSelectIntervalForDeletion(null)}
             >
                 <DeleteIntervalDialog
