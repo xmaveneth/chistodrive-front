@@ -1,5 +1,7 @@
 import AccountAddBtn from '@/components/atoms/account-add-btn';
+import ScriptBoxDropdown from '@/components/atoms/script-box-dropdown';
 import ScriptBtn from '@/components/atoms/script-btn';
+import ScriptWorkerDropdown from '@/components/atoms/script-worker-dropdown';
 import DialogLayout from '@/components/layouts/dialog-layout';
 import AddIntervalDialog from '@/components/molecules/scripts/add-interval-dialog';
 import DeleteIntervalDialog from '@/components/molecules/scripts/delete-interval-dialog';
@@ -13,7 +15,6 @@ import {
     calculateTableWidth,
     generateColumnClass,
 } from '@/lib/utils/generate-column-class';
-import { pluralizeBox, pluralizeMaster } from '@/lib/utils/pluralizer';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -65,7 +66,7 @@ export default function ScriptIntervals() {
                                 calculateTableWidth(columns) *
                                 (isMobile ? 0.65 : 1);
                             return (
-                                <div key={`interval-${serviceIntervalIdx}`}>
+                                <div key={`interval-${serviceIntervalIdx}`} className='overflow-x-auto scrollbar-hidden'>
                                     <div className="my-6 md:text-lg">
                                         {serviceInterval.service_category_name}
                                     </div>
@@ -79,7 +80,7 @@ export default function ScriptIntervals() {
                                                         service.service_name
                                                     }`}
                                                 </div>
-                                                <div className="overflow-auto scrollbar-hidden">
+                                                <div className="">
                                                     <ScriptTableHead
                                                         columns={columnClass}
                                                         width={tableWidth}
@@ -126,23 +127,19 @@ export default function ScriptIntervals() {
                                                                         interval.end_time
                                                                     )}`}
                                                                 </div>
-                                                                <div className="flex-1 flex items-center justify-center">
-                                                                    {`${pluralizeMaster(
-                                                                        interval
-                                                                            .workers
-                                                                            .length
-                                                                    )}`}
-                                                                </div>
+                                                                <ScriptWorkerDropdown
+                                                                    workers={
+                                                                        interval.workers
+                                                                    }
+                                                                />
                                                                 <div className="flex-1 flex items-center justify-center">
                                                                     {`${interval.price} ₽`}
                                                                 </div>
-                                                                <div className="flex-1 flex items-center justify-center">
-                                                                    {`${pluralizeBox(
-                                                                        interval
-                                                                            .boxes
-                                                                            .length
-                                                                    )}`}
-                                                                </div>
+                                                                <ScriptBoxDropdown
+                                                                    boxes={
+                                                                        interval.boxes
+                                                                    }
+                                                                />
                                                             </ScriptIntervalRow>
                                                         )
                                                     )}

@@ -40,3 +40,23 @@ export const deleteScriptInterval = async (
 
     return response.data;
 };
+
+export const updateScriptInterval = async (
+    script_id: number,
+    interval_id: number,
+    price: number,
+    workers: { script_worker_id: number; prio_num: number }[],
+    boxes: { script_box_id: number; prio_num: number }[]
+): Promise<string> => {
+    const response = await axiosInstance.patch<string>(
+        `/api/script/${script_id}/intervals`,
+        {
+            interval_id,
+            price,
+            workers,
+            boxes,
+        }
+    );
+
+    return response.data;
+};
