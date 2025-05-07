@@ -7,6 +7,7 @@ import AddIntervalDialog from '@/components/molecules/scripts/add-interval-dialo
 import DeleteIntervalDialog from '@/components/molecules/scripts/delete-interval-dialog';
 import ScriptIntervalRow from '@/components/molecules/scripts/script-interval-row';
 import ScriptTableHead from '@/components/molecules/scripts/script-table-head';
+import UpdateIntervalDialog from '@/components/molecules/scripts/update-interval-dialog';
 import { useScriptIntervals } from '@/lib/hooks/scripts/use-script-intervals';
 import useMediaQuery from '@/lib/hooks/utils/use-media-query';
 import { Interval, ServiceWithIntervals } from '@/lib/types/intervals';
@@ -28,6 +29,9 @@ export default function ScriptIntervals() {
         useState<ServiceWithIntervals | null>(null);
 
     const [selectIntervalForDeletion, setSelectIntervalForDeletion] =
+        useState<Interval | null>(null);
+
+    const [selectIntervalForUpdate, setSelectIntervalForUpdate] =
         useState<Interval | null>(null);
 
     const vehicleIntervals =
@@ -66,7 +70,7 @@ export default function ScriptIntervals() {
                                 calculateTableWidth(columns) *
                                 (isMobile ? 0.65 : 1);
                             return (
-                                <div key={`interval-${serviceIntervalIdx}`} className='overflow-x-auto scrollbar-hidden'>
+                                <div key={`interval-${serviceIntervalIdx}`}>
                                     <div className="my-6 md:text-lg">
                                         {serviceInterval.service_category_name}
                                     </div>
@@ -74,13 +78,14 @@ export default function ScriptIntervals() {
                                         (service, serviceIdx) => (
                                             <div
                                                 key={`service-${serviceIntervalIdx}-${serviceIdx}`}
+                                                className="overflow-x-auto scrollbar-hidden"
                                             >
                                                 <div className="mt-3 mb-4">
                                                     {`${serviceIdx + 1}. ${
                                                         service.service_name
                                                     }`}
                                                 </div>
-                                                <div className="">
+                                                <div>
                                                     <ScriptTableHead
                                                         columns={columnClass}
                                                         width={tableWidth}
@@ -118,7 +123,11 @@ export default function ScriptIntervals() {
                                                                         interval
                                                                     )
                                                                 }
-                                                                onEdit={() => {}}
+                                                                onEdit={() =>
+                                                                    setSelectIntervalForUpdate(
+                                                                        interval
+                                                                    )
+                                                                }
                                                             >
                                                                 <div className="flex-1 flex items-center justify-center">
                                                                     {`${formatTimeToHHMM(
@@ -192,6 +201,20 @@ export default function ScriptIntervals() {
                     selectIntervalForDeletion={
                         selectIntervalForDeletion || null
                     }
+                />
+            </DialogLayout>
+
+            <DialogLayout
+                isOpen={selectIntervalForUpdate != null}
+                title="Обновить интервал"
+                description="Заполните форму, чтобы обновить интервал"
+                closeDialog={() => setSelectIntervalForUpdate(null)}
+            >
+                <UpdateIntervalDialog
+                    closeDialog={() => setSelectIntervalForUpdate(null)}
+                    selectIntervalForUpdate={selectIntervalForUpdate || null}
+                    allBoxes={data.select_values.boxes}
+                    allWorkers={data.select_values.workers}
                 />
             </DialogLayout>
         </div>

@@ -32,14 +32,14 @@ export type IntervalWorker = {
     interval_worker_id: number,
 	script_worker_id: number,
 	worker_name: string,
-	prio_num: string
+	prio_num: number
 }
 
 export type IntervalBox = {
 	interval_box_id: number,
 	script_box_id: number,
 	box_name: string,
-	prio_num: string
+	prio_num: number
 };
 
 export type SelectValues = {
