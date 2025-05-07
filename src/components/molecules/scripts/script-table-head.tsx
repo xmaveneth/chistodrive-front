@@ -25,6 +25,7 @@ export default function ScriptTableHead({
         >
             <div className="sticky left-0 z-20 bg-light-bg rounded-l-xl  text-btn-bg flex items-center justify-center">
                 {leftCol}
+                <span className='absolute left-0 top-0 bottom-0  w-10 bg-light-bg -z-10'></span>
             </div>
             {children}
         </div>
