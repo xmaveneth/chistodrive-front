@@ -52,7 +52,7 @@ export default function AddServiceParamDialog({
     return (
         <div className="my-6">
             <div className="mb-8 space-y-4">
-                {isLoading ? (
+                {scriptServices.length > 0 && (isLoading ? (
                     <Skeleton />
                 ) : (
                     <SelectField
@@ -65,7 +65,7 @@ export default function AddServiceParamDialog({
                         }
                         values={scriptServices}
                     />
-                )}
+                ))}
             </div>
 
             <PrimaryBtn
