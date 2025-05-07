@@ -1,8 +1,8 @@
 import PrimaryBtn from '@/components/atoms/primary-btn';
-import { PrioritySelector } from '@/components/atoms/priority-selector';
 import ErrorField from '@/components/forms/error-field';
 import { useUpdateScriptInterval } from '@/lib/hooks/scripts/use-update-script-interval';
 import { Interval, ScriptBox, ScriptWorker } from '@/lib/types/intervals';
+import { cn } from '@/lib/utils';
 import { Field, Input, Label } from '@headlessui/react';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -52,20 +52,48 @@ export default function UpdateIntervalDialog({
         })
     );
 
-    function handleWorkerPriorityChange(idx: number, newPriority: number) {
-        setSelectedWorkers((prev) =>
-            prev.map((w, i) =>
-                i === idx ? { ...w, prio_num: newPriority } : w
-            )
-        );
+    function handleWorkerPriorityChange(idx: number) {
+        setSelectedWorkers((prev) => {
+            const current = prev[idx];
+
+            if (current.prio_num !== 0) {
+                return prev.map((w, i) =>
+                    i === idx ? { ...w, prio_num: 0 } : w
+                );
+            }
+
+            const used = new Set(
+                prev.map((w) => w.prio_num).filter((n) => n !== 0)
+            );
+            let next = 1;
+            while (used.has(next)) next++;
+
+            return prev.map((w, i) =>
+                i === idx ? { ...w, prio_num: next } : w
+            );
+        });
     }
 
-    function handleBoxPriorityChange(idx: number, newPriority: number) {
-        setSelectedBoxes((prev) =>
-            prev.map((b, i) =>
-                i === idx ? { ...b, prio_num: newPriority } : b
-            )
-        );
+    function handleBoxPriorityChange(idx: number) {
+        setSelectedBoxes((prev) => {
+            const current = prev[idx];
+
+            if (current.prio_num !== 0) {
+                return prev.map((b, i) =>
+                    i === idx ? { ...b, prio_num: 0 } : b
+                );
+            }
+
+            const used = new Set(
+                prev.map((b) => b.prio_num).filter((n) => n !== 0)
+            );
+            let next = 1;
+            while (used.has(next)) next++;
+
+            return prev.map((b, i) =>
+                i === idx ? { ...b, prio_num: next } : b
+            );
+        });
     }
 
     function handleClick() {
@@ -81,8 +109,8 @@ export default function UpdateIntervalDialog({
         mutate({
             script_id: Number(id),
             interval_id: selectIntervalForUpdate.interval_id,
-            workers: selectedWorkers.filter(w => w.prio_num !== 0),
-            boxes: selectedBoxes.filter(b => b.prio_num !== 0),
+            workers: selectedWorkers.filter((w) => w.prio_num !== 0),
+            boxes: selectedBoxes.filter((b) => b.prio_num !== 0),
             price: Number(price),
         });
     }
@@ -109,14 +137,18 @@ export default function UpdateIntervalDialog({
                                 key={`select-worker-${idx}`}
                                 className="flex items-center gap-4"
                             >
-                                <PrioritySelector
-                                    key={worker.script_worker_id}
-                                    idx={idx}
-                                    selectedPriority={
-                                        selectedWorkers[idx].prio_num
+                                <button
+                                    onClick={() =>
+                                        handleWorkerPriorityChange(idx)
                                     }
-                                    onChange={handleWorkerPriorityChange}
-                                />
+                                    className={cn(
+                                        'rounded-sm border border-btn-bg shrink-0 w-6 flex items-center justify-center cursor-pointer',
+                                        selectedWorkers[idx].prio_num === 0 &&
+                                            'text-transparent'
+                                    )}
+                                >
+                                    {selectedWorkers[idx].prio_num}
+                                </button>
                                 <div>{worker.worker_name}</div>
                             </div>
                         ))}
@@ -131,14 +163,16 @@ export default function UpdateIntervalDialog({
                                 key={`select-box-${idx}`}
                                 className="flex items-center gap-4"
                             >
-                                <PrioritySelector
-                                    key={box.script_box_id}
-                                    idx={idx}
-                                    selectedPriority={
-                                        selectedBoxes[idx].prio_num
-                                    }
-                                    onChange={handleBoxPriorityChange}
-                                />
+                                <button
+                                    onClick={() => handleBoxPriorityChange(idx)}
+                                    className={cn(
+                                        'rounded-sm border border-btn-bg shrink-0 w-6 flex items-center justify-center cursor-pointer',
+                                        selectedBoxes[idx].prio_num === 0 &&
+                                            'text-transparent'
+                                    )}
+                                >
+                                    {selectedBoxes[idx].prio_num}
+                                </button>
                                 <div>{box.box_name}</div>
                             </div>
                         ))}
