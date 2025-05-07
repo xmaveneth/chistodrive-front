@@ -1,13 +1,10 @@
 import AccountAddBtn from '@/components/atoms/account-add-btn';
-import ScriptBoxDropdown from '@/components/atoms/script-box-dropdown';
 import ScriptBtn from '@/components/atoms/script-btn';
-import ScriptWorkerDropdown from '@/components/atoms/script-worker-dropdown';
 import DialogLayout from '@/components/layouts/dialog-layout';
 import AddIntervalDialog from '@/components/molecules/scripts/add-interval-dialog';
 import DeleteIntervalDialog from '@/components/molecules/scripts/delete-interval-dialog';
-import ScriptIntervalRow from '@/components/molecules/scripts/script-interval-row';
-import ScriptTableHead from '@/components/molecules/scripts/script-table-head';
 import UpdateIntervalDialog from '@/components/molecules/scripts/update-interval-dialog';
+import ScriptTableRow from '@/components/organisms/scripts/script-table-row';
 import { useScriptIntervals } from '@/lib/hooks/scripts/use-script-intervals';
 import useMediaQuery from '@/lib/hooks/utils/use-media-query';
 import { Interval, ServiceWithIntervals } from '@/lib/types/intervals';
@@ -78,81 +75,23 @@ export default function ScriptIntervals() {
                                         (service, serviceIdx) => (
                                             <div
                                                 key={`service-${serviceIntervalIdx}-${serviceIdx}`}
-                                                className="overflow-x-auto scrollbar-hidden"
                                             >
                                                 <div className="mt-3 mb-4">
                                                     {`${serviceIdx + 1}. ${
                                                         service.service_name
                                                     }`}
                                                 </div>
-                                                <div>
-                                                    <ScriptTableHead
-                                                        columns={columnClass}
-                                                        width={tableWidth}
-                                                    >
-                                                        <div className="flex items-center justify-center md:text-lg">
-                                                            Интервалы
-                                                        </div>
-                                                        <div className="flex items-center justify-center md:text-lg">
-                                                            Мастера
-                                                        </div>
-                                                        <div className="flex items-center justify-center md:text-lg">
-                                                            Стоимость, ₽
-                                                        </div>
-                                                        <div className="flex items-center justify-center md:text-lg">
-                                                            Боксы
-                                                        </div>
-                                                        <div></div>
-                                                    </ScriptTableHead>
-                                                    {service.intervals.map(
-                                                        (
-                                                            interval,
-                                                            intervalIdx
-                                                        ) => (
-                                                            <ScriptIntervalRow
-                                                                key={`script-interval-row-${intervalIdx}-${interval}`}
-                                                                columns={
-                                                                    columnClass
-                                                                }
-                                                                width={
-                                                                    tableWidth -
-                                                                    30
-                                                                }
-                                                                onDelete={() =>
-                                                                    setSelectIntervalForDeletion(
-                                                                        interval
-                                                                    )
-                                                                }
-                                                                onEdit={() =>
-                                                                    setSelectIntervalForUpdate(
-                                                                        interval
-                                                                    )
-                                                                }
-                                                            >
-                                                                <div className="flex-1 flex items-center justify-center">
-                                                                    {`${formatTimeToHHMM(
-                                                                        interval.start_time
-                                                                    )} - ${formatTimeToHHMM(
-                                                                        interval.end_time
-                                                                    )}`}
-                                                                </div>
-                                                                <ScriptWorkerDropdown
-                                                                    workers={
-                                                                        interval.workers
-                                                                    }
-                                                                />
-                                                                <div className="flex-1 flex items-center justify-center">
-                                                                    {`${interval.price} ₽`}
-                                                                </div>
-                                                                <ScriptBoxDropdown
-                                                                    boxes={
-                                                                        interval.boxes
-                                                                    }
-                                                                />
-                                                            </ScriptIntervalRow>
-                                                        )
-                                                    )}
-                                                </div>
+                                                <ScriptTableRow
+                                                    service={service}
+                                                    columnClass={columnClass}
+                                                    tableWidth={tableWidth}
+                                                    onDelete={
+                                                        setSelectIntervalForDeletion
+                                                    }
+                                                    onEdit={
+                                                        setSelectIntervalForUpdate
+                                                    }
+                                                />
                                                 <div className="py-3 mt-1 w-188 sm:w-290">
                                                     <AccountAddBtn
                                                         onClick={() =>
