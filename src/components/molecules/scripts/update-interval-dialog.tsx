@@ -57,16 +57,19 @@ export default function UpdateIntervalDialog({
             const current = prev[idx];
 
             if (current.prio_num !== 0) {
-                return prev.map((w, i) =>
-                    i === idx ? { ...w, prio_num: 0 } : w
-                );
+                const removedPriority = current.prio_num;
+
+                return prev.map((w, i) => {
+                    if (i === idx) return { ...w, prio_num: 0 };
+                    if (w.prio_num > removedPriority) {
+                        return { ...w, prio_num: w.prio_num - 1 };
+                    }
+                    return w;
+                });
             }
 
-            const used = new Set(
-                prev.map((w) => w.prio_num).filter((n) => n !== 0)
-            );
-            let next = 1;
-            while (used.has(next)) next++;
+            const used = prev.map((w) => w.prio_num).filter((n) => n !== 0);
+            const next = used.length + 1;
 
             return prev.map((w, i) =>
                 i === idx ? { ...w, prio_num: next } : w
@@ -79,19 +82,22 @@ export default function UpdateIntervalDialog({
             const current = prev[idx];
 
             if (current.prio_num !== 0) {
-                return prev.map((b, i) =>
-                    i === idx ? { ...b, prio_num: 0 } : b
-                );
+                const removedPriority = current.prio_num;
+
+                return prev.map((b, i) => {
+                    if (i === idx) return { ...b, prio_num: 0 };
+                    if (b.prio_num > removedPriority) {
+                        return { ...b, prio_num: b.prio_num - 1 };
+                    }
+                    return b;
+                });
             }
 
-            const used = new Set(
-                prev.map((b) => b.prio_num).filter((n) => n !== 0)
-            );
-            let next = 1;
-            while (used.has(next)) next++;
+            const used = prev.map((w) => w.prio_num).filter((n) => n !== 0);
+            const next = used.length + 1;
 
-            return prev.map((b, i) =>
-                i === idx ? { ...b, prio_num: next } : b
+            return prev.map((w, i) =>
+                i === idx ? { ...w, prio_num: next } : w
             );
         });
     }

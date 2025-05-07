@@ -1,10 +1,10 @@
-import ScriptBoxDropdown from '@/components/atoms/script-box-dropdown';
-import ScriptWorkerDropdown from '@/components/atoms/script-worker-dropdown';
+import ScriptDropdown from '@/components/molecules/scripts/script-dropdown';
 import ScriptIntervalRow from '@/components/molecules/scripts/script-interval-row';
 import ScriptTableHead from '@/components/molecules/scripts/script-table-head';
 import { Interval, ServiceWithIntervals } from '@/lib/types/intervals';
 import { cn } from '@/lib/utils';
 import { formatTimeToHHMM } from '@/lib/utils/format-date';
+import { pluralizeBox, pluralizeMaster } from '@/lib/utils/pluralizer';
 
 type ScriptTableRowType = {
     service: ServiceWithIntervals;
@@ -50,11 +50,19 @@ export default function ScriptTableRow({
                             interval.start_time
                         )} - ${formatTimeToHHMM(interval.end_time)}`}
                     </div>
-                    <ScriptWorkerDropdown workers={interval.workers} />
+                    <ScriptDropdown
+                        items={interval.workers}
+                        getName={(w) => w.worker_name}
+                        pluralize={pluralizeMaster}
+                    />
                     <div className="flex-1 flex items-center justify-center">
                         {`${interval.price} ₽`}
                     </div>
-                    <ScriptBoxDropdown boxes={interval.boxes} />
+                    <ScriptDropdown
+                        items={interval.boxes}
+                        getName={(b) => b.box_name}
+                        pluralize={pluralizeBox}
+                    />
                 </ScriptIntervalRow>
             ))}
         </div>

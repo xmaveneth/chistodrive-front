@@ -1,21 +1,27 @@
 import useClickOutside from '@/lib/hooks/utils/use-click-outside';
 import useToggle from '@/lib/hooks/utils/use-toggle';
-import { IntervalWorker } from '@/lib/types/intervals';
 import { cn } from '@/lib/utils';
-import { pluralizeMaster } from '@/lib/utils/pluralizer';
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react';
 import { ChevronDown } from 'lucide-react';
 import { useRef } from 'react';
 
-type ScriptWorkerDropdownProps = {
-    workers: IntervalWorker[];
+type ItemWithPriority = {
+    prio_num: number;
+    [key: string]: any;
 };
 
-export default function ScriptWorkerDropdown({
-    workers,
-}: ScriptWorkerDropdownProps) {
-    const [showPopup, toggleShowPopup] = useToggle(false);
+type ScriptDropdownProps<T extends ItemWithPriority> = {
+    items: T[];
+    getName: (item: T) => string;
+    pluralize: (count: number) => string;
+};
 
+export default function ScriptDropdown<T extends ItemWithPriority>({
+    items,
+    getName,
+    pluralize,
+}: ScriptDropdownProps<T>) {
+    const [showPopup, toggleShowPopup] = useToggle(false);
     const modalRef = useRef(null);
 
     useClickOutside(modalRef, () => {
@@ -31,11 +37,11 @@ export default function ScriptWorkerDropdown({
                 <PopoverButton
                     className={cn(
                         'flex items-center gap-1 relative',
-                        workers.length > 0 && 'cursor-pointer'
+                        items.length > 0 && 'cursor-pointer'
                     )}
                 >
-                    {`${pluralizeMaster(workers.length)}`}
-                    {workers.length > 0 && (
+                    {pluralize(items.length)}
+                    {items.length > 0 && (
                         <ChevronDown
                             className={cn(
                                 'size-4 transition-transform duration-250 group-data-open:rotate-180'
@@ -47,15 +53,12 @@ export default function ScriptWorkerDropdown({
                     anchor="bottom"
                     className="bg-light-bg py-2 px-2 rounded-lg space-y-3"
                 >
-                    {workers.map((worker, index) => (
-                        <div
-                            key={`dropdown-box-${index}`}
-                            className="flex items-center gap-3"
-                        >
+                    {items.map((item, index) => (
+                        <div key={index} className="flex items-center gap-3">
                             <div className="rounded-sm border flex items-center justify-center border-btn-bg shrink-0 w-6">
-                                {worker.prio_num}
+                                {item.prio_num}
                             </div>
-                            <div>{worker.worker_name}</div>
+                            <div>{getName(item)}</div>
                         </div>
                     ))}
                 </PopoverPanel>
