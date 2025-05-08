@@ -44,7 +44,7 @@ export default function AccountSlotDialog({
     function handleSubmit() {
         if (selectedCar == null || slot == null) return;
 
-        bookAppointment({ slot_id: slot.id, vehicle_id: selectedCar.id });
+        bookAppointment({ slot_id: slot.slot_id, vehicle_id: selectedCar.id });
         deleteFavouriteSlot(slot.id);
     }
 
