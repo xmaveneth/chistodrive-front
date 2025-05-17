@@ -11,6 +11,8 @@ export type ScriptWorkersResponse = {
 export type Worker = {
     id: number;
     full_name: string;
+    job_title: string;
+    telephone: string | null;
 };
 
 export type WorkersResponse = {

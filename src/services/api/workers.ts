@@ -89,3 +89,18 @@ export async function getAssignedScriptWorkers(
     );
     return response.data;
 }
+
+export async function createCarwashWorker(
+    car_wash_id: number,
+    full_name: string,
+    job_title: string
+): Promise<string> {
+    const response = await axiosInstance.post<string>(
+        `/api/car_wash/${car_wash_id}/workers`,
+        {
+            full_name,
+            job_title,
+        }
+    );
+    return response.data;
+}

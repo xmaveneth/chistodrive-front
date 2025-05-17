@@ -1,4 +1,5 @@
 import AccountAddBtn from '@/components/atoms/account-add-btn';
+import AdminSkeleton from '@/components/atoms/admin-skeleton';
 import DialogLayout from '@/components/layouts/dialog-layout';
 import AddScriptDialog from '@/components/molecules/admin/add-script-dialog';
 import AddScriptVersionDialog from '@/components/molecules/admin/add-script-version-dialog';
@@ -12,7 +13,6 @@ import { useLocalStorage } from '@/lib/hooks/utils/use-local-storage';
 import useToggle from '@/lib/hooks/utils/use-toggle';
 import { Script, ScriptVersion } from '@/lib/types/scripts';
 import { createScriptNameMap } from '@/lib/utils/create-script-name-map';
-import { range } from '@/lib/utils/range';
 import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -48,7 +48,7 @@ export default function AdminScripts() {
             </TableHead>
 
             {isLoading ? (
-                <Skeleton />
+                <AdminSkeleton />
             ) : (
                 scripts &&
                 scripts.data.map((script, idx) => (
@@ -138,13 +138,3 @@ export default function AdminScripts() {
     );
 }
 
-function Skeleton() {
-    return range(1, 5).map((number) => (
-        <div
-            key={`skeleton-${number}`}
-            className="w-180 sm:w-282 text-center py-3 mx-4 bg-gray-400 text-transparent animate-pulse rounded-sm mb-1"
-        >
-            Loading
-        </div>
-    ));
-}
