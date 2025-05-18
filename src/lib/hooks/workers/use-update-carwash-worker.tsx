@@ -1,10 +1,10 @@
 import { QUERY_KEYS } from '@/lib/constants/queryKeys';
 import notify from '@/lib/utils/notify';
-import { createCarwashWorker } from '@/services/api/workers';
+import { updateCarwashWorker } from '@/services/api/workers';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 
-export function useCreateCarwashWorker(
+export function useUpdateCarwashWorker(
     car_wash_id: number,
     closeModal: () => void
 ) {
@@ -12,17 +12,26 @@ export function useCreateCarwashWorker(
 
     return useMutation({
         mutationFn: ({
+            id,
             full_name,
             job_title,
-            telephone
+            telephone,
         }: {
+            id: number;
             full_name: string;
             job_title: string;
             telephone: string;
-        }) => createCarwashWorker(car_wash_id, full_name, job_title, telephone),
+        }) =>
+            updateCarwashWorker(
+                car_wash_id,
+                id,
+                full_name,
+                job_title,
+                telephone
+            ),
 
         onSuccess: () => {
-            notify('Сотрудник успешно создан!');
+            notify('Сотрудник успешно обновлен!');
             closeModal();
             queryClient.invalidateQueries({
                 queryKey: [QUERY_KEYS.CAR_WASH_WORKERS, car_wash_id],
@@ -35,10 +44,10 @@ export function useCreateCarwashWorker(
                 notify(
                     typeof detail?.msg === 'string'
                         ? detail.msg
-                        : 'Ошибка создания сотрудника. Попробуйте позже.'
+                        : 'Ошибка обновления сотрудника. Попробуйте позже.'
                 );
             } else {
-                notify('Ошибка создания сотрудника. Попробуйте позже.');
+                notify('Ошибка обновления сотрудника. Попробуйте позже.');
             }
         },
     });

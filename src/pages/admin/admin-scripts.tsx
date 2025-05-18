@@ -48,7 +48,7 @@ export default function AdminScripts() {
             </TableHead>
 
             {isLoading ? (
-                <AdminSkeleton />
+                <AdminSkeleton/>
             ) : (
                 scripts &&
                 scripts.data.map((script, idx) => (

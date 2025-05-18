@@ -91,7 +91,7 @@ export default function AdminEmployees() {
             )}
 
             <DialogLayout
-                title="Вы уверены что хотите удалить данного сотрудника?"
+                title="Вы уверены что хотите удалить данный скрипт?"
                 isOpen={showDeleteWorkerDialog}
                 closeDialog={() => toggleDeleteWorkerDialog(false)}
             >
