@@ -30,3 +30,39 @@ export async function updateScriptBoxes(
 
     return response.data;
 }
+
+export async function createCarwashBox(
+    car_wash_id: number,
+    name: string
+): Promise<string> {
+    const response = await axiosInstance.post<string>(
+        `/api/car_wash/${car_wash_id}/boxes`,
+        { name: name }
+    );
+
+    return response.data;
+}
+
+export async function updateCarwashBox(
+    car_wash_id: number,
+    id: number,
+    name: string
+): Promise<string> {
+    const response = await axiosInstance.patch<string>(
+        `/api/car_wash/${car_wash_id}/boxes`,
+        { id: id, name: name }
+    );
+
+    return response.data;
+}
+
+export async function deleteCarwashBox(
+    car_wash_id: number,
+    id: number
+): Promise<string> {
+    const response = await axiosInstance.delete<string>(
+        `/api/car_wash/${car_wash_id}/boxes?box_id=${id}`
+    );
+
+    return response.data;
+}

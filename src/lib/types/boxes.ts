@@ -1,6 +1,7 @@
 export type Box = {
     id: number;
     name: string;
+    created_at: string;
 };
 
 export type BoxesResponse = {
