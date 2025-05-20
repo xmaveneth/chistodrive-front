@@ -11,24 +11,31 @@ export type CarwashAppointment = {
     date: string;
     time: string;
     status: string;
-}
+};
 
 export interface AppointmentResponse {
     data: CarwashAppointment[];
+    statuses: Status[];
+}
+
+export interface Status {
+    id: number;
+    name: string;
+    code: string;
 }
 
 export interface Service {
-  id: number;
-  name: string;
-  car_wash_id?: number;
-  description?: string;
-  service_type_id?: number;
+    id: number;
+    name: string;
+    car_wash_id?: number;
+    description?: string;
+    service_type_id?: number;
 }
 
 export interface Filters {
-  services: Service[];
+    services: Service[];
 }
 
 export interface FiltersResponse {
-  filters: Filters;
+    filters: Filters;
 }

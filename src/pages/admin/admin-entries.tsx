@@ -3,13 +3,16 @@ import DatePicker from '@/components/forms/date-picker';
 import PriceRangePicker from '@/components/forms/price-range-picker';
 import SelectField from '@/components/forms/select-field';
 import TimeRangePicker from '@/components/forms/time-range-picker';
+import DialogLayout from '@/components/layouts/dialog-layout';
 import AppointmentRow from '@/components/molecules/admin/appointment-row';
 import TableHead from '@/components/molecules/admin/table-head';
+import UpdateAppointmentDialog from '@/components/molecules/admin/update-appointment-dialog';
 import FilterField from '@/components/molecules/search/filter-field';
 import { useFilterValues } from '@/lib/hooks/appointments/use-filter-values';
 import { useCarwashAppointments } from '@/lib/hooks/appointments/use-get-carwash-appointments';
+import useToggle from '@/lib/hooks/utils/use-toggle';
+import { CarwashAppointment } from '@/lib/types/appointments';
 import { formatDateToString } from '@/lib/utils/format-date';
-import { getCurrentCarTypeOption } from '@/lib/utils/get-filter-options';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -26,6 +29,11 @@ export default function AdminEntries() {
     const [endPrice, setEndPrice] = useState(9900);
     const [date, setDate] = useState<string>(formatDateToString(new Date()));
     const [serviceTypeId, setServiceTypeId] = useState<number>(0);
+
+    const [showUpdateAppointmentDialog, toggleUpdateAppointmentDialog] =
+        useToggle(false);
+    const [selectedAppointment, setSelectedAppointment] =
+        useState<CarwashAppointment | null>(null);
 
     const filters = filterValues?.filters?.services?.map((service) => {
         return {
@@ -72,7 +80,7 @@ export default function AdminEntries() {
                     />
                 </FilterField>
 
-                {currentServiceTypeOption != null && filters != null && (
+                {currentServiceTypeOption && filters && !isLoadingFilters && (
                     <FilterField title="Тип услуги">
                         <SelectField
                             values={filters}
@@ -84,7 +92,7 @@ export default function AdminEntries() {
                 )}
             </div>
             <div className="overflow-auto scrollbar-hidden text-xs sm:text-base">
-                <TableHead gridClass="grid-cols-[60px_1fr_1fr_250px_1fr_1fr_1fr_1fr_1fr_1fr_1fr_60px] w-400 sm:w-460 z-10">
+                <TableHead gridClass="grid-cols-[60px_1fr_1fr_250px_1fr_1fr_1fr_1fr_1fr_1fr_1.5fr_60px] w-400 sm:w-460 z-10">
                     <div>Имя</div>
                     <div>Телефон</div>
                     <div>Исполнитель</div>
@@ -103,18 +111,36 @@ export default function AdminEntries() {
                 ) : (
                     appointments &&
                     appointments.data.map((appointment, idx) => (
-                        <div key={`box-${idx}`}>
+                        <div key={`appointment-${idx}`}>
                             <AppointmentRow
                                 appointment={appointment}
                                 index={idx + 1}
                                 id={appointment.id}
-                                onDelete={() => {}}
-                                onEdit={() => {}}
+                                onEdit={() => {
+                                    setSelectedAppointment(appointment);
+                                    toggleUpdateAppointmentDialog(true);
+                                }}
                             />
                         </div>
                     ))
                 )}
             </div>
+
+            {selectedAppointment && appointments && (
+                <DialogLayout
+                    title="Обновление статуса записи"
+                    description="Заполните данные, чтобы обновить статус записи"
+                    isOpen={showUpdateAppointmentDialog}
+                    closeDialog={() => toggleUpdateAppointmentDialog(false)}
+                >
+                    <UpdateAppointmentDialog
+                        statuses={appointments.statuses}
+                        selectedAppointment={selectedAppointment}
+                        closeDialog={() => toggleUpdateAppointmentDialog(false)}
+                        carWashId={parsedId}
+                    />
+                </DialogLayout>
+            )}
         </div>
     );
 }
