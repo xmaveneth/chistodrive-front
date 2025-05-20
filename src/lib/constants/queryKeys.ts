@@ -22,4 +22,6 @@ export const QUERY_KEYS = {
     ASSIGNED_WORKERS: 'assigned_workers',
     CARWASH_SERVICES: 'car_wash_services',
     SCRIPT_INTERVALS: 'script_intervals',
+    CARWASH_APPOITMENTS: 'carwash_appointments',
+    APPOINTMENT_FILTERS: 'appointment_filters',
 };
