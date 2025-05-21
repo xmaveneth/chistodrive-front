@@ -39,3 +39,12 @@ export interface Filters {
 export interface FiltersResponse {
     filters: Filters;
 }
+
+export type FiltersPayload = {
+  date: string, 
+  start_time: string, 
+  end_time: string, 
+  start_price: number,
+  end_price: number,
+  service_id: number,
+}

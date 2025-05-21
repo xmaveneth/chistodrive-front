@@ -1,11 +1,12 @@
-import { AppointmentResponse, FiltersResponse } from '@/lib/types/appointments';
+import { AppointmentResponse, FiltersPayload, FiltersResponse } from '@/lib/types/appointments';
 import { axiosInstance } from './axios-instance';
 
 export async function getCarwashAppointments(
-    car_wash_id: number
+    car_wash_id: number,
+    payload: FiltersPayload
 ): Promise<AppointmentResponse> {
-    const response = await axiosInstance.get<AppointmentResponse>(
-        `/api/car_wash/${car_wash_id}/appointments`
+    const response = await axiosInstance.post<AppointmentResponse>(
+        `/api/car_wash/${car_wash_id}/appointments`, payload
     );
     return response.data;
 }
