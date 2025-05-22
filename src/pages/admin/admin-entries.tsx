@@ -30,33 +30,23 @@ export default function AdminEntries() {
     const endPrice = useRef(9900);
     const [date, setDate] = useState<string>(formatDateToString(new Date()));
     const [serviceTypeId, setServiceTypeId] = useState<number>(0);
-    const queryClient = useQueryClient();
-
-    const payload = useRef({
-        start_time: startTime.current,
-        end_time: endTime.current,
-        start_price: startPrice.current,
-        end_price: endPrice.current,
-        date,
-        service_id: serviceTypeId,
-    });
 
     function triggerSearch() {
-        payload.current = {
+        loadAppointments({
             start_time: startTime.current,
             end_time: endTime.current,
             start_price: startPrice.current,
             end_price: endPrice.current,
             date,
             service_id: serviceTypeId,
-        };
-        queryClient.invalidateQueries({
-            queryKey: [QUERY_KEYS.CARWASH_APPOITMENTS, parsedId],
         });
     }
 
-    const { data: appointments, isFetching: isLoadingAppointments } =
-        useCarwashAppointments(parsedId, payload.current);
+    const {
+        mutate: loadAppointments,
+        data: appointments,
+        isPending: isLoadingAppointments,
+    } = useCarwashAppointments(parsedId);
 
     const [showUpdateAppointmentDialog, toggleUpdateAppointmentDialog] =
         useToggle(false);
@@ -69,8 +59,6 @@ export default function AdminEntries() {
             label: service.name,
         };
     });
-
-    console.log(appointments?.statuses)
 
     const currentServiceTypeOption =
         filters?.find((filter) => filter.id === serviceTypeId) ?? null;
@@ -156,17 +144,23 @@ export default function AdminEntries() {
                     <AdminSkeleton className="w-400 sm:w-460" />
                 ) : (
                     appointments &&
-                    appointments.data.map((appointment, idx) => (
-                        <div key={`appointment-${idx}`}>
-                            <AppointmentRow
-                                appointment={appointment}
-                                index={idx + 1}
-                                id={appointment.id}
-                                onEdit={() => {
-                                    setSelectedAppointment(appointment);
-                                    toggleUpdateAppointmentDialog(true);
-                                }}
-                            />
+                    (appointments.data.length > 0 ? (
+                        appointments.data.map((appointment, idx) => (
+                            <div key={`appointment-${idx}`}>
+                                <AppointmentRow
+                                    appointment={appointment}
+                                    index={idx + 1}
+                                    id={appointment.id}
+                                    onEdit={() => {
+                                        setSelectedAppointment(appointment);
+                                        toggleUpdateAppointmentDialog(true);
+                                    }}
+                                />
+                            </div>
+                        ))
+                    ) : (
+                        <div className='mx-4 w-400 sm:w-460'>
+                            По вашему запросу не найдено ни одного результата
                         </div>
                     ))
                 )}
