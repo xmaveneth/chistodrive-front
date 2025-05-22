@@ -9,13 +9,11 @@ import AppointmentRow from '@/components/molecules/admin/appointment-row';
 import TableHead from '@/components/molecules/admin/table-head';
 import UpdateAppointmentDialog from '@/components/molecules/admin/update-appointment-dialog';
 import FilterField from '@/components/molecules/search/filter-field';
-import { QUERY_KEYS } from '@/lib/constants/queryKeys';
 import { useFilterValues } from '@/lib/hooks/appointments/use-filter-values';
 import { useCarwashAppointments } from '@/lib/hooks/appointments/use-get-carwash-appointments';
 import useToggle from '@/lib/hooks/utils/use-toggle';
 import { CarwashAppointment } from '@/lib/types/appointments';
 import { formatDateToString } from '@/lib/utils/format-date';
-import { useQueryClient } from '@tanstack/react-query';
 import { useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
