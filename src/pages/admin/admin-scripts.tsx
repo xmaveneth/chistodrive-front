@@ -12,7 +12,7 @@ import { useScripts } from '@/lib/hooks/scripts/use-scripts';
 import { useLocalStorage } from '@/lib/hooks/utils/use-local-storage';
 import useToggle from '@/lib/hooks/utils/use-toggle';
 import { Script, ScriptVersion } from '@/lib/types/scripts';
-import { createScriptNameMap } from '@/lib/utils/create-script-name-map';
+import { createScriptNameMap, createScriptVersionNameMap } from '@/lib/utils/create-script-name-map';
 import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -31,11 +31,14 @@ export default function AdminScripts() {
     const [selectedScriptVersion, setSelectedScriptVersion] = useState<ScriptVersion | null>(null);
 
     const [, setScriptNamesMap] = useLocalStorage<Record<number, string>>('script_names_map', {});
+    const [, setScriptVersionNamesMap] = useLocalStorage<Record<number, string>>('script_version_names_map', {});
 
     const scriptMap = useMemo(() => createScriptNameMap(scripts), [scripts]);
+    const scriptVersionMap = useMemo(() => createScriptVersionNameMap(scripts), [scripts]);
     
     useEffect(() => {
         setScriptNamesMap(scriptMap);
+        setScriptVersionNamesMap(scriptVersionMap);
     }, [scriptMap, isLoading]);
 
     return (

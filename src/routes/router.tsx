@@ -26,6 +26,7 @@ const ScriptIntervals = lazy(() => import('@/pages/script/script-intervals'));
 const ScriptServices = lazy(() => import('@/pages/script/script-services'));
 const ScriptVehicles = lazy(() => import('@/pages/script/script-vehicles'));
 const ScriptWorkers = lazy(() => import('@/pages/script/script-workers'));
+const AdminScriptVersion = lazy(() => import('@/pages/admin/admin-script-version'))
 
 export const routes = [
     {
@@ -74,6 +75,10 @@ export const routes = [
                     { path: 'boxes', element: <ScriptBoxes /> },
                     { path: 'workers', element: <ScriptWorkers /> },
                 ],
+            },
+            {
+                path: 'script-version/:id',
+                element: <AdminScriptVersion />,
             },
         ],
     },
