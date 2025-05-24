@@ -23,8 +23,7 @@ export default function UpdateAppointmentDialog({
     );
 
     const [statusId, setStatusId] = useState<number>(
-        statuses.find((status) => status.name === selectedAppointment.status)
-            ?.id ?? 0
+        0
     );
 
     const statusValues = statuses.map((status) => {
@@ -35,7 +34,7 @@ export default function UpdateAppointmentDialog({
     });
 
     const currentStatus =
-        statusValues.find((status) => status.id === statusId) ?? null;
+        statusValues.find((status) => status.id === statusId) ?? statusValues[0];
 
     const onSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
