@@ -15,21 +15,6 @@ export default function CarwashInfo({ carwash, onClick }: CarwashInfoProps) {
 
     return (
         <div className="flex flex-col gap-8 mb-6 sm:mb-11 sm:flex-row sm:justify-between">
-            <div className="space-y-3 sm:space-y-3 sm:order-2 sm:text-right">
-                <SecondaryBtn
-                    onClick={() => setShowDialog(true)}
-                    className="text-sm sm:ml-auto"
-                >
-                    Посмотреть график работы
-                </SecondaryBtn>
-
-                <PrimaryBtn
-                    onClick={onClick}
-                    className="text-sm sm:ml-auto"
-                >
-                    Редактировать график работы
-                </PrimaryBtn>
-            </div>
             <div className="space-y-2 sm:space-y-3">
                 <p className="text-2xl font-medium sm:text-3xl">
                     {carwash.name}
@@ -46,6 +31,21 @@ export default function CarwashInfo({ carwash, onClick }: CarwashInfoProps) {
                         {carwash.telephone}
                     </p>
                 )}
+            </div>
+            <div className="space-y-3 sm:space-y-3 sm:text-right">
+                <SecondaryBtn
+                    onClick={() => setShowDialog(true)}
+                    className="text-sm sm:ml-auto"
+                >
+                    Посмотреть график работы
+                </SecondaryBtn>
+
+                <PrimaryBtn
+                    onClick={onClick}
+                    className="text-sm sm:ml-auto"
+                >
+                    Редактировать график работы
+                </PrimaryBtn>
             </div>
             <DialogLayout
                 isOpen={showDialog}
