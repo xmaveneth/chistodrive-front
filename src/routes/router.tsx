@@ -15,6 +15,7 @@ const AdminCarwashes = lazy(() => import('@/pages/admin/admin-carwashes'));
 const AdminScripts = lazy(() => import('@/pages/admin/admin-scripts'));
 const AdminEmployees = lazy(() => import('@/pages/admin/admin-employees'));
 const AdminBoxes = lazy(() => import('@/pages/admin/admin-boxes'));
+const AdminCalendar = lazy(() => import('@/pages/admin/admin-calendar'));
 const AdminEntries = lazy(() => import('@/pages/admin/admin-entries'));
 const AdminReviews = lazy(() => import('@/pages/admin/admin-reviews'));
 const CarwashLayout = lazy(() => import('@/components/layouts/carwash-layout'));
@@ -61,6 +62,7 @@ export const routes = [
                             { path: 'boxes', element: <AdminBoxes /> },
                             { path: 'entries', element: <AdminEntries /> },
                             { path: 'reviews', element: <AdminReviews /> },
+                            { path: 'calendar', element: <AdminCalendar /> },
                         ],
                     },
                 ],

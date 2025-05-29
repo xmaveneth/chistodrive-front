@@ -4,7 +4,7 @@ import {
     ChatBubbleBottomCenterTextIcon,
     DocumentIcon,
 } from '@heroicons/react/24/solid';
-import { ArchiveBoxIcon, UsersIcon } from '@heroicons/react/16/solid';
+import { ArchiveBoxIcon, CalendarDaysIcon, UsersIcon } from '@heroicons/react/16/solid';
 
 type LayoutBottomNavProps = {
     isVisible: boolean;
@@ -45,6 +45,13 @@ export default function LayoutBottomNav({
                 >
                     <ChatBubbleBottomCenterTextIcon className="text-btn-bg size-[1.5em]" />
                     Отзывы
+                </AdminItemBtn>
+                <AdminItemBtn
+                    routeName={`/admin/carwash/${carwashId}/calendar`}
+                    className="text-xs sm:text-sm"
+                >
+                    <CalendarDaysIcon className="text-btn-bg size-[1.5em]" />
+                    Календарь 
                 </AdminItemBtn>
             </nav>
         </Transition>
