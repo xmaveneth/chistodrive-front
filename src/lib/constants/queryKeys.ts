@@ -24,4 +24,5 @@ export const QUERY_KEYS = {
     SCRIPT_INTERVALS: 'script_intervals',
     CARWASH_APPOITMENTS: 'carwash_appointments',
     APPOINTMENT_FILTERS: 'appointment_filters',
+    ADMIN_CALENDAR: 'admin_calendar',
 };

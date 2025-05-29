@@ -1,12 +1,12 @@
 import { RootLayout } from '@/components/layouts/root-layout';
+import About from '@/pages/about';
 import Home from '@/pages/home';
 import NotFound from '@/pages/not-found';
 import Policy from '@/pages/policy';
 import Rules from '@/pages/rules';
+import Search from '@/pages/search';
 import { lazy } from 'react';
 
-const Search = lazy(() => import('@/pages/search'));
-const About = lazy(() => import('@/pages/about'));
 const AccountLayout = lazy(() => import('@/components/layouts/account-layout'));
 const AccountCars = lazy(() => import('@/pages/account/cars'));
 const AccountEntries = lazy(() => import('@/pages/account/entries'));
