@@ -1,12 +1,16 @@
 import DarkBtn from '@/components/atoms/dark-btn';
 import Logo from '@/components/atoms/logo';
 import ScriptBtn from '@/components/atoms/script-btn';
+import DialogLayout from '@/components/layouts/dialog-layout';
+import DeleteTemplateSlotDialog from '@/components/molecules/admin/delete-template-slot-dialog';
 import IntervalSkeleton from '@/components/molecules/admin/interval-skeleton';
 import ScriptVersionTableRow from '@/components/organisms/scripts/script-version-table-row';
 import ErrorFallback from '@/components/organisms/shared/error-boundary';
 import { STORAGE_KEYS } from '@/lib/constants/storageKeys';
 import { useScriptVersion } from '@/lib/hooks/scripts/use-script-version';
 import { useLocalStorage } from '@/lib/hooks/utils/use-local-storage';
+import useToggle from '@/lib/hooks/utils/use-toggle';
+import { ScriptVersionTimeSlot } from '@/lib/types/script-version';
 import { ArrowBigLeft } from 'lucide-react';
 import { useState } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
@@ -16,6 +20,9 @@ export default function AdminScriptVersion() {
     const { id } = useParams<{ id: string }>();
     const { data, isLoading } = useScriptVersion(Number(id));
     const [currentVersionInterval, setCurrentVersionInterval] = useState(0);
+    const [showDeleteSlotDialog, toggleDeleteSlotDialog] = useToggle(false);
+    const [selectedSlot, setSelectedSlot] =
+        useState<ScriptVersionTimeSlot | null>(null);
 
     const versionInfo =
         data?.slots.map((versionSlot, idx) => ({
@@ -75,6 +82,7 @@ export default function AdminScriptVersion() {
                                                         workers={
                                                             service.workers
                                                         }
+                                                        onDelete={(slot) => {setSelectedSlot(slot); toggleDeleteSlotDialog(true)}}
                                                     />
                                                 </div>
                                             )
@@ -85,6 +93,16 @@ export default function AdminScriptVersion() {
                         )}
                 </div>
             </div>
+            <DialogLayout
+                title="Вы уверены что хотите удалить данный слот?"
+                isOpen={showDeleteSlotDialog}
+                closeDialog={() => toggleDeleteSlotDialog(false)}
+            >
+                <DeleteTemplateSlotDialog
+                    selectedSlot={selectedSlot}
+                    closeDialog={() => toggleDeleteSlotDialog(false)}
+                />
+            </DialogLayout>
         </ScriptVersionLayout>
     );
 }

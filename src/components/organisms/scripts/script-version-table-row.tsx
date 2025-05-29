@@ -1,14 +1,16 @@
 import AccountAddBtn from '@/components/atoms/account-add-btn';
-import { ScriptVersionWorker } from '@/lib/types/script-version';
+import { ScriptVersionTimeSlot, ScriptVersionWorker } from '@/lib/types/script-version';
 import { cn } from '@/lib/utils';
 import { formatTimeToHHMM } from '@/lib/utils/format-date';
 import { Trash2Icon } from 'lucide-react';
 
 type ScriptVersionTableRowType = {
     workers: ScriptVersionWorker[];
+    onDelete: (slot: ScriptVersionTimeSlot) => void;
 };
 export default function ScriptVersionTableRow({
     workers,
+    onDelete
 }: ScriptVersionTableRowType) {
     return (
         <div className={cn('scrollbar-hidden overflow-x-auto')}>
@@ -26,7 +28,9 @@ export default function ScriptVersionTableRow({
                         Сотрудники
                     </div>
                     <div className="flex items-center justify-center md:text-lg">
-                        <span className='sticky left-20 right-10 mx-3'>Слоты времени</span>
+                        <span className="sticky left-20 right-10 mx-3">
+                            Слоты времени
+                        </span>
                     </div>
                     <div></div>
                 </div>
@@ -42,21 +46,24 @@ export default function ScriptVersionTableRow({
                             {worker.worker_name}
                         </div>
                         <ul className="p-3 flex items-center gap-3">
-                            {worker.slots.map((slot) => (
-                                <li className='flex items-center gap-1'>
-                                    <div className="rounded-full bg-input-bg px-3 py-2 text-sm">{formatTimeToHHMM(slot.time)}</div>
-                                    <button className="cursor-pointer">
-                                    <Trash2Icon className='size-3 text-btn-bg' /> 
+                            {worker.slots.map((slot, slotIdx) => (
+                                <li
+                                    key={`slot-index-${slotIdx}`}
+                                    className="flex items-center gap-1"
+                                >
+                                    <div className="rounded-full bg-input-bg px-3 py-2 text-sm">
+                                        {formatTimeToHHMM(slot.time)}
+                                    </div>
+                                    <button onClick={() => onDelete(slot)} className="cursor-pointer">
+                                        <Trash2Icon className="size-3 text-btn-bg" />
                                     </button>
                                 </li>
                             ))}
                         </ul>
                         <div className="py-3 flex items-center justify-center border-l border-white/20">
-                            <button className="cursor-pointer">
-                                <AccountAddBtn
-                                    onClick={() => {}}
-                                />
-                            </button>
+                            <div className="cursor-pointer">
+                                <AccountAddBtn onClick={() => {}} />
+                            </div>
                         </div>
                     </div>
                 ))}
