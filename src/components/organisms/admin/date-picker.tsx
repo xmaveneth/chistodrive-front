@@ -7,7 +7,6 @@ import {
     format,
     isSameDay,
     isSameMonth,
-    isToday,
     startOfMonth,
     startOfWeek,
 } from 'date-fns';
@@ -25,8 +24,9 @@ export function DatePicker({
     onChange,
     label = 'Select a date',
 }: DatePickerProps) {
+
     return (
-        <div className="block max-w-75 mt-4 mx-auto">
+        <div className="block max-w-85 mt-4 mx-auto">
             <div className="my-4 bg-input-bg rounded-full w-max mx-auto px-4 py-3 text-text-muted text-sm flex items-center justify-center">
                 <div>
                     {value == null
