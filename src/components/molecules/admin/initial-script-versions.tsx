@@ -1,9 +1,9 @@
-import AdminSkeleton from "@/components/atoms/admin-skeleton";
-import PrimaryBtn from "@/components/atoms/primary-btn";
-import { useApplyCalendarSlot } from "@/lib/hooks/calendar/use-apply-calendar-slot";
-import { ScheduleVersion } from "@/lib/types/schedule";
-import { cn } from "@/lib/utils";
-import { formatDateForScripts } from "@/lib/utils/format-date";
+import AdminSkeleton from '@/components/atoms/admin-skeleton';
+import PrimaryBtn from '@/components/atoms/primary-btn';
+import { useApplyCalendarSlot } from '@/lib/hooks/calendar/use-apply-calendar-slot';
+import { ScheduleVersion } from '@/lib/types/schedule';
+import { cn } from '@/lib/utils';
+import { formatDateForScripts } from '@/lib/utils/format-date';
 
 type InitialScriptVersionsProps = {
     isLoading: boolean;
@@ -16,7 +16,17 @@ export function InitialScriptVersions({
     isLoading,
     date,
 }: InitialScriptVersionsProps) {
-    const {mutate: applyScriptVersion, isPending} = useApplyCalendarSlot();
+    const { mutate: applyScriptVersion, isPending } = useApplyCalendarSlot();
+
+    if (isLoading)
+        return (
+            <div className="mx-4 mt-8">
+                <AdminSkeleton className="mx-auto !w-240 !sm:w-342" />
+            </div>
+        );
+
+    if (versions == null)
+        return <div>На эту дату слоты еще не сформированы</div>;
 
     return (
         <div className="overflow-auto scrollbar-hidden mt-8 text-xs sm:text-base">
@@ -26,24 +36,23 @@ export function InitialScriptVersions({
                 <div></div>
             </TableHead>
 
-            {isLoading || versions == null ? (
-                <div className="mx-4">
-                    <AdminSkeleton className="mx-auto !w-240 !sm:w-342" />
-                </div>
-            ) : versions && versions.length > 0 ? (
+            {versions.length > 0 && (
                 versions.map((version, idx) => (
                     <div key={`version-${idx}`}>
                         <InitialScriptVersionRow
                             version={version}
                             index={idx + 1}
-                            onClick={() => { applyScriptVersion({date: date, script_version_id: version.id})}}
+                            onClick={() => {
+                                applyScriptVersion({
+                                    date: date,
+                                    script_version_id: version.id,
+                                });
+                            }}
                             isPending={isPending}
                         />
                     </div>
                 ))
-            ) : (
-                <div>На эту дату слоты еще не сформированы</div>
-            )}
+            )} 
         </div>
     );
 }
@@ -75,7 +84,11 @@ function InitialScriptVersionRow({
                 </div>
                 <div className="py-3 flex items-center justify-center">
                     {' '}
-                    <PrimaryBtn onClick={onClick} disabled={isPending} className="text-sm">
+                    <PrimaryBtn
+                        onClick={onClick}
+                        disabled={isPending}
+                        className="text-sm"
+                    >
                         Применить
                     </PrimaryBtn>
                 </div>
