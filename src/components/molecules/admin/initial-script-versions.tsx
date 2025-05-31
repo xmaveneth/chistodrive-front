@@ -1,5 +1,6 @@
 import AdminSkeleton from "@/components/atoms/admin-skeleton";
 import PrimaryBtn from "@/components/atoms/primary-btn";
+import { useApplyCalendarSlot } from "@/lib/hooks/calendar/use-apply-calendar-slot";
 import { ScheduleVersion } from "@/lib/types/schedule";
 import { cn } from "@/lib/utils";
 import { formatDateForScripts } from "@/lib/utils/format-date";
@@ -7,14 +8,18 @@ import { formatDateForScripts } from "@/lib/utils/format-date";
 type InitialScriptVersionsProps = {
     isLoading: boolean;
     versions: ScheduleVersion[] | undefined;
+    date: string;
 };
 
 export function InitialScriptVersions({
     versions,
     isLoading,
+    date,
 }: InitialScriptVersionsProps) {
+    const {mutate: applyScriptVersion, isPending} = useApplyCalendarSlot();
+
     return (
-        <div className="overflow-auto scrollbar-hidden text-xs sm:text-base">
+        <div className="overflow-auto scrollbar-hidden mt-8 text-xs sm:text-base">
             <TableHead>
                 <div>Название</div>
                 <div>Создан</div>
@@ -31,7 +36,8 @@ export function InitialScriptVersions({
                         <InitialScriptVersionRow
                             version={version}
                             index={idx + 1}
-                            onClick={() => {}}
+                            onClick={() => { applyScriptVersion({date: date, script_version_id: version.id})}}
+                            isPending={isPending}
                         />
                     </div>
                 ))
@@ -46,12 +52,14 @@ type InitialScriptVersionRow = {
     version: ScheduleVersion;
     index: number;
     onClick: () => void;
+    isPending: boolean;
 };
 
 function InitialScriptVersionRow({
     version,
     index,
     onClick,
+    isPending,
 }: InitialScriptVersionRow) {
     return (
         <div className="mx-auto w-max">
@@ -67,7 +75,7 @@ function InitialScriptVersionRow({
                 </div>
                 <div className="py-3 flex items-center justify-center">
                     {' '}
-                    <PrimaryBtn onClick={onClick} className="text-sm">
+                    <PrimaryBtn onClick={onClick} disabled={isPending} className="text-sm">
                         Применить
                     </PrimaryBtn>
                 </div>
