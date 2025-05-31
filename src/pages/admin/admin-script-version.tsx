@@ -75,7 +75,7 @@ export default function AdminScriptVersion() {
                                                 <div
                                                     key={`service-${serviceIntervalIdx}-${serviceIdx}`}
                                                 >
-                                                    <div className="mt-3 mb-4">
+                                                    <div className="mt-10 mb-4">
                                                         {`${serviceIdx + 1}. ${service.service_name}`}
                                                     </div>
                                                     <ScriptVersionTableRow
