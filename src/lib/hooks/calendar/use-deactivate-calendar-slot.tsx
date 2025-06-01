@@ -4,7 +4,7 @@ import { deactivateCalendarSlot } from '@/services/api/calendar';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 
-export function useDeactivateCalendarSlot(closeDialog: () => void) {
+export function useDeactivateCalendarSlot() {
     const queryClient = useQueryClient();
 
     return useMutation({
@@ -20,7 +20,6 @@ export function useDeactivateCalendarSlot(closeDialog: () => void) {
                 queryKey: [QUERY_KEYS.ADMIN_CALENDAR],
             });
             notify('Слоты успешно деактивированы!');
-            closeDialog();
         },
         onError: (error: unknown) => {
             if (error instanceof AxiosError && error.response) {

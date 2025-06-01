@@ -24,6 +24,7 @@ export async function applyCalendarSlot(
 ): Promise<string> {
     const response = await axiosInstance.post<string>(
         '/api/calendar/apply',
+        null,
         {
             params: {
                 date,
@@ -41,6 +42,7 @@ export async function activateCalendarSlot(
 ): Promise<string> {
     const response = await axiosInstance.post<string>(
         '/api/calendar/activate',
+        null,
         {
             params: {
                 date,
@@ -59,6 +61,7 @@ export async function deactivateCalendarSlot(
 ): Promise<string> {
     const response = await axiosInstance.post<string>(
         '/api/calendar/deactivate',
+        null,
         {
             params: {
                 date,
@@ -77,6 +80,7 @@ export async function clearAllCalendarDay(
 ): Promise<string> {
     const response = await axiosInstance.post<string>(
         '/api/calendar/clear_all_day',
+        null,
         {
             params: {
                 date_field,
