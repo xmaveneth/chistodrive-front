@@ -22,7 +22,7 @@ export default function AccountEntries() {
     if (user == null || isLoading) return null;
 
     return (
-        <section className="flex flex-col gap-4 md:flex-row md:justify-between md:pt-3 md:gap-6">
+        <section className="flex flex-col gap-4 lg:flex-row md:justify-between md:pt-3 md:gap-6">
             <div className="md:flex-1">
                 <p className="mb-3.5 text-sm sm:text-base md:text-lg md:mb-4.5">
                     Актуальные
