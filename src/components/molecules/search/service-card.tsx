@@ -59,7 +59,7 @@ export default function ServiceCard({
                 </p>
                 <p className="mb-2.5 text-2xl">{name}</p>
                 <div className="my-5">
-                    <span className='px-4 py-3 rounded-full text-sm bg-background'>{serviceName}</span>
+                    <span className='px-8 block w-max max-w-full text-balance py-3 rounded-full text-sm bg-background'>{serviceName}</span>
                 </div>
                 <p className="mb-2.5 text-white/70 min-h-26 sm:min-h-30">
                     {description}

@@ -86,7 +86,7 @@ export function SearchServiceProvider({
             order_by_id: orderById ?? 0,
             service_category_id: serviceCategoryId ?? 0,
             service_type_id: serviceTypeId ?? 0,
-            date: date,
+            date: date != '' ? date : formatDateToString(new Date()),
             start_time: startTime,
             end_time: endTime,
             start_price: startPrice,

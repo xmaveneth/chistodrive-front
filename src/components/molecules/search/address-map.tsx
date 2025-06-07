@@ -21,7 +21,6 @@ export default function AddressMap() {
         return <div className="bg-gray-200/50 h-[500px] animate-pulse"></div>;
 
     const addresses = convertToAddresses(servicesData?.data);
-    console.log(currentCity);
 
     return (
         <MapContainer
