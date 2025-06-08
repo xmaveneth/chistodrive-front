@@ -94,6 +94,7 @@ export default function EntryDialog({
         );
     }
 
+
     function handleChange(carId: number) {
         const newCar = userCars.find((car) => car.id === carId) ?? userCars[0];
 
@@ -107,7 +108,7 @@ export default function EntryDialog({
                 <MapPinIcon className="size-6 shrink-0 text-btn-bg" />
                 {carwash?.address}
             </p>
-            <p>{carwash?.service_name}</p>
+            <p className='text-balance text-center mb-2'>{carwash?.service_name}</p>
             <p>
                 {formatDateToDayMonthLabel(date)} {time}
             </p>
