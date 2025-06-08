@@ -21,10 +21,11 @@ export function useUpdateCarwashAppointment(
 
         onSuccess: () => {
             notify('Статус успешно обновлен!');
-            closeModal();
             queryClient.invalidateQueries({
                 queryKey: [QUERY_KEYS.CARWASH_APPOITMENTS, car_wash_id],
+                exact: false,
             });
+            closeModal();
         },
 
         onError: (error: unknown) => {

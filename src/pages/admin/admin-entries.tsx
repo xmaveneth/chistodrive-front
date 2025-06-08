@@ -14,7 +14,7 @@ import { useCarwashAppointments } from '@/lib/hooks/appointments/use-get-carwash
 import useToggle from '@/lib/hooks/utils/use-toggle';
 import { CarwashAppointment } from '@/lib/types/appointments';
 import { formatDateToString } from '@/lib/utils/format-date';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 export default function AdminEntries() {
@@ -46,10 +46,16 @@ export default function AdminEntries() {
         isPending: isLoadingAppointments,
     } = useCarwashAppointments(parsedId);
 
+    
     const [showUpdateAppointmentDialog, toggleUpdateAppointmentDialog] =
         useToggle(false);
     const [selectedAppointment, setSelectedAppointment] =
         useState<CarwashAppointment | null>(null);
+    const [statusUpdated, toggleStatusUpdated] = useToggle(true);
+
+    useEffect(() => {
+            triggerSearch();
+    }, [statusUpdated])
 
     const filters = filterValues?.filters?.services?.map((service) => {
         return {
@@ -175,7 +181,7 @@ export default function AdminEntries() {
                         statuses={appointments.statuses}
                         selectedAppointment={selectedAppointment}
                         closeDialog={() => toggleUpdateAppointmentDialog(false)}
-                        carWashId={parsedId}
+                        toggleStatus={() => toggleStatusUpdated()}
                     />
                 </DialogLayout>
             )}

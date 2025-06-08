@@ -4,26 +4,31 @@ import { CarwashAppointment, Status } from '@/lib/types/appointments';
 import FilterField from '../search/filter-field';
 import SelectField from '@/components/forms/select-field';
 import { FormEvent, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 type UpdateAppointmentDialogProps = {
     closeDialog: () => void;
-    carWashId: number;
     selectedAppointment: CarwashAppointment;
     statuses: Status[];
+    toggleStatus: () => void;
 };
 export default function UpdateAppointmentDialog({
     closeDialog,
-    carWashId,
     selectedAppointment,
     statuses,
+    toggleStatus
 }: UpdateAppointmentDialogProps) {
+    const { id } = useParams();
+    const parsedId = Number(id);
+
     const { mutate, isPending } = useUpdateCarwashAppointment(
-        carWashId,
+        parsedId,
         closeDialog
     );
 
+
     const [statusId, setStatusId] = useState<number>(
-        0
+        statuses[0].id
     );
 
     const statusValues = statuses.map((status) => {
@@ -39,6 +44,7 @@ export default function UpdateAppointmentDialog({
     const onSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         mutate({ appointment_id: selectedAppointment.id, status_id: statusId });
+        toggleStatus();
     };
 
     return (
