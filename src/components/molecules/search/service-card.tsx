@@ -59,7 +59,7 @@ export default function ServiceCard({
                 </p>
                 <p className="mb-2.5 text-2xl">{name}</p>
                 <div className="my-5">
-                    <span className='px-8 block w-max max-w-full text-balance py-3 rounded-full text-sm bg-background'>{serviceName}</span>
+                    <span className='px-8 block max-w-full text-balance py-3 rounded-full text-sm bg-background'>{serviceName}</span>
                 </div>
                 <p className="mb-2.5 text-white/70 min-h-26 sm:min-h-30">
                     {description}
@@ -67,7 +67,7 @@ export default function ServiceCard({
                 <p className="mb-3 text-2xl text-btn-bg">{price} ₽</p>
                 <div className='flex flex-wrap items-center justify-between gap-2'>
                     {slots && slots.map(slot => (
-                        <button disabled={isLoading} key={`slot-${slot.id}`} onClick={() => isLoggedIn ? onClick(slot.time, service, slot) : toggleLoginDialog(true)} className='px-3 py-1.5 rounded-full bg-btn-bg cursor-pointer font-medium hover:bg-btn-hover transition-colors duration-200 ease-in last:mr-auto'>{slot.time}</button>
+                        <button disabled={isLoading} key={`slot-${slot.id}`} onClick={() => isLoggedIn ? onClick(slot.time, service, slot) : toggleLoginDialog(true)} className='px-3 py-1.5 rounded-full bg-btn-bg cursor-pointer font-medium hover:bg-btn-hover transition-colors duration-200 ease-in'>{slot.time}</button>
                     ))}
                 </div>
             </div>
