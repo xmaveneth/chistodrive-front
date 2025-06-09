@@ -21,7 +21,7 @@ export function AccountEntry({ entry, onClick }: AccountEntryProps) {
                         {entry.location && entry.location}
                     </p>
                 </div>
-                <div className="flex items-start gap-1 flex-wrap text-xs sm:text-sm text-white/70 flex-1 md:justify-center">
+                <div className="flex items-start gap-1 flex-wrap text-xs sm:text-sm text-white/70 flex-1 justify-end pr-5">
                     <p>{entry.date && formatDateToDayMonthLabel(entry.date)}</p>
                     <p>{entry.time && formatTimeToHHMM(entry.time)}</p>
                     <p>{entry.reg_num && entry.reg_num}</p>

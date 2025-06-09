@@ -1,4 +1,5 @@
 import AccountAddBtn from '@/components/atoms/account-add-btn';
+import { AccountAcrhived } from '@/components/atoms/account-archived';
 import { AccountEntry } from '@/components/atoms/account-entry';
 import NoItemsMessage from '@/components/atoms/no-items-message';
 import DialogLayout from '@/components/layouts/dialog-layout';
@@ -51,7 +52,7 @@ export default function AccountEntries() {
 
                 <div className="space-y-2 mb-3.5 md:space-y-5">
                     {user.appointments.archive.length > 0 ? user.appointments.archive.map((entry, idx) => (
-                        <AccountEntry
+                        <AccountAcrhived
                             key={`${entry.appointment_id}-${idx}`}
                             entry={entry}
                             onClick={() => {
