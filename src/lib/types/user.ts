@@ -1,7 +1,7 @@
 export type Appointment = {
     appointment_id: number;
-    date: string; // format: 'YYYY-MM-DD'
-    time: string; // format: 'HH:mm:ss'
+    date: string;
+    time: string;
     price: number;
     car_wash_name: string;
     location: string;
@@ -9,6 +9,14 @@ export type Appointment = {
     service_name: string;
 };
 
+export type ArchivedAppointment = Appointment & {
+    is_review_exist: boolean,
+    review_uuid?: string,
+    rating?: number,
+    comment?: string,
+    created_at?: string,
+    media?: string[],
+}
 export type Car = {
     id: number;
     reg_number: string;
@@ -46,7 +54,7 @@ export type Favourites = {
 
 export type Appointments = {
     actual: Appointment[];
-    archive: Appointment[];
+    archive: ArchivedAppointment[];
 };
 
 export type User = {
