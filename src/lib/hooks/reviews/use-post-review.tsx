@@ -21,10 +21,10 @@ export function usePostReview(closeModal: () => void) {
 
         onError: (error: unknown) => {
             if (error instanceof AxiosError && error.response) {
-                const detail = error.response.data?.detail;
+                const detail = error.response.data;
                 notify(
-                    typeof detail?.msg === 'string'
-                        ? detail.msg
+                    typeof detail?.ru_message === 'string'
+                        ? detail.ru_message
                         : 'Ошибка создания отзыва. Попробуйте позже.'
                 );
             } else {

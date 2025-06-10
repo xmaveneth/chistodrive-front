@@ -1,8 +1,10 @@
+import Rating from '@mui/material/Rating';
 import Camera from '@/assets/svgs/camera.svg';
 import PrimaryBtn from '@/components/atoms/primary-btn';
 import { usePostReview } from '@/lib/hooks/reviews/use-post-review';
 import { Appointment } from '@/lib/types/user';
 import { formatDateForScripts, formatTimeToHHMM } from '@/lib/utils/format-date';
+import notify from '@/lib/utils/notify';
 import { Textarea } from '@headlessui/react';
 import { useState } from 'react';
 
@@ -15,15 +17,20 @@ export default function AddReviewDialog({
     closeDialog,
     entry
 }: AddReviewDialogProps) {
-    const { isPending } = usePostReview(closeDialog);
+    const {mutate, isPending } = usePostReview(closeDialog);
     const [files, setFiles] = useState<File[]>([]);
     const [comment, setComment] = useState('');
-    // const [rating, setRating] = useState(0);
+    const [rating, setRating] = useState<number | null>(0);
 
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const selected = e.target.files;
         if (!selected) return;
+
+        if (files.length + selected.length > 5) {
+            notify("Выберите максимум 5 фото");
+            return;
+        }
 
         setFiles((prev) => [...prev, ...Array.from(selected)]);
     };
@@ -32,22 +39,36 @@ export default function AddReviewDialog({
         setFiles((prev) => prev.filter((_, i) => i !== index));
     };
 
-    // const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    //     e.preventDefault();
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
 
-    //     const formData = new FormData();
-    //     formData.append('appointment_id', String(entry.appointment_id));
-    //     formData.append('rating', rating.toString()); // example
-    //     formData.append('comment', comment); // example
+        if (comment.length > 480) {
+            notify("Пожалуйста, оставьте более короткий комментарий")
+            return;
+        }
 
-    //     files.forEach((file) => {
-    //         formData.append('files', file);
-    //     });
+        if (comment.length === 0) {
+            notify("Пожалуйста, оставьте комментарий")
+            return;
+        }
+        if (rating == null || rating == 0) {
+            notify("Пожалуйста, дайте оценку автомойке для оставления комментария")
+            return;
+        }
+        const formData = new FormData();
+        formData.append('appointment_id', String(entry.appointment_id));
+        formData.append('rating', rating.toString()); 
+        formData.append('comment', comment); 
 
-    //     mutate(formData);
-    // };
+        files.forEach((file) => {
+            formData.append('files', file);
+        });
+
+        mutate(formData);
+    };
+
     return (
-        <form className="my-10 space-y-2" onSubmit={() => {}} encType='multipart/form-data'>
+        <form className="my-10 space-y-2" onSubmit={(e) => {handleSubmit(e)}} encType='multipart/form-data'>
             <div className="space-y-2 my-8">
                 <TitleLine title='Автомойка' description={entry.car_wash_name} />
                 <TitleLine title='Время и дата визита' description={`${formatDateForScripts(entry.date)} ${formatTimeToHHMM(entry.time)}`} />
@@ -55,6 +76,16 @@ export default function AddReviewDialog({
             </div>
 
             <div className="space-y-2 my-8">
+                <div className='rounded-lg bg-white/10 w-full px-4 py-2 flex items-center justify-between gap-2'>
+                    <div className='text-sm'>Оцените это место</div>
+                        <Rating
+                            name="simple-controlled"
+                            value={rating}
+                            onChange={(_, newValue) => {
+                                setRating(newValue);
+                            }}
+                        />
+                </div>
                 <Textarea onChange={(e) => setComment(e.target.value)} value={comment} placeholder='Напишите комментарий' className="rounded-lg bg-white/10 w-full px-4 py-2 min-h-30" maxLength={480} />
 
                 <div className='rounded-lg bg-white/10 w-full p-2'>
@@ -63,7 +94,7 @@ export default function AddReviewDialog({
                         <label htmlFor="review-files" className="flex flex-col items-center justify-center w-full h-30 border-2 border-btn-bg border-dotted rounded-lg cursor-pointer">
                             <div className="flex flex-col items-center justify-center pt-5 pb-6">
                                 <div className="flex items-center gap-2 mb-2">
-                                   <img src={Camera} alt="Добавить фото" className='shrink-0 size-5' />  
+                                    <img src={Camera} alt="Добавить фото" className='shrink-0 size-5' />
                                     <p className="font-medium text-white">Добавить фото или видео</p>
                                 </div>
                                 <p className="text-xs text-white">Можно перетащить его в эту рамку</p>
@@ -78,7 +109,7 @@ export default function AddReviewDialog({
                         <div className="mt-4 grid grid-cols-3 gap-2">
                             {files.map((file, index) => (
                                 <div key={index} className="bg-white rounded-md relative overflow-clip">
-                                    <img src={URL.createObjectURL(file)} alt="" className='object-center object-cover size-full'/>
+                                    <img src={URL.createObjectURL(file)} alt="" className='object-center object-cover size-full' />
                                     <button
                                         type="button"
                                         onClick={() => removeFile(index)}
