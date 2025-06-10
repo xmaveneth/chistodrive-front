@@ -1,5 +1,5 @@
 
-import { Appointment, ArchivedAppointment } from '@/lib/types/user';
+import { ArchivedAppointment } from '@/lib/types/user';
 import { MapPinIcon } from '@heroicons/react/16/solid';
 import { useState } from 'react';
 import DialogLayout from '../layouts/dialog-layout';
