@@ -10,7 +10,7 @@ export async function postReview(data: FormData) {
 }
 
 export async function deleteReview(
-    review_uuid: number
+    review_uuid: string
 ): Promise<string> {
     const response = await axiosInstance.delete<string>(
         `/api/review/delete?review_uuid=${review_uuid}`

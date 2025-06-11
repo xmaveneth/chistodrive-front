@@ -6,9 +6,10 @@ import { MapPinIcon } from '@heroicons/react/16/solid';
 type AccountEntryDialogProps = {
     entry: Appointment | null;
     onClick: () => void;
+    selectedEntryType: "actual" | "archive"
 };
 
-export default function AccountEntryDialog({ entry, onClick }: AccountEntryDialogProps) {
+export default function AccountEntryDialog({ entry, onClick, selectedEntryType }: AccountEntryDialogProps) {
 
     if (entry == null) return null;
 
@@ -19,16 +20,16 @@ export default function AccountEntryDialog({ entry, onClick }: AccountEntryDialo
                 <MapPinIcon className="size-6 shrink-0 text-btn-bg" />
                 {entry.location}
             </p>
-            <p>{entry.service_name}</p>
+            <p className='text-center text-balance'>{entry.service_name}</p>
             <p>
                 {formatDateToDayMonthLabel(entry.date)} {formatTimeToHHMM(entry.time)}
             </p>
             <p>Цена {entry.price} ₽</p>
             <p className="mb-6">{entry.reg_num}</p>
 
-            <PrimaryBtn onClick={onClick} type="button" className="w-full">
+            {selectedEntryType === "actual" && <PrimaryBtn onClick={onClick} type="button" className="w-full">
                 Отменить запись
-            </PrimaryBtn>
+            </PrimaryBtn>}
         </div>
     );
 }

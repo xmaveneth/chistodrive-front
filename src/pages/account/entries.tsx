@@ -14,6 +14,7 @@ export default function AccountEntries() {
     const [selectedEntry, setSelectedEntry] = useState<Appointment | null>(
         null
     );
+    const [selectedEntryType, setSelectedEntryType] = useState<"archive" | "actual">("actual");
     const [showAccountEntryDialog, setShowAccountEntryDialog] = useState(false);
     const [showCancelEntryDialog, setShowCancelEntryDialog] = useState(false);
     const [showRedirectModal, setShowRedirectModal] = useState(false);
@@ -37,6 +38,7 @@ export default function AccountEntries() {
                             onClick={() => {
                                 setSelectedEntry(entry);
                                 setShowAccountEntryDialog(true);
+                                setSelectedEntryType("actual");
                             }}
                         />
                     )) : <NoItemsMessage />}
@@ -58,6 +60,7 @@ export default function AccountEntries() {
                             onClick={() => {
                                 setSelectedEntry(entry);
                                 setShowAccountEntryDialog(true);
+                                setSelectedEntryType("archive");
                             }}
                         />
                     )) : <NoItemsMessage />}
@@ -76,6 +79,7 @@ export default function AccountEntries() {
                         setShowAccountEntryDialog(false);
                         setShowCancelEntryDialog(true);
                     }}
+                    selectedEntryType={selectedEntryType}
                 />
             </DialogLayout>
 

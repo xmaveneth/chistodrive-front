@@ -1,18 +1,23 @@
-import { postReview } from '@/services/api/review';
+
 import { QUERY_KEYS } from '@/lib/constants/queryKeys';
 import notify from '@/lib/utils/notify';
+import { deleteReview } from '@/services/api/review';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 
-export function usePostReview(closeModal: () => void) {
+export function useDeleteReview(closeModal: () => void) {
 
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: postReview,
+        mutationFn: ({
+            review_uuid
+        }: {
+            review_uuid: string;
+        }) => deleteReview(review_uuid),
 
         onSuccess: () => {
-            notify('Спасибо что оставили отзыв!');
+            notify('Отзыв успешно удален!');
             closeModal();
             queryClient.invalidateQueries({
                 queryKey: [QUERY_KEYS.REVIEWS],
@@ -20,7 +25,6 @@ export function usePostReview(closeModal: () => void) {
             queryClient.invalidateQueries({
                 queryKey: [QUERY_KEYS.CURRENT_USER],
             });
-
         },
 
         onError: (error: unknown) => {
@@ -29,10 +33,10 @@ export function usePostReview(closeModal: () => void) {
                 notify(
                     typeof detail?.ru_message === 'string'
                         ? detail.ru_message
-                        : 'Ошибка создания отзыва. Попробуйте позже.'
+                        : 'Ошибка удаления отзыва. Попробуйте позже.'
                 );
             } else {
-                notify('Ошибка создания отзыва. Попробуйте позже.');
+                notify('Ошибка удаления отзыва. Попробуйте позже.');
             }
         },
     });

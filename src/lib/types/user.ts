@@ -7,15 +7,25 @@ export type Appointment = {
     location: string;
     reg_num: string;
     service_name: string;
+    is_review_exist: boolean;
 };
 
+export type AppointmentReview = {
+    review_uuid: string,
+    rating: number,
+    comment: string,
+    created_at: string,
+    media: string[],
+}
+
+export type AppointmentReviewReply = {
+    comment: string,
+    created_at: string,
+}
+
 export type ArchivedAppointment = Appointment & {
-    is_review_exist: boolean,
-    review_uuid?: string,
-    rating?: number,
-    comment?: string,
-    created_at?: string,
-    media?: string[],
+    review?: AppointmentReview;
+    review_reply?: AppointmentReviewReply;
 }
 export type Car = {
     id: number;
