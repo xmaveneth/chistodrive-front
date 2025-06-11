@@ -8,6 +8,7 @@ export type Appointment = {
     reg_num: string;
     service_name: string;
     is_review_exist: boolean;
+    status: string;
 };
 
 export type AppointmentReview = {
