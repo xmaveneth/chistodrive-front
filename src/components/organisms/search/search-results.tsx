@@ -65,7 +65,8 @@ export default function SearchResult() {
                         address={service.address}
                         serviceName={service.service_name}
                         description={service.description}
-                        price={service.price}
+                        start_price={service.start_price}
+                        end_price={service.end_price}
                         slots={service.slots}
                         onClick={handleTimeSelect}
                         service={service}

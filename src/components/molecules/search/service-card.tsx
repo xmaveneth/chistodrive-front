@@ -11,7 +11,8 @@ export type ServiceCardProps = {
     address: string;
     serviceName: string;
     description: string;
-    price: number;
+    start_price: number;
+    end_price: number;
     slots: Slot[];
     onClick: (val: string, carwash: ServiceResult, slot: Slot) => void;
     service: ServiceResult
@@ -23,7 +24,8 @@ export default function ServiceCard({
     address,
     serviceName,
     description,
-    price,
+    start_price,
+    end_price,
     slots,
     onClick,
     service
@@ -33,7 +35,7 @@ export default function ServiceCard({
     const { toggleLoginDialog } = useAuthContext();
 
     const isLoggedIn = !(isError || !user);
-    
+
     return (
         <div className="rounded-lg bg-input-bg">
             <div className="overflow-clip relative aspect-[1.55/1] rounded-lg mb-1">
@@ -64,7 +66,7 @@ export default function ServiceCard({
                 <p className="mb-2.5 text-white/70 min-h-26 sm:min-h-30">
                     {description}
                 </p>
-                <p className="mb-3 text-2xl text-btn-bg">{price} ₽</p>
+                <p className="mb-3 text-2xl text-btn-bg">{start_price === end_price ? `${start_price} ₽` : `${start_price} ₽ - ${end_price} ₽`} </p>
                 <div className='flex flex-wrap items-center justify-between gap-2'>
                     {slots && slots.map(slot => (
                         <button disabled={isLoading} key={`slot-${slot.id}`} onClick={() => isLoggedIn ? onClick(slot.time, service, slot) : toggleLoginDialog(true)} className='px-3 py-1.5 rounded-full bg-btn-bg cursor-pointer font-medium hover:bg-btn-hover transition-colors duration-200 ease-in'>{slot.time}</button>

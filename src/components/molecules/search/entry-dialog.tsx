@@ -112,7 +112,7 @@ export default function EntryDialog({
             <p>
                 {formatDateToDayMonthLabel(date)} {time}
             </p>
-            <p className="mb-6">Цена {carwash?.price} ₽</p>
+            <p className="mb-6">Цена {slot?.price} ₽</p>
 
             <AppoitmentEntryBtn
                 showShow={userCars.length === 0}

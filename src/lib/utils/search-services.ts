@@ -16,6 +16,7 @@ export type SearchFilters = {
 export type Slot = {
     id: number;
     time: string;
+    price: number;
 };
 
 export type ServiceResult = {
@@ -29,6 +30,8 @@ export type ServiceResult = {
     service_name: string;
     description: string;
     price: number;
+    start_price: number;
+    end_price: number;
     slots: Slot[];
 };
 
