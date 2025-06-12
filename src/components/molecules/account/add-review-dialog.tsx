@@ -8,6 +8,7 @@ import notify from '@/lib/utils/notify';
 import { Textarea } from '@headlessui/react';
 import { useState } from 'react';
 
+const MAX_FILE_SIZE_MB = 1024 * 1024 * 48;
 
 type AddReviewDialogProps = {
     closeDialog: () => void;
@@ -17,11 +18,10 @@ export default function AddReviewDialog({
     closeDialog,
     entry
 }: AddReviewDialogProps) {
-    const {mutate, isPending } = usePostReview(closeDialog);
+    const { mutate, isPending } = usePostReview(closeDialog);
     const [files, setFiles] = useState<File[]>([]);
     const [comment, setComment] = useState('');
     const [rating, setRating] = useState<number | null>(0);
-
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const selected = e.target.files;
@@ -55,10 +55,17 @@ export default function AddReviewDialog({
             notify("Пожалуйста, дайте оценку автомойке для оставления комментария")
             return;
         }
+
+        files.forEach(file => {
+            if (file.size > MAX_FILE_SIZE_MB) {
+                notify("Размер файла не должен превышать 50 МБ")
+                return;
+            }
+        })
         const formData = new FormData();
         formData.append('appointment_id', String(entry.appointment_id));
-        formData.append('rating', rating.toString()); 
-        formData.append('comment', comment); 
+        formData.append('rating', rating.toString());
+        formData.append('comment', comment);
 
         files.forEach((file) => {
             formData.append('files', file);
@@ -68,7 +75,7 @@ export default function AddReviewDialog({
     };
 
     return (
-        <form className="my-10 space-y-2" onSubmit={(e) => {handleSubmit(e)}} encType='multipart/form-data'>
+        <form className="my-10 space-y-2" onSubmit={(e) => { handleSubmit(e) }} encType='multipart/form-data'>
             <div className="space-y-2 my-8">
                 <TitleLine title='Автомойка' description={entry.car_wash_name} />
                 <TitleLine title='Время и дата визита' description={`${formatDateForScripts(entry.date)} ${formatTimeToHHMM(entry.time)}`} />
@@ -78,13 +85,13 @@ export default function AddReviewDialog({
             <div className="space-y-2 my-8">
                 <div className='rounded-lg bg-white/10 w-full px-4 py-2 flex items-center justify-between gap-2'>
                     <div className='text-sm'>Оцените это место</div>
-                        <Rating
-                            name="simple-controlled"
-                            value={rating}
-                            onChange={(_, newValue) => {
-                                setRating(newValue);
-                            }}
-                        />
+                    <Rating
+                        name="simple-controlled"
+                        value={rating}
+                        onChange={(_, newValue) => {
+                            setRating(newValue);
+                        }}
+                    />
                 </div>
                 <Textarea onChange={(e) => setComment(e.target.value)} value={comment} placeholder='Напишите комментарий' className="rounded-lg bg-white/10 w-full px-4 py-2 min-h-30" maxLength={480} />
 
