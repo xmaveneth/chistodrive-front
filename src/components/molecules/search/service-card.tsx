@@ -1,5 +1,6 @@
 import { useCurrentUser } from '@/lib/hooks/auth/use-current-user';
 import { useAuthContext } from '@/lib/hooks/context/use-auth-context';
+import useToggle from '@/lib/hooks/utils/use-toggle';
 import { cn } from '@/lib/utils/cn';
 import { ServiceResult, Slot } from '@/lib/utils/search-services';
 import { MapPinIcon } from '@heroicons/react/24/solid';
@@ -33,6 +34,7 @@ export default function ServiceCard({
     const [isImageLoading, setIsImageLoading] = useState(true);
     const { isError, data: user, isLoading } = useCurrentUser();
     const { toggleLoginDialog } = useAuthContext();
+    const [expandSlotPanel, toggleSlotPanel] = useToggle(false);
 
     const isLoggedIn = !(isError || !user);
 
@@ -67,7 +69,10 @@ export default function ServiceCard({
                     {description}
                 </p>
                 <p className="mb-3 text-2xl text-btn-bg">{start_price === end_price ? `${start_price} ₽` : `${start_price} ₽ - ${end_price} ₽`} </p>
-                <div className='flex flex-wrap items-center justify-between gap-2'>
+                {slots.length > 10 && <button onClick={() => toggleSlotPanel()} className='cursor-pointer mb-4 text-xs border border-white px-1 py-0.5 rounded-sm block mx-auto'>{expandSlotPanel ? 'Свернуть' : 'Раскрыть'}</button>}
+                <div className={cn('flex flex-wrap items-center justify-between gap-2 overflow-clip transition-all duration-300 ease-in-out',
+                    expandSlotPanel ? 'max-h-[80px]' : 'max-h-[2000px]'
+                )}>
                     {slots && slots.map(slot => (
                         <button disabled={isLoading} key={`slot-${slot.id}`} onClick={() => isLoggedIn ? onClick(slot.time, service, slot) : toggleLoginDialog(true)} className='px-3 py-1.5 rounded-full bg-btn-bg cursor-pointer font-medium hover:bg-btn-hover transition-colors duration-200 ease-in'>{slot.time}</button>
                     ))}
