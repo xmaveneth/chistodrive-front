@@ -29,3 +29,25 @@ export async function getReviews(
 
     return response.data;
 }
+
+export async function createReviewReply(
+    review_uuid: string,
+    comment: string,
+): Promise<string> {
+    const response = await axiosInstance.post<string>('/api/review/create_reply', {
+        review_uuid,
+        comment,
+    });
+
+    return response.data;
+}
+
+export async function deleteReviewReply(
+    review_uuid: string
+): Promise<string> {
+    const response = await axiosInstance.delete<string>(
+        `/api/review/delete-reply?review_uuid=${review_uuid}`
+    );
+
+    return response.data;
+}

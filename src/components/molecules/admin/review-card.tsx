@@ -3,6 +3,9 @@ import Avatar from "@/assets/svgs/avatar.svg"
 import { formatDateForReviews } from "@/lib/utils/format-date";
 import Rating from "@mui/material/Rating";
 import { ReviewImage } from "../account/show-review-dialog";
+import useToggle from "@/lib/hooks/utils/use-toggle";
+import DialogLayout from "@/components/layouts/dialog-layout";
+import LeaveReviewReplyDialog from "./leave-review-reply-dialog";
 
 type ReviewCardProps = {
     review: AdminReview;
@@ -10,6 +13,8 @@ type ReviewCardProps = {
 }
 
 export default function ReviewCard({ isNew = false, review }: ReviewCardProps) {
+    const [showPopup, togglePopup] = useToggle(false);
+
     return <div className="mb-3">
         <div className="bg-white/10 rounded-xl pt-3.5 pb-7 px-5 space-y-2.5">
             <div className="flex items-center gap-4">
@@ -35,7 +40,7 @@ export default function ReviewCard({ isNew = false, review }: ReviewCardProps) {
             )}
 
             {isNew && <div className="px-4">
-                <button className="text-sm block mt-6 text-white ml-auto cursor-pointer transition-opacity hover:opacity-80">Ответить на отзыв</button>
+                <button onClick={() => togglePopup(true)} className="text-sm block mt-6 text-white ml-auto cursor-pointer transition-opacity hover:opacity-80">Ответить на отзыв</button>
             </div>}
 
         </div>
@@ -45,5 +50,19 @@ export default function ReviewCard({ isNew = false, review }: ReviewCardProps) {
                 <div className="text-sm xs:text-base md:text-sm lg:text-base">{review.review_reply?.comment}</div>
             </div>
         )}
+
+        {isNew && <DialogLayout
+            isOpen={showPopup}
+            closeDialog={() => {
+                togglePopup(false);
+            }}
+            title="Ответ на отзыв"
+            description="Оставьте отзыв, чтобы его видели все"
+        >
+            <LeaveReviewReplyDialog
+                review={review}
+                closeDialog={() => { togglePopup(false) }}
+            />
+        </DialogLayout>}
     </div>
 }
