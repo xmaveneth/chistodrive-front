@@ -10,6 +10,11 @@ export function formatDate(date: Date, options = defaultDateOptions) {
     return new Intl.DateTimeFormat(undefined, options).format(date);
 }
 
+export function formatDateForReviews(dateString: string): string {
+    const parsed = parse(dateString, 'yyyy-MM-dd', new Date());
+    return format(parsed, 'd MMMM yyyy', { locale: ru });
+}
+
 /* export function formatDateFromString(date: string) {
     return format(parse(date, 'dd-MM-yyyy', new Date()), 'yyyy-MM-dd');
 }

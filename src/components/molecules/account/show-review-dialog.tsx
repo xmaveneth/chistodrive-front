@@ -80,7 +80,7 @@ function TitleLine({ title, description }: TitleLineProps) {
 type ReviewImageProps = {
     img: string;
 }
-function ReviewImage({ img }: ReviewImageProps) {
+export function ReviewImage({ img }: ReviewImageProps) {
     const [isLoading, setIsLoading] = useState(true);
 
     return (<div className="bg-black rounded-md relative min-h-20 overflow-clip">

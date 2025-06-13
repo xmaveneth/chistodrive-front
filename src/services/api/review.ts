@@ -1,3 +1,4 @@
+import { AdminReviewsResponse } from "@/lib/types/reviews";
 import { axiosInstance } from "./axios-instance";
 
 export async function postReview(data: FormData) {
@@ -19,3 +20,12 @@ export async function deleteReview(
     return response.data;
 }
 
+export async function getReviews(
+    car_wash_id: number
+): Promise<AdminReviewsResponse> {
+    const response = await axiosInstance.get<AdminReviewsResponse>(
+        `/api/car_wash/${car_wash_id}/reviews`
+    );
+
+    return response.data;
+}
