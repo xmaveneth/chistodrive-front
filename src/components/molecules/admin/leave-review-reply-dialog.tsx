@@ -7,6 +7,7 @@ import Rating from "@mui/material/Rating";
 import { useState } from "react";
 import { ReviewImage } from "../account/show-review-dialog";
 import { Textarea } from "@headlessui/react";
+import { cn } from "@/lib/utils";
 
 type LeaveReviewReplyDialogProps = {
     closeDialog: () => void;
@@ -18,15 +19,24 @@ export default function LeaveReviewReplyDialog({
 }: LeaveReviewReplyDialogProps) {
     const { mutate, isPending } = useLeaveReply(closeDialog);
     const [comment, setComment] = useState('');
+    const [error, setError] = useState('');
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        setError("");
         if (review == null) return;
+
+        if (comment === "") {
+            setError("Пожалуйста, оставьте напишите ответ к комментарию");
+            return;
+        }
+        if (comment.length < 10) {
+            setError("Пожалуйста, оставьте более подробный комментарий");
+            return;
+        }
 
         mutate({ review_uuid: review.review_uuid, comment: comment })
     };
-
-    if (review?.media == null || review.comment == null || review.rating == null) return null;
 
     return (
         <form className="my-10 space-y-2" onSubmit={(e) => { handleSubmit(e) }} encType='multipart/form-data'>
@@ -57,7 +67,9 @@ export default function LeaveReviewReplyDialog({
 
                 </div>
 
-                <Textarea onChange={(e) => setComment(e.target.value)} value={comment} placeholder='Напишите комментарий' className="rounded-lg bg-white/10 w-full px-4 py-2 min-h-30" maxLength={480} />
+                <Textarea onChange={(e) => setComment(e.target.value)} value={comment} placeholder='Напишите комментарий' className={cn("rounded-lg bg-white/10 w-full px-4 py-2 min-h-30", error.length > 0 && "border border-red-500")} maxLength={480} />
+
+                {error.length > 0 && <p className="text-red-500 text-sm">{error}</p>}
 
             </div>
 

@@ -43,10 +43,10 @@ export async function createReviewReply(
 }
 
 export async function deleteReviewReply(
-    review_uuid: string
+    reply_uuid: string
 ): Promise<string> {
     const response = await axiosInstance.delete<string>(
-        `/api/review/delete-reply?review_uuid=${review_uuid}`
+        `/api/review/delete_reply?reply_uuid=${reply_uuid}`
     );
 
     return response.data;

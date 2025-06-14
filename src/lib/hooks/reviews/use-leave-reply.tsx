@@ -17,12 +17,8 @@ export function useLeaveReply(closeModal: () => void) {
             notify('Ответ на отзыв успешно оставлен!');
             closeModal();
             queryClient.invalidateQueries({
-                queryKey: [QUERY_KEYS.REVIEWS],
+                queryKey: [QUERY_KEYS.CARWASH_REVIEWS],
             });
-            queryClient.invalidateQueries({
-                queryKey: [QUERY_KEYS.CURRENT_USER],
-            });
-
         },
 
         onError: (error: unknown) => {

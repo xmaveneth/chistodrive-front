@@ -10,19 +10,16 @@ export function useDeleteReviewReply(closeModal: () => void) {
 
     return useMutation({
         mutationFn: ({
-            review_uuid
+            reply_uuid
         }: {
-            review_uuid: string;
-        }) => deleteReviewReply(review_uuid),
+            reply_uuid: string;
+        }) => deleteReviewReply(reply_uuid),
 
         onSuccess: () => {
             notify('Комментарий к отзыву успешно удален!');
             closeModal();
             queryClient.invalidateQueries({
-                queryKey: [QUERY_KEYS.REVIEWS],
-            });
-            queryClient.invalidateQueries({
-                queryKey: [QUERY_KEYS.CURRENT_USER],
+                queryKey: [QUERY_KEYS.CARWASH_REVIEWS],
             });
         },
 

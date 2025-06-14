@@ -6,6 +6,8 @@ import { ReviewImage } from "../account/show-review-dialog";
 import useToggle from "@/lib/hooks/utils/use-toggle";
 import DialogLayout from "@/components/layouts/dialog-layout";
 import LeaveReviewReplyDialog from "./leave-review-reply-dialog";
+import { Trash } from "lucide-react";
+import DeleteReviewReplyDialog from "./delete-review-reply-dialog";
 
 type ReviewCardProps = {
     review: AdminReview;
@@ -14,6 +16,7 @@ type ReviewCardProps = {
 
 export default function ReviewCard({ isNew = false, review }: ReviewCardProps) {
     const [showPopup, togglePopup] = useToggle(false);
+    const [showDeleteReplyPopup, toggleDeleteReplyPopup] = useToggle(false);
 
     return <div className="mb-3">
         <div className="bg-white/10 rounded-xl pt-3.5 pb-7 px-5 space-y-2.5">
@@ -44,10 +47,13 @@ export default function ReviewCard({ isNew = false, review }: ReviewCardProps) {
             </div>}
 
         </div>
-        {isNew === false && (
-            <div className="mt-4 ml-auto w-4/5 bg-white/10 rounded-xl pt-3.5 pb-7 px-5 space-y-2.5">
+        {isNew === false && review.review_reply != null && (
+            <div className="mt-4 ml-auto w-4/5 bg-white/10 rounded-xl pt-3.5 pb-7 px-5 space-y-2.5 relative">
                 <p className="text-xs text-white">Ответ на отзыв</p>
-                <div className="text-sm xs:text-base md:text-sm lg:text-base">{review.review_reply?.comment}</div>
+                <div className="text-sm xs:text-base md:text-sm lg:text-base">{review.review_reply.comment}</div>
+                <button onClick={() => toggleDeleteReplyPopup(true)} className="absolute right-3 cursor-pointer bottom-3 size-5">
+                    <Trash className="size-full" />
+                </button>
             </div>
         )}
 
@@ -62,6 +68,17 @@ export default function ReviewCard({ isNew = false, review }: ReviewCardProps) {
             <LeaveReviewReplyDialog
                 review={review}
                 closeDialog={() => { togglePopup(false) }}
+            />
+        </DialogLayout>}
+
+        {review.review_reply != null && <DialogLayout
+            title="Вы уверены что хотите удалить данный ответ?"
+            isOpen={showDeleteReplyPopup}
+            closeDialog={() => toggleDeleteReplyPopup(false)}
+        >
+            <DeleteReviewReplyDialog
+                reply={review.review_reply}
+                closeDialog={() => toggleDeleteReplyPopup(false)}
             />
         </DialogLayout>}
     </div>
