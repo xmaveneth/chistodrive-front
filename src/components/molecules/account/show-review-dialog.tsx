@@ -8,6 +8,7 @@ import useToggle from '@/lib/hooks/utils/use-toggle';
 import DialogLayout from '@/components/layouts/dialog-layout';
 import DeleteReviewDialog from './delete-review-dialog';
 import { Trash2Icon } from 'lucide-react';
+import Lighthouse from '@/components/organisms/shared/lighthouse';
 
 
 type ShowReviewDialogProps = {
@@ -87,14 +88,18 @@ type ReviewImageProps = {
 }
 export function ReviewImage({ img }: ReviewImageProps) {
     const [isLoading, setIsLoading] = useState(true);
+    const [showLighthouse, toggleLighthouse] = useToggle(false);
 
-    return (<div className="bg-black rounded-md relative min-h-20 overflow-clip">
-        <img onLoad={() => setIsLoading(false)} src={img} alt="" className='object-center object-cover size-full' />
-        {isLoading && (
-            <div className="inset-0 absolute z-10 flex items-center justify-center">
-                <span className='card-loader'></span>
-            </div>
-        )
-        }</div>
+    return (
+        <button onClick={() => toggleLighthouse(true)} className="bg-black cursor-pointer rounded-md relative min-h-20 overflow-clip">
+            <img onLoad={() => setIsLoading(false)}  src={img} alt="" className='object-center object-cover size-full' />
+            {isLoading && (
+                <div className="inset-0 absolute z-10 flex items-center justify-center">
+                    <span className='card-loader'></span>
+                </div>
+            )}
+
+            <Lighthouse img={img} closeDialog={() => toggleLighthouse(false)} isOpen={showLighthouse}/>
+        </button>
     )
 }
