@@ -3,8 +3,11 @@ import Rating from '@mui/material/Rating';
 import PrimaryBtn from '@/components/atoms/primary-btn';
 import { ArchivedAppointment } from '@/lib/types/user';
 import { formatDateForScripts, formatTimeToHHMM } from '@/lib/utils/format-date';
-import { useDeleteReview } from '@/lib/hooks/reviews/use-delete-review';
 import { useState } from 'react';
+import useToggle from '@/lib/hooks/utils/use-toggle';
+import DialogLayout from '@/components/layouts/dialog-layout';
+import DeleteReviewDialog from './delete-review-dialog';
+import { Trash2Icon } from 'lucide-react';
 
 
 type ShowReviewDialogProps = {
@@ -15,19 +18,16 @@ export default function ShowReviewDialog({
     closeDialog,
     entry
 }: ShowReviewDialogProps) {
-    const { mutate, isPending } = useDeleteReview(closeDialog);
-
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        if (entry.review == null) return;
-
-        mutate({ review_uuid: entry.review.review_uuid })
-    };
+    const [showPopup, togglePopup] = useToggle(false);
 
     if (entry.review?.media == null || entry.review.comment == null || entry.review.rating == null) return null;
 
     return (
-        <form className="my-10 space-y-2" onSubmit={(e) => { handleSubmit(e) }} encType='multipart/form-data'>
+        <div className="my-10 space-y-2">
+            <button onClick={() => togglePopup(true)} className="absolute left-4 top-4 size-4 cursor-pointer transition-opacity hover:opacity-90">
+                <Trash2Icon className='size-full' />
+                <span className="block absolute -inset-2"></span>
+            </button>
             <div className="space-y-2 my-8">
                 <TitleLine title='Автомойка' description={entry.car_wash_name} />
                 <TitleLine title='Время и дата визита' description={`${formatDateForScripts(entry.date)} ${formatTimeToHHMM(entry.time)}`} />
@@ -40,24 +40,17 @@ export default function ShowReviewDialog({
                     <Rating name="read-only" value={entry.review.rating} readOnly />
                 </div>
                 <div className="rounded-lg bg-white/10 w-full px-4 py-2 text-sm">Ваш комментарий: <span className='text-white'>{entry.review.comment}</span></div>
-                <div className='rounded-lg bg-white/10 w-full p-2'>
 
-                    {entry.review.media.length > 0 && (
-                        <div className="grid grid-cols-3 gap-2">
-                            {entry.review.media.map((file, index) => (
-                                <ReviewImage key={index} img={file} />
-                            ))}
-                        </div>
-                    )}
-
-                </div>
+                {entry.review.media.length > 0 && (<div className='rounded-lg bg-white/10 w-full p-2'>
+                    <div className="grid grid-cols-3 gap-2">
+                        {entry.review.media.map((file, index) => (
+                            <ReviewImage key={index} img={file} />
+                        ))}
+                    </div>
+                </div>)}
 
                 {entry.review_reply && <div className="rounded-lg bg-white/10 w-full px-4 py-2 text-sm">Ответ на отзыв: <span className='text-white'>{entry.review_reply.comment}</span></div>}
             </div>
-
-            <PrimaryBtn type="submit" disabled={isPending} className="w-full">
-                Удалить комментарий
-            </PrimaryBtn>
 
             <PrimaryBtn
                 type="button"
@@ -66,7 +59,19 @@ export default function ShowReviewDialog({
             >
                 Вернуться назад
             </PrimaryBtn>
-        </form>
+
+            <DialogLayout
+                title="Вы уверены что хотите удалить данный комментарий?"
+                isOpen={showPopup}
+                closeDialog={() => togglePopup(false)}
+            >
+                <DeleteReviewDialog
+                    review_uuid={entry.review.review_uuid}
+                    closeDialog={() => togglePopup(false)}
+                />
+            </DialogLayout>
+
+        </div>
     );
 }
 type TitleLineProps = {

@@ -6,7 +6,9 @@ export default function AdminReviews() {
     const { id } = useParams();
     const { data: reviews, isLoading } = useCarwashReviews(Number(id));
 
-    if (isLoading) return <div>Loading...</div>
+    
+    if (isLoading) return <Skeleton />
+
     return (
         <div className="flex flex-wrap flex-col md:flex-row md:items-start items-center gap-6">
             <div className="flex-1 w-full grid gap-4">
@@ -25,4 +27,19 @@ export default function AdminReviews() {
                 ))}
             </div>
         </div>);
+}
+
+function Skeleton() {
+    return (<div className="flex flex-wrap flex-col md:flex-row md:items-start items-center gap-6">
+            <div className="flex-1 w-full grid gap-4">
+                <div className="text-left mb-2 w-max">
+                    Новые
+                </div>
+                <div className="rounded-xl w-full h-50 bg-gray-100 animate-pulse"></div>
+            </div>
+            <div className="flex-1 w-full grid gap-4">
+                <p className="text-left mb-2">Архив</p>
+                <div className="rounded-xl w-full h-50 bg-gray-100 animate-pulse"></div>
+            </div>
+        </div>)
 }
