@@ -17,7 +17,7 @@ export default function AdminReviews() {
                     <div className="absolute size-5 rounded-full bg-btn-bg -right-7 font-medium text-sm top-1 -translate-y-1/2 flex items-center justify-center p-1">{reviews?.reviews.new.length}</div>
                 </div>
                 {reviews?.reviews.new.map((review, idx) => (
-                    <ReviewCard key={`new-review-card-${idx}`} review={review} isNew={true} />
+                    <ReviewCard key={`new-review-card-${idx}`} review={review} />
                 ))}
             </div>
             <div className="flex-1 w-full grid gap-4">

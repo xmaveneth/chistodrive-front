@@ -11,10 +11,9 @@ import DeleteReviewReplyDialog from "./delete-review-reply-dialog";
 
 type ReviewCardProps = {
     review: AdminReview;
-    isNew?: boolean;
 }
 
-export default function ReviewCard({ isNew = false, review }: ReviewCardProps) {
+export default function ReviewCard({ review }: ReviewCardProps) {
     const [showPopup, togglePopup] = useToggle(false);
     const [showDeleteReplyPopup, toggleDeleteReplyPopup] = useToggle(false);
 
@@ -42,12 +41,12 @@ export default function ReviewCard({ isNew = false, review }: ReviewCardProps) {
                 </div>
             )}
 
-            {isNew && <div className="px-4">
+            {!review.is_review_reply_exist && <div className="px-4">
                 <button onClick={() => togglePopup(true)} className="text-sm block mt-6 text-white ml-auto cursor-pointer transition-opacity hover:opacity-80">Ответить на отзыв</button>
             </div>}
 
         </div>
-        {isNew === false && review.review_reply != null && (
+        {review.is_review_reply_exist && review.review_reply != null && (
             <div className="mt-4 ml-auto w-4/5 bg-white/10 rounded-xl pt-3.5 pb-7 px-5 space-y-2.5 relative">
                 <p className="text-xs text-white">Ответ на отзыв</p>
                 <div className="text-sm xs:text-base md:text-sm lg:text-base">{review.review_reply.comment}</div>
@@ -57,7 +56,7 @@ export default function ReviewCard({ isNew = false, review }: ReviewCardProps) {
             </div>
         )}
 
-        {isNew && <DialogLayout
+        {!review.is_review_reply_exist && <DialogLayout
             isOpen={showPopup}
             closeDialog={() => {
                 togglePopup(false);
