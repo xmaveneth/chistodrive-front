@@ -32,6 +32,8 @@ export default function CarwashLayout() {
 
     if (isError) return <p>Ошибка загрузки мойки</p>;
 
+    const reviewNum = carwash?.data.review_num;
+    const appointmentNum = carwash?.data.appointment_num;
     return (
         <div>
             <div
@@ -53,6 +55,8 @@ export default function CarwashLayout() {
                     </button>
 
                     <LayoutBottomNav
+                        appointmentNum={appointmentNum}
+                        reviewNum={reviewNum}
                         carwashId={parsedId}
                         isVisible={showActions}
                     />

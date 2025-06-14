@@ -10,6 +10,8 @@ export type CarWash = {
     location: string;
     telephone: string;
     schedule: WorkDay[];
+    appointment_num: number; 
+    review_num: number;
 };
 
 export type CarWashListResponse = {
