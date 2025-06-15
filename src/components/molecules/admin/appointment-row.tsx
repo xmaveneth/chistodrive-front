@@ -25,7 +25,7 @@ export default function AppointmentRow({
         );
     }
     return (
-        <div className="w-392 sm:w-452 text-center grid grid-cols-[60px_1fr_1fr_250px_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1.5fr_60px] divide-x-1 mx-4 divide-white/20 border-y border-white/20">
+        <div className="w-392 sm:w-452 text-center grid grid-cols-[60px_1fr_1fr_250px_1fr_1fr_1fr_2fr_1fr_1fr_1fr_1.5fr_60px] divide-x-1 mx-4 divide-white/20 border-y border-white/20">
             <button
                 type="button"
                 onClick={onEdit}

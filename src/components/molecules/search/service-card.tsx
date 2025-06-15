@@ -71,7 +71,7 @@ export default function ServiceCard({
                 <p className="mb-3 text-2xl text-btn-bg">{start_price === end_price ? `${start_price} ₽` : `${start_price} ₽ - ${end_price} ₽`} </p>
                 {slots.length > 10 && <button onClick={() => toggleSlotPanel()} className='cursor-pointer mb-4 text-xs border border-white px-1 py-0.5 rounded-sm block mx-auto'>{expandSlotPanel ? 'Свернуть' : 'Раскрыть'}</button>}
                 <div className={cn('flex flex-wrap items-center justify-between gap-2 overflow-clip transition-all duration-300 ease-in-out',
-                    expandSlotPanel ? 'max-h-[80px]' : 'max-h-[2000px]'
+                    expandSlotPanel ? 'max-h-[2000px]' : 'max-h-[80px]'
                 )}>
                     {slots && slots.map(slot => (
                         <button disabled={isLoading} key={`slot-${slot.id}`} onClick={() => isLoggedIn ? onClick(slot.time, service, slot) : toggleLoginDialog(true)} className='px-3 py-1.5 rounded-full bg-btn-bg cursor-pointer font-medium hover:bg-btn-hover transition-colors duration-200 ease-in'>{slot.time}</button>
