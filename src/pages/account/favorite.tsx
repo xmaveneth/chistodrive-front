@@ -83,8 +83,8 @@ export default function AccountFavorite() {
         <section>
             <div className="flex md:hidden flex-col gap-4 lg:flex-row md:justify-between md:pt-3 md:gap-6">
                 <div className="md:flex-1">
-                    <p className="mb-3.5 text-sm sm:text-base md:text-lg md:mb-4.5">
-                        <div className="w-40 mb-4">
+                    <p className="mb-3.5 text-sm sm:text-base md:text-lg">
+                        <div className="w-40 mb-2">
                             <SelectMenu selected={selected} setSelected={setSelected} values={favoriteTypes} />
                         </div>
                     </p>
@@ -96,7 +96,7 @@ export default function AccountFavorite() {
             </div>
             <div className="hidden md:flex flex-col gap-4 lg:flex-row md:justify-between md:pt-3 md:gap-6">
                 <div className="md:flex-1">
-                    <p className="mb-3.5 text-sm sm:text-base md:text-lg md:mb-4.5">
+                    <p className="mb-2.5 text-sm sm:text-base md:text-lg">
                         Окно
                     </p>
 
@@ -128,40 +128,38 @@ export default function AccountFavorite() {
                             ))
                         )}
                     </div>
-                    <div className="md:flex-1">
-                        <p className="mb-3.5 text-sm sm:text-base md:text-lg md:mb-4.5">
-                            Автомойки
-                        </p>
 
-                        <div className="space-y-2 mb-3.5 md:space-y-5">
-                            {user != null ? (
-                                user.favourites.car_wash.length > 0 ? (
-                                    user.favourites.car_wash.map((carwash, idx) => (
-                                        <FavouriteCarwash
-                                            key={`${carwash.id}-${idx}`}
-                                            carwash={carwash}
-                                            deleteCarwash={() =>
-                                                setShowDeleteCarwashDialog(true)
-                                            }
-                                        />
-                                    ))
-                                ) : (
-                                    <NoItemsMessage />
-                                )
-                            ) : (
-                                range(1, 5).map((index) => (
-                                    <AccountItemSkeleton
-                                        key={`vehicle-skeleton-${index}`}
+                </div>
+                <div className="md:flex-1">
+                    <p className="mb-2.5 text-sm sm:text-base md:text-lg">
+                        Автомойки
+                    </p>
+
+                    <div className="space-y-2 mb-3.5 md:space-y-5">
+                        {user != null ? (
+                            user.favourites.car_wash.length > 0 ? (
+                                user.favourites.car_wash.map((carwash, idx) => (
+                                    <FavouriteCarwash
+                                        key={`${carwash.id}-${idx}`}
+                                        carwash={carwash}
+                                        deleteCarwash={() =>
+                                            setShowDeleteCarwashDialog(true)
+                                        }
                                     />
                                 ))
-                            )}
-                        </div>
+                            ) : (
+                                <NoItemsMessage />
+                            )
+                        ) : (
+                            range(1, 5).map((index) => (
+                                <AccountItemSkeleton
+                                    key={`vehicle-skeleton-${index}`}
+                                />
+                            ))
+                        )}
                     </div>
                 </div>
             </div>
-
-
-
 
             {selectedSlot != null && (
                 <DialogLayout
