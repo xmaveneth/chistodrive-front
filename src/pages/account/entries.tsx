@@ -30,30 +30,46 @@ export default function AccountEntries() {
 
     if (user == null || isLoading) return null;
 
-    const mobileReviews = selected === "Архив" ? user.appointments.archive : user.appointments.actual; 
+    const mobileReviews = selected === "Архив" ? user.appointments.archive : user.appointments.actual;
     return (
         <section>
             <div className="flex md:hidden flex-col gap-4 lg:flex-row md:justify-between md:pt-3 md:gap-6">
                 <div className="md:flex-1">
                     <div className="mb-3.5 text-sm sm:text-base md:text-lg md:mb-4.5">
-                    <div className="w-40 mb-4">
-                        <SelectMenu selected={selected} setSelected={setSelected} values={entryTypes} />
-                    </div>
+                        <div className="w-40 mb-4">
+                            <SelectMenu selected={selected} setSelected={setSelected} values={entryTypes} />
+                        </div>
 
                     </div>
 
                     <div className="space-y-3 mb-3.5 md:space-y-5">
-                        {mobileReviews.length > 0 ? mobileReviews.map((entry, idx) => (
-                            <AccountEntry
-                                key={`${entry.appointment_id}-${idx}`}
-                                entry={entry}
-                                onClick={() => {
-                                    setSelectedEntry(entry);
-                                    setShowAccountEntryDialog(true);
-                                    setSelectedEntryType(selected === "Архив" ? "archive" : "actual");
-                                }}
-                            />
-                        )) : <NoItemsMessage />}
+                        {mobileReviews.length > 0 ? (
+                            mobileReviews.map((entry, idx) => (
+                                selected === "Архив" ? (
+                                    <AccountAcrhived
+                                        key={`${entry.appointment_id}-${idx}`}
+                                        entry={entry}
+                                        onClick={() => {
+                                            setSelectedEntry(entry);
+                                            setShowAccountEntryDialog(true);
+                                            setSelectedEntryType("archive");
+                                        }}
+                                    />
+                                ) : (
+                                    <AccountEntry
+                                        key={`${entry.appointment_id}-${idx}`}
+                                        entry={entry}
+                                        onClick={() => {
+                                            setSelectedEntry(entry);
+                                            setShowAccountEntryDialog(true);
+                                            setSelectedEntryType("actual");
+                                        }}
+                                    />
+                                )
+                            ))
+                        ) : (
+                            <NoItemsMessage />
+                        )}
                     </div>
 
                     {selected === "Актуальные" && <AccountAddBtn onClick={() => setShowRedirectModal(true)} />}

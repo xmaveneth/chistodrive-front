@@ -12,9 +12,9 @@ export default function AdminReviews() {
     const { id } = useParams();
     const { data: reviews, isLoading } = useCarwashReviews(Number(id));
     const [selected, setSelected] = useState(reviewTypes[0]);
-    const mobileReviews = selected === "Новые" ? reviews?.reviews.new : reviews?.reviews.archive;
 
     if (isLoading) return <Skeleton />
+    const mobileReviews = selected === "Новые" ? reviews?.reviews.new : reviews?.reviews.archive;
 
     return (
         <>
