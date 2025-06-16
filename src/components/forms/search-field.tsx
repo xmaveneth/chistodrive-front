@@ -17,7 +17,6 @@ export default function SearchField({ value, onChange, placeholder, className }:
                 className="flex-1 shadow-none outline-none w-full"
                 value={value}
                 onChange={(e) => onChange(e.target.value)}
-                autoFocus
             />
             <MagnifyingGlassIcon className="size-4 md:size-5" />
         </Field>
