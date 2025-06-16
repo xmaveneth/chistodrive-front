@@ -19,7 +19,6 @@ export default function AdminCalendar() {
         formatDateToString(date)
     );
 
-    console.log(calendarData)
     const { mutate: clearDay, isPending: pendingClearAllDay } =
         useClearAllDay();
 
@@ -64,6 +63,7 @@ export default function AdminCalendar() {
                             checked={enabled}
                             onChange={setEnabled}
                             className="group ml-auto mt-2 relative flex h-7 w-14 cursor-pointer rounded-full bg-white/10 p-1 ease-in-out focus:not-data-focus:outline-none data-checked:bg-white/10 data-focus:outline data-focus:outline-white"
+                            disabled={pendingActivateDay || pendingDeactivateDay}
                         >
                             <span
                                 aria-hidden="true"
