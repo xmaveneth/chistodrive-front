@@ -1,19 +1,17 @@
+import SelectMenu from "@/components/atoms/select-menu";
 import ReviewCard from "@/components/molecules/admin/review-card";
 import { useCarwashReviews } from "@/lib/hooks/reviews/use-carwash-reviews";
-import { cn } from "@/lib/utils";
-import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from "@headlessui/react";
-import { CheckIcon, ChevronDownIcon } from "lucide-react";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 
-const reviewType = [
+const reviewTypes = [
     "Новые",
     "Архив"
 ];
 export default function AdminReviews() {
     const { id } = useParams();
     const { data: reviews, isLoading } = useCarwashReviews(Number(id));
-    const [selected, setSelected] = useState(reviewType[0]);
+    const [selected, setSelected] = useState(reviewTypes[0]);
     const mobileReviews = selected === "Новые" ? reviews?.reviews.new : reviews?.reviews.archive;
 
     if (isLoading) return <Skeleton />
@@ -23,40 +21,7 @@ export default function AdminReviews() {
             <div className="md:hidden space-y-4">
                 <div className="text-left mb-2 relative w-max">
                     <div className="w-40 mb-4">
-                        <Listbox value={selected} onChange={setSelected}>
-                            <ListboxButton
-                                className={cn(
-                                    'relative block w-full rounded-lg bg-white/5 py-1.5 pr-8 pl-3 text-left text-sm/6 text-white',
-                                    'focus:not-data-focus:outline-none data-focus:outline-2 data-focus:-outline-offset-2 data-focus:outline-white/25'
-                                )}
-                            >
-                                {selected}
-                                <ChevronDownIcon
-                                    className="group pointer-events-none absolute top-2.5 right-2.5 size-4 fill-white/60"
-                                    aria-hidden="true"
-                                />
-                            </ListboxButton>
-                            <ListboxOptions
-                                anchor="bottom"
-                                transition
-                                className={cn(
-                                    'w-(--button-width) rounded-xl border border-white/5 bg-black p-1 [--anchor-gap:--spacing(1)] focus:outline-none',
-                                    'transition duration-100 ease-in data-leave:data-closed:opacity-0'
-                                )}
-                            >
-                                {reviewType.map((type) => (
-                                    <ListboxOption
-                                        key={type}
-                                        value={type}
-                                        className="group flex cursor-default items-center gap-2 rounded-lg px-3 py-1.5 select-none data-focus:bg-white/10"
-                                    >
-                                        <CheckIcon className="invisible size-4 fill-white group-data-selected:visible" />
-                                        <div className="text-sm/6 text-white">{type}</div>
-                                    </ListboxOption>
-                                ))}
-                            </ListboxOptions>
-                        </Listbox>
-
+                        <SelectMenu selected={selected} setSelected={setSelected} values={reviewTypes} />
                     </div>
                 </div>
                 {mobileReviews?.map((review, idx) => (
