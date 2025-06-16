@@ -7,7 +7,8 @@ import { useCalendarData } from '@/lib/hooks/calendar/use-calendar-data';
 import { useClearAllDay } from '@/lib/hooks/calendar/use-clear-all-day';
 import { useDeactivateCalendarSlot } from '@/lib/hooks/calendar/use-deactivate-calendar-slot';
 import { formatDateToString } from '@/lib/utils/format-date';
-import { useState } from 'react';
+import { Switch } from '@headlessui/react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 export default function AdminCalendar() {
@@ -17,6 +18,8 @@ export default function AdminCalendar() {
         Number(id),
         formatDateToString(date)
     );
+
+    console.log(calendarData)
     const { mutate: clearDay, isPending: pendingClearAllDay } =
         useClearAllDay();
 
@@ -26,6 +29,21 @@ export default function AdminCalendar() {
     const { mutate: deactivateDay, isPending: pendingDeactivateDay } =
         useDeactivateCalendarSlot();
 
+    const [enabled, setEnabled] = useState(false);
+
+    useEffect(() => {
+        if (enabled) {
+            deactivateDay({
+                date: formatDateToString(date),
+                car_wash_id: Number(id),
+            })
+        } else {
+            activateDay({
+                date: formatDateToString(date),
+                car_wash_id: Number(id),
+            })
+        }
+    }, [enabled]);
     function selectDate(newDate: Date | null) {
         if (newDate == null) return;
 
@@ -39,7 +57,21 @@ export default function AdminCalendar() {
             <div className="relative">
                 <DatePicker value={date} onChange={selectDate} />
 
-                <div className="flex flex-col gap-4 items-end justify-end ml-auto lg:absolute lg:right-0 lg:bottom-0">
+                <div className="flex flex-col gap-4 items-end justify-between h-full ml-auto lg:absolute lg:right-0 lg:bottom-0">
+                    <div>
+                        <p>Вкл/Выкл день</p>
+                        <Switch
+                            checked={enabled}
+                            onChange={setEnabled}
+                            className="group ml-auto mt-2 relative flex h-7 w-14 cursor-pointer rounded-full bg-white/10 p-1 ease-in-out focus:not-data-focus:outline-none data-checked:bg-white/10 data-focus:outline data-focus:outline-white"
+                        >
+                            <span
+                                aria-hidden="true"
+                                className="pointer-events-none inline-block size-5 translate-x-0 rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out group-data-checked:translate-x-7"
+                            />
+                        </Switch>
+
+                    </div>
                     <PrimaryBtn
                         disabled={pendingClearAllDay}
                         onClick={() =>
@@ -51,32 +83,6 @@ export default function AdminCalendar() {
                         className="w-50 text-sm lg:text-base"
                     >
                         Очистить все
-                    </PrimaryBtn>
-
-                    <PrimaryBtn
-                        disabled={pendingDeactivateDay}
-                        className="w-50 text-sm lg:text-base"
-                        onClick={() =>
-                            deactivateDay({
-                                date: formatDateToString(date),
-                                car_wash_id: Number(id),
-                            })
-                        }
-                    >
-                        Деактивировать
-                    </PrimaryBtn>
-
-                    <PrimaryBtn
-                        disabled={pendingActivateDay}
-                        className="w-50 text-sm lg:text-base"
-                        onClick={() =>
-                            activateDay({
-                                date: formatDateToString(date),
-                                car_wash_id: Number(id),
-                            })
-                        }
-                    >
-                        Активировать
                     </PrimaryBtn>
                 </div>
             </div>
