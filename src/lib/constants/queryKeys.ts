@@ -27,4 +27,5 @@ export const QUERY_KEYS = {
     ADMIN_CALENDAR: 'admin_calendar',
     REVIEWS: 'reviews',
     CARWASH_REVIEWS: 'carwash_reviews',
+    CARWASH_ADMIN_SERVICES: 'carwash_admin_services',
 };

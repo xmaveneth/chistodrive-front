@@ -5,6 +5,7 @@ import {
     DocumentIcon,
 } from '@heroicons/react/24/solid';
 import { ArchiveBoxIcon, CalendarDaysIcon, UsersIcon } from '@heroicons/react/16/solid';
+import { ClipboardListIcon } from 'lucide-react';
 
 type LayoutBottomNavProps = {
     isVisible: boolean;
@@ -58,6 +59,13 @@ export default function LayoutBottomNav({
                 >
                     <CalendarDaysIcon className="text-btn-bg size-[1.5em]" />
                     Календарь
+                </AdminItemBtn>
+                <AdminItemBtn
+                    routeName={`/admin/carwash/${carwashId}/services`}
+                    className="text-xs sm:text-sm"
+                >
+                    <ClipboardListIcon className="text-btn-bg size-[1.5em]" />
+                    Услуги
                 </AdminItemBtn>
             </nav>
         </Transition>
