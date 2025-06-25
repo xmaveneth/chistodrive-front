@@ -8,7 +8,7 @@ import { useClearAllDay } from '@/lib/hooks/calendar/use-clear-all-day';
 import { useDeactivateCalendarSlot } from '@/lib/hooks/calendar/use-deactivate-calendar-slot';
 import { formatDateToString } from '@/lib/utils/format-date';
 import { Switch } from '@headlessui/react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 export default function AdminCalendar() {
