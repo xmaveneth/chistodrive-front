@@ -4,9 +4,9 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-    --font-display: 'Gilroy', ui-sans-serif, system-ui, sans-serif,
-        'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
-        'Noto Color Emoji';
+    --font-display: 'gilroy', ui-sans-serif, system-ui, sans-serif,
+        'apple color emoji', 'segoe ui emoji', 'segoe ui symbol',
+        'noto color emoji';
 
     --breakpoint-xs: 420px;
 

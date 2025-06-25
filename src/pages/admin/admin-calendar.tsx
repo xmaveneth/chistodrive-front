@@ -30,8 +30,9 @@ export default function AdminCalendar() {
 
     const [enabled, setEnabled] = useState(false);
 
-    useEffect(() => {
-        if (enabled) {
+    function handleDayToggle(newVal: boolean) {
+        setEnabled(newVal);
+        if (newVal === false) {
             deactivateDay({
                 date: formatDateToString(date),
                 car_wash_id: Number(id),
@@ -42,7 +43,8 @@ export default function AdminCalendar() {
                 car_wash_id: Number(id),
             })
         }
-    }, [enabled]);
+    }
+
     function selectDate(newDate: Date | null) {
         if (newDate == null) return;
 
@@ -58,10 +60,10 @@ export default function AdminCalendar() {
 
                 <div className="flex flex-col gap-4 items-end justify-between h-full ml-auto lg:absolute lg:right-0 lg:bottom-0">
                     <div>
-                        <p>Вкл/Выкл день</p>
+                        <p>Выкл/Вкл день</p>
                         <Switch
                             checked={enabled}
-                            onChange={setEnabled}
+                            onChange={handleDayToggle}
                             className="group ml-auto mt-2 relative flex h-7 w-14 cursor-pointer rounded-full bg-white/10 p-1 ease-in-out focus:not-data-focus:outline-none data-checked:bg-white/10 data-focus:outline data-focus:outline-white"
                             disabled={pendingActivateDay || pendingDeactivateDay}
                         >
