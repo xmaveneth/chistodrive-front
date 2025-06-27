@@ -1,10 +1,10 @@
-import { ServiceData } from "@/lib/types/services";
+import { ServiceResponse } from "@/lib/types/services";
 import { axiosInstance } from "./axios-instance";
 
 export async function getCarwashServices(
     car_wash_id: number
-): Promise<ServiceData> {
-    const response = await axiosInstance.get<ServiceData>(
+): Promise<ServiceResponse> {
+    const response = await axiosInstance.get<ServiceResponse>(
         `/api/car_wash/${car_wash_id}/services`
     );
     return response.data;
