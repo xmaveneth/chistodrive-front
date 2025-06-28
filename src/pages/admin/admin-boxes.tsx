@@ -64,7 +64,7 @@ export default function AdminBoxes() {
 
             <DialogLayout
                 title="Добавление нового бокса"
-                description="Заполните данные, чтобы добавить нового бокса"
+                description="Заполните данные, чтобы добавить новый бокс"
                 isOpen={showAddBoxDialog}
                 closeDialog={() => toggleAddBoxDialog(false)}
             >

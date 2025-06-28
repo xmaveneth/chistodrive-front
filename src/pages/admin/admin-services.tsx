@@ -1,20 +1,28 @@
 import AccountAddBtn from "@/components/atoms/account-add-btn";
+import DialogLayout from "@/components/layouts/dialog-layout";
+import AddServiceDialog from "@/components/molecules/admin/add-service-dialog";
+import DeleteServiceDialog from "@/components/molecules/admin/delete-service-dialog";
 import TableHead from "@/components/molecules/admin/table-head";
 import { useCarwashServices } from "@/lib/hooks/services/use-carwash-services";
+import { Service } from "@/lib/types/services";
 import { formatDateForScripts } from "@/lib/utils/format-date";
 import { PencilSquareIcon } from "@heroicons/react/16/solid";
 import { TrashIcon } from "lucide-react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 
 export default function AdminServices() {
     const { id } = useParams<{ id: string }>();
     const { data, isLoading } = useCarwashServices(Number(id));
+    const [selectedService, setSelectedService] = useState<Service | null>(null);
+    const [selectedServiceType, setSeletedServiceType] = useState<number | null>(null);
 
     if (isLoading) return <div>Loading...</div>;
 
     if (data == null) return null;
 
-    console.log(data.data);
+    console.log(data.service_categories)
+
     return (
 
         <div>
@@ -57,7 +65,7 @@ export default function AdminServices() {
                                                 </div>
                                                 <div className="p-3 flex items-center justify-center border-l border-white/20">
                                                     {' '}
-                                                    <button className="cursor-pointer">
+                                                    <button onClick={() => setSelectedService(item)} className="cursor-pointer">
                                                         <TrashIcon className="text-btn-bg size-4 mx-auto" />
                                                     </button>
                                                 </div>
@@ -67,7 +75,7 @@ export default function AdminServices() {
                                 )}
                                 <div className="py-3 mt-1 w-188 sm:w-290">
                                     <AccountAddBtn
-                                        onClick={() => { }
+                                        onClick={() => {setSeletedServiceType(service.service_category_id)}
                                         }
                                         className="sticky left-40 sm:left-52 mx-0 z-20 ml-40"
                                     />
@@ -76,6 +84,28 @@ export default function AdminServices() {
                         );
                     }
                 )}
+            <DialogLayout
+                title="Вы уверены что хотите удалить данную услугу?"
+                isOpen={selectedService != null}
+                closeDialog={() => setSelectedService(null)}
+            >
+                <DeleteServiceDialog
+                    selectedService={selectedService}
+                    closeDialog={() => setSelectedService(null)}
+                />
+            </DialogLayout>
+
+            <DialogLayout
+                title="Добавление новой услуги"
+                description="Заполните данные, чтобы добавить новую услугу"
+                isOpen={selectedServiceType != null}
+                closeDialog={() => setSeletedServiceType(null)}
+            >
+                <AddServiceDialog
+                    closeDialog={() => setSeletedServiceType(null)}
+                    selectedServiceType={selectedServiceType}
+                />
+            </DialogLayout>
         </div>
     )
 }
