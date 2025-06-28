@@ -17,11 +17,14 @@ export default function AdminServices() {
     const [selectedService, setSelectedService] = useState<Service | null>(null);
     const [selectedServiceType, setSeletedServiceType] = useState<number | null>(null);
 
+
     if (isLoading) return <div>Loading...</div>;
 
     if (data == null) return null;
 
-    console.log(data.service_categories)
+    const selectedServiceList = data.service_categories.find(cat => cat.service_category_id === selectedServiceType)?.service_types_list;
+
+    console.log(selectedServiceList)
 
     return (
 
@@ -103,7 +106,7 @@ export default function AdminServices() {
             >
                 <AddServiceDialog
                     closeDialog={() => setSeletedServiceType(null)}
-                    selectedServiceType={selectedServiceType}
+                    selectedServiceList={selectedServiceList || []}
                 />
             </DialogLayout>
         </div>
