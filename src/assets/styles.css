@@ -8,6 +8,7 @@
         'apple color emoji', 'segoe ui emoji', 'segoe ui symbol',
         'noto color emoji';
 
+    --font-rockstar: 'Rockstar';
     --breakpoint-xs: 420px;
 
     --color-background: oklch(0.17 0.0175 268.55);
