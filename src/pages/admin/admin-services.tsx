@@ -3,7 +3,9 @@ import DialogLayout from "@/components/layouts/dialog-layout";
 import AddServiceDialog from "@/components/molecules/admin/add-service-dialog";
 import DeleteServiceDialog from "@/components/molecules/admin/delete-service-dialog";
 import TableHead from "@/components/molecules/admin/table-head";
+import UpdateServiceDialog from "@/components/molecules/admin/update-service-dialog";
 import { useCarwashServices } from "@/lib/hooks/services/use-carwash-services";
+import useToggle from "@/lib/hooks/utils/use-toggle";
 import { Service } from "@/lib/types/services";
 import { formatDateForScripts } from "@/lib/utils/format-date";
 import { PencilSquareIcon } from "@heroicons/react/16/solid";
@@ -16,6 +18,8 @@ export default function AdminServices() {
     const { data, isLoading } = useCarwashServices(Number(id));
     const [selectedService, setSelectedService] = useState<Service | null>(null);
     const [selectedServiceType, setSeletedServiceType] = useState<number | null>(null);
+    const [selectedItem, setSelectedItem] = useState<Service | null>(null);
+    const [showCreateServiceDialog, toggleShowCreateServiceDialog] = useToggle(false);
 
 
     if (isLoading) return <div>Loading...</div>;
@@ -23,8 +27,6 @@ export default function AdminServices() {
     if (data == null) return null;
 
     const selectedServiceList = data.service_categories.find(cat => cat.service_category_id === selectedServiceType)?.service_types_list;
-
-    console.log(selectedServiceList)
 
     return (
 
@@ -53,7 +55,7 @@ export default function AdminServices() {
                                             <div
                                                 className="w-180 sm:w-282 grid grid-cols-[60px_1fr_1fr_1fr_60px] divide-x-1 mx-4 divide-white/20 border-y border-white/20 text-sm sm:text-base"
                                             >
-                                                <button className="py-3 cursor-pointer sticky left-0 z-10 flex items-center gap-2 justify-center bg-background text-btn-bg">
+                                                <button onClick={() => { setSelectedItem(item); setSeletedServiceType(service.service_category_id) }} className="py-3 cursor-pointer sticky left-0 z-10 flex items-center gap-2 justify-center bg-background text-btn-bg">
                                                     <PencilSquareIcon className="size-4" />
                                                     {itemIdx + 1}
                                                 </button>
@@ -78,7 +80,7 @@ export default function AdminServices() {
                                 )}
                                 <div className="py-3 mt-1 w-188 sm:w-290">
                                     <AccountAddBtn
-                                        onClick={() => {setSeletedServiceType(service.service_category_id)}
+                                        onClick={() => { setSeletedServiceType(service.service_category_id); toggleShowCreateServiceDialog(true)}
                                         }
                                         className="sticky left-40 sm:left-52 mx-0 z-20 ml-40"
                                     />
@@ -101,12 +103,25 @@ export default function AdminServices() {
             <DialogLayout
                 title="Добавление новой услуги"
                 description="Заполните данные, чтобы добавить новую услугу"
-                isOpen={selectedServiceType != null}
-                closeDialog={() => setSeletedServiceType(null)}
+                isOpen={showCreateServiceDialog}
+                closeDialog={() => toggleShowCreateServiceDialog(false)}
             >
                 <AddServiceDialog
-                    closeDialog={() => setSeletedServiceType(null)}
+                    closeDialog={() => toggleShowCreateServiceDialog(false)}
                     selectedServiceList={selectedServiceList || []}
+                />
+            </DialogLayout>
+
+            <DialogLayout
+                title="Обновление услуги"
+                description="Заполните данные, чтобы обновить услугу"
+                isOpen={selectedItem != null}
+                closeDialog={() => setSelectedItem(null)}
+            >
+                <UpdateServiceDialog
+                    closeDialog={() => setSelectedItem(null)}
+                    selectedServiceList={selectedServiceList || []}
+                    selectedItem={selectedItem}
                 />
             </DialogLayout>
         </div>

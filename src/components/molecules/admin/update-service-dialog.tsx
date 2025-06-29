@@ -1,26 +1,28 @@
 import PrimaryBtn from '@/components/atoms/primary-btn';
 import ErrorField from '@/components/forms/error-field';
 import SelectField from '@/components/forms/select-field';
-import { useCreateCarwashService } from '@/lib/hooks/services/use-create-carwash-service';
-import { ServiceType } from '@/lib/types/services';
+import { useUpdateCarwashService } from '@/lib/hooks/services/use-update-carwash-service';
+import { Service, ServiceType } from '@/lib/types/services';
 import { cn } from '@/lib/utils';
 import { Field, Input, Label } from '@headlessui/react';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-type AddServiceDialogProps = {
+type UpdateServiceDialogProps = {
     closeDialog: () => void;
     selectedServiceList: ServiceType[];
+    selectedItem: Service | null;
 };
-export default function AddServiceDialog({
+export default function UpdateServiceDialog({
     closeDialog,
     selectedServiceList,
-}: AddServiceDialogProps) {
+    selectedItem
+}: UpdateServiceDialogProps) {
     const { id } = useParams();
     const parsedId = Number(id);
-    const [serviceName, setServiceName] = useState('');
+    const [serviceName, setServiceName] = useState(selectedItem?.service_name || "");
     const [serviceNameError, setServiceNameError] = useState("");
-    const [serviceDescription, setServiceDescription] = useState('');
+    const [serviceDescription, setServiceDescription] = useState(selectedItem?.description || "");
     const [serviceDescriptionError, setServiceDescriptionError] = useState("");
 
     const values = selectedServiceList.map(item => {
@@ -31,7 +33,7 @@ export default function AddServiceDialog({
     })
 
     const [serviceTypeId, setServiceTypeId] = useState<number>(values[0]?.id || 0);
-    const { mutate: createService, isPending } = useCreateCarwashService(
+    const { mutate: updateService, isPending } = useUpdateCarwashService(
         parsedId,
         closeDialog
     );
@@ -40,7 +42,7 @@ export default function AddServiceDialog({
 
     function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
-        if (serviceTypeId == null) return;
+        if (serviceTypeId == null || selectedItem == null) return;
 
         setServiceNameError("");
         setServiceDescriptionError("");
@@ -65,7 +67,7 @@ export default function AddServiceDialog({
             return;
         }
 
-        createService({ name: serviceName, description: serviceDescription, service_type_id: serviceTypeId });
+        updateService({ name: serviceName, description: serviceDescription, service_type_id: serviceTypeId, service_id: selectedItem.service_id });
     }
 
     return (
@@ -130,7 +132,7 @@ export default function AddServiceDialog({
                 className="w-full"
                 type='submit'
             >
-                Добавить услугу
+                Обновить услугу
             </PrimaryBtn>
             <PrimaryBtn
                 onClick={closeDialog}

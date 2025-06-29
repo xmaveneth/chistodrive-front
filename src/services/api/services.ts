@@ -28,6 +28,26 @@ export async function createCarwashService(
     return response.data;
 }
 
+export async function updateCarwashService(
+    car_wash_id: number,
+    name: string,
+    description: string,
+    service_id: number,
+    service_type_id: number,
+): Promise<string> {
+    const response = await axiosInstance.put<string>(
+        `/api/car_wash/${car_wash_id}/services`,
+        { 
+            name: name,
+            description: description,
+            service_id: service_id,
+            service_type_id: service_type_id
+        }
+    );
+
+    return response.data;
+}
+
 export async function deleteCarwashService(
     car_wash_id: number,
     service_id: number,
