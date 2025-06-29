@@ -2,6 +2,7 @@ import AccountAddBtn from "@/components/atoms/account-add-btn";
 import DialogLayout from "@/components/layouts/dialog-layout";
 import AddServiceDialog from "@/components/molecules/admin/add-service-dialog";
 import DeleteServiceDialog from "@/components/molecules/admin/delete-service-dialog";
+import ServicesSkeleton from "@/components/molecules/admin/services-skeleton";
 import TableHead from "@/components/molecules/admin/table-head";
 import UpdateServiceDialog from "@/components/molecules/admin/update-service-dialog";
 import { useCarwashServices } from "@/lib/hooks/services/use-carwash-services";
@@ -22,7 +23,7 @@ export default function AdminServices() {
     const [showCreateServiceDialog, toggleShowCreateServiceDialog] = useToggle(false);
 
 
-    if (isLoading) return <div>Loading...</div>;
+    if (isLoading) return <ServicesSkeleton />;
 
     if (data == null) return null;
 
@@ -39,7 +40,8 @@ export default function AdminServices() {
                                 <div className="my-6 md:text-lg">
                                     {service.service_category_ru_name}
                                 </div>
-                                <TableHead gridClass="grid-cols-[60px_1fr_1fr_1fr_60px]">
+                                <TableHead gridClass="grid-cols-[60px_1fr_1fr_2fr_1fr_60px]">
+                                    <div>Тип услуги</div>
                                     <div>Название</div>
                                     <div>Описание</div>
                                     <div>Дата добавления</div>
@@ -53,12 +55,15 @@ export default function AdminServices() {
                                         >
 
                                             <div
-                                                className="w-180 sm:w-282 grid grid-cols-[60px_1fr_1fr_1fr_60px] divide-x-1 mx-4 divide-white/20 border-y border-white/20 text-sm sm:text-base"
+                                                className="w-180 sm:w-282 grid grid-cols-[60px_1fr_1fr_2fr_1fr_60px] divide-x-1 mx-4 divide-white/20 border-y border-white/20 text-sm sm:text-base"
                                             >
                                                 <button onClick={() => { setSelectedItem(item); setSeletedServiceType(service.service_category_id) }} className="py-3 cursor-pointer sticky left-0 z-10 flex items-center gap-2 justify-center bg-background text-btn-bg">
                                                     <PencilSquareIcon className="size-4" />
                                                     {itemIdx + 1}
                                                 </button>
+                                                <div className="p-3 flex text-center text-balance items-center justify-center">
+                                                    {item.service_type}
+                                                </div>
                                                 <div className="p-3 flex text-center text-balance items-center justify-center">
                                                     {item.service_name}
                                                 </div>
@@ -80,7 +85,7 @@ export default function AdminServices() {
                                 )}
                                 <div className="py-3 mt-1 w-188 sm:w-290">
                                     <AccountAddBtn
-                                        onClick={() => { setSeletedServiceType(service.service_category_id); toggleShowCreateServiceDialog(true)}
+                                        onClick={() => { setSeletedServiceType(service.service_category_id); toggleShowCreateServiceDialog(true) }
                                         }
                                         className="sticky left-40 sm:left-52 mx-0 z-20 ml-40"
                                     />
