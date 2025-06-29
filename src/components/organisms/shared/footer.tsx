@@ -29,7 +29,7 @@ export default function Footer() {
 
                 <div className="flex items-center gap-3 sm:gap-6 md:mr-auto">
                     <Link
-                        to="/about"
+                        to="/"
                         className="block hover:underline underline-offset-4"
                     >
                         О сервисе
