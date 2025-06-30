@@ -83,7 +83,6 @@ export function CarwashSlotsProvider({
         searchSlots(currentFilters, {
             onSuccess: (data) => {
                 setServicesData(data);
-                console.log(data)
             },
         });
     };

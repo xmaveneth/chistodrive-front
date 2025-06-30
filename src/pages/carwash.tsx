@@ -1,3 +1,4 @@
+import NavMenuBtn from "@/components/atoms/nav-menu-btn";
 import AddressMap from "@/components/molecules/search/address-map";
 import SearchHeader from "@/components/molecules/search/search-header"
 import PrimaryFilters from "@/components/organisms/search/primary-filters";
@@ -6,18 +7,22 @@ import { useCarwashInfo } from "@/lib/hooks/carwash/use-carwash-info";
 import useSearchSlotsContext from "@/lib/hooks/context/use-search-slots-context";
 import { CarwashSlotsProvider } from "@/lib/providers/carwash-slots-provider";
 import { extractCarwashInfoAddresses } from "@/lib/utils/get-filter-options";
+import { useState } from "react";
 import { ErrorBoundary } from "react-error-boundary"
 import { useParams } from "react-router-dom"
 
 export default function Carwash() {
     const { id } = useParams();
     const parsedId = Number(id);
+    const [currentSection, setCurrentSection] = useState<'info' | 'reviews'>('info');
 
     const { data, isLoading } = useCarwashInfo(parsedId);
 
     if (data?.data == null) return null;
 
     const addresses = extractCarwashInfoAddresses(data);
+
+    console.log(data);
 
     return (
         <CarwashSlotsProvider>
@@ -40,7 +45,11 @@ export default function Carwash() {
                             <FilterWrapper />
                         </ErrorBoundary>
                     </div>
-                    {/* TODO */}
+                    <nav className="flex items-center max-w-125 mx-auto lg:max-w-154">
+                        <NavMenuBtn isActive={currentSection === 'info'} onClick={() => setCurrentSection('info')}>Инфо</NavMenuBtn>
+                        <NavMenuBtn isActive={currentSection === 'reviews'} onClick={() => setCurrentSection('reviews')}>Отзывы</NavMenuBtn>
+                    </nav>
+
                 </section>
             </div>
         </CarwashSlotsProvider>
