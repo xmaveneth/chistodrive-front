@@ -4,7 +4,7 @@ import PriceRangePicker from '@/components/forms/price-range-picker';
 import SelectField from '@/components/forms/select-field';
 import TimeRangePicker from '@/components/forms/time-range-picker';
 import FilterField from '@/components/molecules/search/filter-field';
-import { useSearchServicesContext } from '@/lib/hooks/context/use-search-services-context';
+import { FiltersResponse } from '@/lib/types/filters';
 
 import {
     getCarTypeOptions,
@@ -15,28 +15,29 @@ import {
     getServiceTypeOptions,
 } from '@/lib/utils/get-filter-options';
 
-export default function PrimaryFilters() {
-    const {
-        areFiltersLoading,
-        filters,
-        date,
-        setDate,
-        startTime,
-        endTime,
-        setStartTime,
-        setEndTime,
-        startPrice,
-        endPrice,
-        setStartPrice,
-        setEndPrice,
-        serviceCategoryId,
-        setServiceCategoryId,
-        serviceTypeId,
-        setServiceTypeId,
-        vehicleTypeId,
-        setVehicleTypeId,
-    } = useSearchServicesContext();
+type PrimaryFiltersProps = {
+    areFiltersLoading: boolean,
+    filters: FiltersResponse | undefined,
+    date: string;
+    setDate: (val: string) => void;
+    startTime: string;
+    endTime: string;
+    setStartTime: (val: string) => void;
+    setEndTime: (val: string) => void;
+    startPrice: number;
+    endPrice: number;
+    setStartPrice: (val: number) => void;
+    setEndPrice: (val: number) => void;
+    serviceCategoryId: number;
+    setServiceCategoryId: (val: number) => void;
+    serviceTypeId: number;
+    setServiceTypeId: (val: number) => void;
+    vehicleTypeId: number;
+    setVehicleTypeId: (val: number) => void;
 
+}
+
+export default function PrimaryFilters({ areFiltersLoading, filters, date, setDate, startTime, endTime, setStartTime, setEndTime, startPrice, endPrice, setStartPrice, setEndPrice, serviceCategoryId, setServiceCategoryId, serviceTypeId, setServiceTypeId, vehicleTypeId, setVehicleTypeId }: PrimaryFiltersProps) {
 
     if (areFiltersLoading || !filters) return <Skeleton />;
 

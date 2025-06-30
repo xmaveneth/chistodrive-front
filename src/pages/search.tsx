@@ -32,7 +32,7 @@ export default function Search() {
                         </h2>
 
                         <ErrorBoundary FallbackComponent={ErrorFallback}>
-                            <PrimaryFilters />
+                            <FilterWrapper />
                         </ErrorBoundary>
                     </div>
                     <ErrorBoundary FallbackComponent={ErrorFallback}>
@@ -50,4 +50,29 @@ function MapWrapper() {
     const addresses = convertToAddresses(servicesData?.data);
 
     return <AddressMap addresses={addresses} isLoading={areServicesLoading || areFiltersLoading} />
+}
+
+function FilterWrapper() {
+    const {
+        areFiltersLoading,
+        filters,
+        date,
+        setDate,
+        startTime,
+        endTime,
+        setStartTime,
+        setEndTime,
+        startPrice,
+        endPrice,
+        setStartPrice,
+        setEndPrice,
+        serviceCategoryId,
+        setServiceCategoryId,
+        serviceTypeId,
+        setServiceTypeId,
+        vehicleTypeId,
+        setVehicleTypeId,
+    } = useSearchServicesContext();
+
+    return <PrimaryFilters areFiltersLoading={areFiltersLoading} filters={filters} date={date} setDate={setDate} startTime={startTime} endTime={endTime} setStartTime={setStartTime} setEndPrice={setEndPrice} setEndTime={setEndTime} endPrice={endPrice} startPrice={startPrice} serviceCategoryId={serviceCategoryId} setServiceCategoryId={setServiceCategoryId} serviceTypeId={serviceTypeId} setServiceTypeId={setServiceTypeId} vehicleTypeId={vehicleTypeId} setVehicleTypeId={setVehicleTypeId} setStartPrice={setStartPrice} />;
 }
