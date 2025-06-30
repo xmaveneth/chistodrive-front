@@ -6,6 +6,8 @@ import TopFilters from '@/components/organisms/search/top-filters';
 import SearchResult from '@/components/organisms/search/search-results';
 import { ErrorBoundary } from 'react-error-boundary';
 import ErrorFallback from '@/components/organisms/shared/error-boundary';
+import { useSearchServicesContext } from '@/lib/hooks/context/use-search-services-context';
+import { convertToAddresses } from '@/lib/utils/get-filter-options';
 
 export default function Search() {
     return (
@@ -20,7 +22,7 @@ export default function Search() {
 
                     <div className="rounded-3xl overflow-clip z-0">
                         <ErrorBoundary FallbackComponent={ErrorFallback}>
-                            <AddressMap />
+                            <MapWrapper />
                         </ErrorBoundary>
                     </div>
 
@@ -40,4 +42,12 @@ export default function Search() {
             </div>
         </SearchServiceProvider>
     );
+}
+
+function MapWrapper() {
+    const { servicesData, areServicesLoading, areFiltersLoading } =
+        useSearchServicesContext();
+    const addresses = convertToAddresses(servicesData?.data);
+
+    return <AddressMap addresses={addresses} isLoading={areServicesLoading || areFiltersLoading} />
 }

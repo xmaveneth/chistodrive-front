@@ -1,6 +1,7 @@
 import { Address } from '@/lib/types/address';
 import { Filters, hasServiceTypes } from '@/lib/types/filters';
 import { ServiceResult } from '@/lib/utils/search-services';
+import { CarwashData } from '../types/carwash';
 
 type SelectOption = {
     id: number;
@@ -114,9 +115,22 @@ export function convertToAddresses(
 ): Address[] {
     return data
         ? data.map((item) => ({
-              name: item.car_wash_name,
-              lat: parseFloat(item.lat),
-              lng: parseFloat(item.lng),
-          }))
+            name: item.car_wash_name,
+            lat: parseFloat(item.lat),
+            lng: parseFloat(item.lng),
+        }))
         : [];
 }
+
+export function extractCarwashInfoAddresses(
+    data: CarwashData | undefined
+): Address[] {
+    return data
+        ? [{
+            name: data.data.name,
+            lat: parseFloat(data.data.lat),
+            lng: parseFloat(data.data.lng),
+        }]
+        : [];
+}
+

@@ -28,4 +28,6 @@ export const QUERY_KEYS = {
     REVIEWS: 'reviews',
     CARWASH_REVIEWS: 'carwash_reviews',
     CARWASH_ADMIN_SERVICES: 'carwash_admin_services',
+    CARWASH_INFO: 'carwash_info',
+    CARWASH_USER_REVIEWS: 'carwash_user_reviews',
 };

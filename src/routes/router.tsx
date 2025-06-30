@@ -1,4 +1,5 @@
 import { RootLayout } from '@/components/layouts/root-layout';
+import Carwash from '@/pages/carwash';
 import Home from '@/pages/home';
 import NotFound from '@/pages/not-found';
 import Policy from '@/pages/policy';
@@ -38,6 +39,7 @@ export const routes = [
             { path: 'search', element: <Search /> },
             { path: 'policy', element: <Policy /> },
             { path: 'rules', element: <Rules /> },
+            { path: 'carwash/:id', element: <Carwash />},
             {
                 path: 'account',
                 element: <AccountLayout />,
