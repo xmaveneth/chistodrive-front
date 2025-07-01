@@ -45,3 +45,14 @@ export const fetchSlots = async (
     return response.data;
 };
 
+export const fetchReviews = async (
+    car_wash_id: number,
+    page: number,
+): Promise<CarwashReviewsData> => {
+    const response = await axiosInstance.post<CarwashReviewsData>(
+        `/api/car_wash/${car_wash_id}/review_list`,
+        page
+    );
+    return response.data;
+};
+
