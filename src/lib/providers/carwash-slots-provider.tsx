@@ -28,7 +28,7 @@ type CarwashSlotsContextType = {
     setServiceTypeId: (val: number) => void;
     vehicleTypeId: number;
     setVehicleTypeId: (val: number) => void;
-    servicesData: CarwashServiceData | undefined;
+    slotsData: CarwashServiceData | undefined;
     areServicesLoading: boolean;
     isServicesError: boolean;
     userCars: {
@@ -55,7 +55,7 @@ export function CarwashSlotsProvider({
     const [startPrice, setStartPrice] = useState(100);
     const [endPrice, setEndPrice] = useState(9900);
     const [vehicleTypeId, setVehicleTypeId] = useState<number>(1);
-    const [servicesData, setServicesData] = useState<CarwashServiceData>({
+    const [slotsData, setServicesData] = useState<CarwashServiceData>({
         data: [],
     });
 
@@ -129,7 +129,7 @@ export function CarwashSlotsProvider({
                 setServiceTypeId,
                 vehicleTypeId,
                 setVehicleTypeId,
-                servicesData,
+                slotsData,
                 areServicesLoading,
                 isServicesError,
                 userCars: userCars,

@@ -17,6 +17,10 @@ type EntryDialogProps = {
     time: string;
     slot: Slot | null;
     closeDialog: () => void;
+    userCars: {
+        id: number;
+        label: string;
+    }[];
 };
 
 export default function EntryDialog({
@@ -25,9 +29,9 @@ export default function EntryDialog({
     time,
     slot,
     closeDialog,
+    userCars
 }: EntryDialogProps) {
     const { isError, data: user, isLoading } = useCurrentUser();
-    const { userCars } = useSearchServicesContext();
 
     const isLoggedIn = !(isError || !user);
 

@@ -6,6 +6,7 @@ export type CarwashData = {
         lng: string;
         name: string;
         location: string;
+        phone: string;
         description: string;
         rating: number;
         review_num: number;
@@ -18,6 +19,7 @@ export type CarwashData = {
 export type CarwashSlot = {
     slot_id: number;
     time: string;
+    price: number;
 };
 
 export type CarwashService = {

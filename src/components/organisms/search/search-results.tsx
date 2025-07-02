@@ -14,7 +14,9 @@ export default function SearchResult() {
         date,
         incrementCurrentPage,
         showIncrementPageBtn,
+        userCars
     } = useSearchServicesContext();
+
     const [showEntryDialog, setShowEntryDialog] = useState(false);
     const [selectedCarwash, setSelectedCarwash] =
         useState<ServiceResult | null>(null);
@@ -92,6 +94,7 @@ export default function SearchResult() {
                 closeDialog={() => setShowEntryDialog(false)}
             >
                 <EntryDialog
+                    userCars={userCars}
                     carwash={selectedCarwash}
                     date={date}
                     time={selectedTime}

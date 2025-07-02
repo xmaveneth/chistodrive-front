@@ -1,5 +1,5 @@
 import AddFavouriteBtn from "@/components/atoms/add-favourite-btn";
-import { CarwashData } from "@/lib/types/carwash"
+import { CarwashData, CarwashSlot } from "@/lib/types/carwash"
 import Rating from "@mui/material/Rating";
 import { MapPinIcon, Phone } from "lucide-react";
 import { ErrorBoundary } from "react-error-boundary";
@@ -8,6 +8,16 @@ import useSearchSlotsContext from "@/lib/hooks/context/use-search-slots-context"
 import PrimaryFilters from "../search/primary-filters";
 import { useState } from "react";
 import { conjugateReviewWord } from "@/lib/utils/conjugate-review-word";
+import { useCurrentUser } from "@/lib/hooks/auth/use-current-user";
+import { useAuthContext } from "@/lib/hooks/context/use-auth-context";
+import DialogLayout from "@/components/layouts/dialog-layout";
+import EntryDialog from "@/components/molecules/search/entry-dialog";
+import { useParams } from "react-router-dom";
+import transformCarwashData from "@/lib/utils/transformCarwashData";
+import transformCarwashSlot from "@/lib/utils/trasnformCarwashSlot";
+import { cn } from "@/lib/utils";
+import { CarwashGallery } from "@/components/molecules/home/carwash-gallery";
+import { formatTimeToHHMM } from "@/lib/utils/format-date";
 
 const Header = () => {
     return (
@@ -23,15 +33,52 @@ const Header = () => {
     )
 }
 
-const Slots = () => {
-    return (
-        <div>
+type SlotSectionProps = {
+    slots: CarwashSlot[];
+    onClick: (price: number, slot: CarwashSlot) => void;
+}
 
+const SlotSection: React.FC<SlotSectionProps> = ({ slots, onClick }) => {
+    const { isError, data: user, isLoading } = useCurrentUser();
+    const isLoggedIn = !(isError || !user);
+    const { toggleLoginDialog } = useAuthContext();
+
+    return (
+        <div className={cn('flex flex-wrap items-center gap-2 md:gap-x-3 overflow-clip transition-all duration-300 ease-in-out'
+        )}>
+            {slots && slots.map(slot => (
+                <button disabled={isLoading} key={`slot-${slot.slot_id}`} onClick={() => isLoggedIn ? onClick(slot.price, slot) : toggleLoginDialog(true)} className='px-3 py-1.5 rounded-full bg-btn-bg cursor-pointer font-medium hover:bg-btn-hover transition-colors duration-200 ease-in'>{formatTimeToHHMM(slot.time)}</button>
+            ))}
         </div>
     )
 }
 
-const Info: React.FC<{ carwashData: CarwashData }> = ({ carwashData }) => {
+type SlotsProps = {
+    onClick: (price: number, slot: CarwashSlot) => void;
+}
+
+const Slots: React.FC<SlotsProps> = ({ onClick }) => {
+    const { slotsData } = useSearchSlotsContext();
+
+    return (
+        <div>
+            {slotsData?.data.map((category, idx) => (
+                <div key={`category-group-${idx + 1}`}>
+                    <div className="mb-4 text-lg">{category.service_category_name}</div>
+                    {category.service_list.map((service, serviceIdx) => (
+                        <div key={`slot-group-${serviceIdx + 1}`} className="mb-5">
+                            <div className="my-2">{service.service_name}</div>
+                            <p className="mb-3 text-btn-bg">{service.start_price === service.end_price ? `${service.start_price} ₽` : `${service.start_price} ₽ - ${service.end_price} ₽`} </p>
+                            <SlotSection slots={service.slot_list} onClick={onClick} />
+                        </div>
+                    ))}
+                </div>
+            ))}
+        </div>
+    )
+}
+
+const Info: React.FC<{ carwashData: CarwashData, onClick: (price: number, slot: CarwashSlot) => void }> = ({ carwashData, onClick }) => {
     return (
         <div className="lg:flex-1 lg:order-1 text-sm md:text-base">
             <div className="flex items-start justify-between gap-2">
@@ -58,7 +105,7 @@ const Info: React.FC<{ carwashData: CarwashData }> = ({ carwashData }) => {
             <div className="mt-4">
                 <p className="flex items-center gap-3 mb-3 text-gray-300">
                     <Phone className="size-5 shrink-0 text-btn-bg" />
-                    {carwashData.data.location}
+                    {carwashData.data.phone}
                 </p>
                 <p className="flex items-center gap-3 mb-3 text-gray-300">
                     <MapPinIcon className="size-5 shrink-0 text-btn-bg" />
@@ -70,33 +117,8 @@ const Info: React.FC<{ carwashData: CarwashData }> = ({ carwashData }) => {
             </div>
 
             <div className="mt-4">
-                <Slots />
+                <Slots onClick={onClick} />
             </div>
-        </div>
-    )
-}
-
-const Gallery: React.FC<{ carwashData: CarwashData }> = ({ carwashData }) => {
-    const [imageIdx, setImageIdx] = useState(0);
-
-    const images = carwashData.data.media;
-
-    return (
-        <div className="lg:flex-1">
-            {images.length > 0 && (
-                <>
-                    <div className="aspect-[4/3] rounded-xl overflow-clip mb-2 md:mb-3">
-                        <img src={images[imageIdx]} alt="Фото автомойки" className="size-full object-cover object-center" />
-                    </div>
-                    <div className="flex items-center overflow-x-auto gap-2 md:gap-3 scrollbar-hidden">
-                        {images.map((img, idx) => (
-                            <button key={`media-${idx}`} onClick={() => setImageIdx(idx)} className="rounded-xl block cursor-pointer shrink-0 aspect-[4/3] overflow-clip" style={{width: 'calc((100% - 0.5rem) / 3)'}}>
-                                <img src={img} alt="Фото автомойки" className="size-full object-cover object-center"/>
-                            </button>
-                        ))}
-                    </div>
-                </>
-            )}
         </div>
     )
 }
@@ -106,13 +128,43 @@ type CarwashInfoProps = {
 }
 
 export default function CarwashInfo({ carwashData }: CarwashInfoProps) {
+    const [showEntryDialog, setShowEntryDialog] = useState(false);
+    const { date, userCars } = useSearchSlotsContext();
+    const { id } = useParams();
+    const [selectedSlot, setSelectedSlot] = useState<CarwashSlot | null>(null);
+    const [price, setPrice] = useState(0);
+
+    const serviceResult = transformCarwashData(carwashData, price, Number(id));
+    const slot = transformCarwashSlot(selectedSlot);
+
+    function handleTimeSelect(price: number, slot: CarwashSlot) {
+        setSelectedSlot(slot);
+        setPrice(price);
+        setShowEntryDialog(true);
+    }
+
     return (
         <>
             <Header />
             <section className="flex flex-col lg:flex-row gap-4.5 sm:gap-10 lg:items-start">
-                <Info carwashData={carwashData} />
-                <Gallery carwashData={carwashData} />
+                <Info carwashData={carwashData} onClick={handleTimeSelect} />
+                <CarwashGallery carwashData={carwashData} />
             </section>
+
+            <DialogLayout
+                isOpen={showEntryDialog}
+                closeDialog={() => setShowEntryDialog(false)}
+            >
+                {slot != null && <EntryDialog
+                    userCars={userCars}
+                    carwash={serviceResult}
+                    date={date}
+                    time={slot.time}
+                    slot={slot}
+                    closeDialog={() => setShowEntryDialog(false)}
+                />
+                }
+            </DialogLayout>
         </>
     )
 }
