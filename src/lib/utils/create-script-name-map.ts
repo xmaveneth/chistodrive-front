@@ -5,7 +5,7 @@ export function createScriptNameMap(scriptData: ScriptsResponse | undefined) {
 
     if (scriptData == null) return obj;
 
-    scriptData.data.forEach((script) => {
+    scriptData?.data?.forEach((script) => {
         obj[script.script_id] = script.script_name;
     });
 
@@ -19,7 +19,7 @@ export function createScriptVersionNameMap(
 
     if (scriptData == null) return obj;
 
-    scriptData.data.forEach((script) => {
+    scriptData?.data?.forEach((script) => {
         script.versions.forEach((version) => {
             obj[version.version_id] = version.version_name;
         });

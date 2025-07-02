@@ -46,7 +46,12 @@ export default function CarwashLayout() {
                     ref={modalRef}
                     className="flex items-center justify-center relative gap-2 max-w-75 sm:max-w-125 mx-auto sm:gap-4"
                 >
-                    {parsedId && <LayoutTopNav carwashId={parsedId} />}
+                    {parsedId && 
+                        <LayoutTopNav 
+                            reviewNum={reviewNum} 
+                            appointmentNum={appointmentNum} 
+                            carwashId={parsedId} />
+                    }
                     <button
                         onClick={() => toggleActions()}
                         className="aspect-square rounded-full bg-light-bg p-2 cursor-pointer transition-scale duration-250 ease-in hover:scale-110"
@@ -55,7 +60,6 @@ export default function CarwashLayout() {
                     </button>
 
                     <LayoutBottomNav
-                        appointmentNum={appointmentNum}
                         reviewNum={reviewNum}
                         carwashId={parsedId}
                         isVisible={showActions}

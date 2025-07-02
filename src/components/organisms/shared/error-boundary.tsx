@@ -1,10 +1,18 @@
 import PrimaryBtn from '@/components/atoms/primary-btn';
 import { FallbackProps } from 'react-error-boundary';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function ErrorFallback({
     error,
     resetErrorBoundary,
 }: FallbackProps) {
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    const handleRefresh = () => {
+        resetErrorBoundary(); 
+        navigate(location.pathname, { replace: true });
+    };
     return (
         <div
             role="alert"
@@ -15,7 +23,7 @@ export default function ErrorFallback({
                 <pre className="whitespace-pre-wrap text-sm">{error.message}</pre>
             </div>
             <div className='mt-6 sm:mt-0'>
-                <PrimaryBtn onClick={resetErrorBoundary}>Перезагрузить</PrimaryBtn>
+                <PrimaryBtn onClick={handleRefresh}>Перезагрузить</PrimaryBtn>
             </div>
         </div>
     );
