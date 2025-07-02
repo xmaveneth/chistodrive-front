@@ -2,6 +2,8 @@
 export type ScriptVersionTimeSlot = {
     slot_id: number; // e.g. 1
     time: string; // e.g. "10:00"
+    is_active: boolean;
+    is_booked: boolean;
 };
 
 // a worker with their available slots

@@ -51,7 +51,7 @@ export default function ScriptVersionTableRow({
                                     key={`slot-index-${slotIdx}`}
                                     className="flex items-center gap-1"
                                 >
-                                    <div className="rounded-full bg-input-bg px-3 py-2 text-sm">
+                                    <div className={cn("rounded-full bg-input-bg px-3 py-2 text-sm", slot.is_active ? "bg-[#BDA57E]" : "bg-[#181B24]", slot.is_booked && "bg-[#FFFFFF]")}>
                                         {formatTimeToHHMM(slot.time)}
                                     </div>
                                     <button onClick={() => onDelete(slot)} className="cursor-pointer">

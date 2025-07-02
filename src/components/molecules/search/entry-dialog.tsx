@@ -7,7 +7,6 @@ import { ServiceResult, Slot } from '@/lib/utils/search-services';
 import { MapPinIcon } from '@heroicons/react/16/solid';
 import { useState } from 'react';
 import { useDeleteFavouriteSlot } from '@/lib/hooks/carwashes/use-delete-favourite-slot';
-import { useSearchServicesContext } from '@/lib/hooks/context/use-search-services-context';
 import { SelectCarType } from '@/lib/types/filters';
 import AppoitmentEntryBtn from '@/components/atoms/appoitment-entry-btn';
 

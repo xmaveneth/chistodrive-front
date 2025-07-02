@@ -1,6 +1,8 @@
 export type ScheduleSlot = {
     slot_id: number;
-    time: string; // format: "HH:mm:ss"
+    time: string; 
+    is_active: boolean;
+    is_booked: boolean;
 };
 
 export type ScheduleWorker = {
