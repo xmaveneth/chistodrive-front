@@ -24,7 +24,7 @@ export default function AdminCalendar() {
     const [showClearDayDialog, toggleClearDayDialog] = useToggle(false);
 
     const { mutate: clearDay, isPending: pendingClearAllDay } =
-        useClearAllDay();
+        useClearAllDay(() => toggleClearDayDialog(false));
 
     const { mutate: activateDay, isPending: pendingActivateDay } =
         useActivateCalendarSlot();

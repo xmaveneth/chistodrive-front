@@ -4,7 +4,7 @@ import { clearAllCalendarDay } from '@/services/api/calendar';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 
-export function useClearAllDay() {
+export function useClearAllDay(closeDialog: () => void) {
     const queryClient = useQueryClient();
 
     return useMutation({
@@ -20,6 +20,7 @@ export function useClearAllDay() {
                 queryKey: [QUERY_KEYS.ADMIN_CALENDAR],
             });
             notify('Данные успешно очищены!');
+            closeDialog();
         },
         onError: (error: unknown) => {
             if (error instanceof AxiosError && error.response) {
