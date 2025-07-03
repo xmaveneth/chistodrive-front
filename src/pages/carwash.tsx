@@ -22,8 +22,6 @@ export default function Carwash() {
 
     const addresses = extractCarwashInfoAddresses(data);
 
-    console.log(data);
-
     return (
         <CarwashSlotsProvider>
             <div className="primary-px primary-py">

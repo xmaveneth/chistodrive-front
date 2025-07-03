@@ -6,7 +6,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import ErrorFallback from "../shared/error-boundary";
 import useSearchSlotsContext from "@/lib/hooks/context/use-search-slots-context";
 import PrimaryFilters from "../search/primary-filters";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { conjugateReviewWord } from "@/lib/utils/conjugate-review-word";
 import { useCurrentUser } from "@/lib/hooks/auth/use-current-user";
 import { useAuthContext } from "@/lib/hooks/context/use-auth-context";
@@ -18,6 +18,8 @@ import transformCarwashSlot from "@/lib/utils/trasnformCarwashSlot";
 import { cn } from "@/lib/utils";
 import { CarwashGallery } from "@/components/molecules/home/carwash-gallery";
 import { formatTimeToHHMM } from "@/lib/utils/format-date";
+import { useAddFavouriteCarwash } from "@/lib/hooks/carwash/use-add-favourite-carwash";
+import { useDeleteFavouriteCarwash } from "@/lib/hooks/carwash/use-delete-favourite-carwash";
 
 const Header = () => {
     return (
@@ -79,6 +81,44 @@ const Slots: React.FC<SlotsProps> = ({ onClick }) => {
 }
 
 const Info: React.FC<{ carwashData: CarwashData, onClick: (price: number, slot: CarwashSlot) => void }> = ({ carwashData, onClick }) => {
+
+    const { id } = useParams();
+    const { data: user } = useCurrentUser();
+
+    const isFavourite = user?.favourites.car_wash.find(
+                (fav_carwash) => fav_carwash.car_wash_id  === Number(id)
+            ) != null;
+
+    const { mutate: addFavouriteCarwash, isPending: isFavoritePending } =
+        useAddFavouriteCarwash(
+            () => {},
+            () => {}
+        );
+    const { mutate: deleteFavouriteCarwash, isPending: isDeleteFavoritePending } =
+        useDeleteFavouriteCarwash(
+            () => {},
+            () => {},
+        );
+
+    function handleAddFavourite() {
+
+        addFavouriteCarwash(Number(id));
+    }
+
+    function handleDeleteFavourite() {
+        if (user == null) return;
+
+        console.log(user.favourites.car_wash)
+        const favouriteSlot = user.favourites.car_wash.find(
+            (fav_carwash) => fav_carwash.car_wash_id === Number(id)
+        );
+
+        if (favouriteSlot == null) return;
+
+        deleteFavouriteCarwash(favouriteSlot.car_wash_id);
+    }
+
+
     return (
         <div className="lg:flex-1 lg:order-1 text-sm md:text-base">
             <div className="flex items-start justify-between gap-2">
@@ -93,12 +133,12 @@ const Info: React.FC<{ carwashData: CarwashData, onClick: (price: number, slot: 
                 </div>
 
                 <AddFavouriteBtn
-                    addClick={() => { }}
-                    deleteClick={() => { }}
-                    disabled={true}
+                    addClick={handleAddFavourite}
+                    deleteClick={handleDeleteFavourite}
+                    disabled={isFavoritePending || isDeleteFavoritePending}
                     sizeClass="size-5"
                     className="p-2"
-                    isAdded={false}
+                    isAdded={isFavourite}
                 />
 
             </div>

@@ -83,11 +83,11 @@ export default function AccountFavorite() {
         <section>
             <div className="flex md:hidden flex-col gap-4 lg:flex-row md:justify-between md:pt-3 md:gap-6">
                 <div className="md:flex-1">
-                    <p className="mb-3.5 text-sm sm:text-base md:text-lg">
+                    <div className="mb-3.5 text-sm sm:text-base md:text-lg">
                         <div className="w-40 mb-2">
                             <SelectMenu selected={selected} setSelected={setSelected} values={favoriteTypes} />
                         </div>
-                    </p>
+                    </div>
 
                     <div className="space-y-2 mb-3.5 md:space-y-5">
                         <RenderMobileFavorites />
