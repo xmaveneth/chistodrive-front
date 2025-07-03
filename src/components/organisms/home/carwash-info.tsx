@@ -6,7 +6,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import ErrorFallback from "../shared/error-boundary";
 import useSearchSlotsContext from "@/lib/hooks/context/use-search-slots-context";
 import PrimaryFilters from "../search/primary-filters";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { conjugateReviewWord } from "@/lib/utils/conjugate-review-word";
 import { useCurrentUser } from "@/lib/hooks/auth/use-current-user";
 import { useAuthContext } from "@/lib/hooks/context/use-auth-context";
@@ -108,7 +108,6 @@ const Info: React.FC<{ carwashData: CarwashData, onClick: (price: number, slot: 
     function handleDeleteFavourite() {
         if (user == null) return;
 
-        console.log(user.favourites.car_wash)
         const favouriteSlot = user.favourites.car_wash.find(
             (fav_carwash) => fav_carwash.car_wash_id === Number(id)
         );

@@ -29,8 +29,8 @@ type CarwashSlotsContextType = {
     vehicleTypeId: number;
     setVehicleTypeId: (val: number) => void;
     slotsData: CarwashServiceData | undefined;
-    areServicesLoading: boolean;
-    isServicesError: boolean;
+    areSlotsLoading: boolean;
+    isSlotsError: boolean;
     userCars: {
         id: number;
         label: string;
@@ -63,8 +63,8 @@ export function CarwashSlotsProvider({
 
     const {
         mutate: searchSlots,
-        isPending: areServicesLoading,
-        isError: isServicesError,
+        isPending: areSlotsLoading,
+        isError: isSlotsError,
     } = useSearchSlots(Number(id));
 
     const handleSearchClick = () => {
@@ -130,8 +130,8 @@ export function CarwashSlotsProvider({
                 vehicleTypeId,
                 setVehicleTypeId,
                 slotsData,
-                areServicesLoading,
-                isServicesError,
+                areSlotsLoading,
+                isSlotsError,
                 userCars: userCars,
             }}
         >

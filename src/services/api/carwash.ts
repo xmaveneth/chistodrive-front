@@ -51,7 +51,8 @@ export const fetchReviews = async (
 ): Promise<CarwashReviewsData> => {
     const response = await axiosInstance.post<CarwashReviewsData>(
         `/api/car_wash/${car_wash_id}/review_list`,
-        page
+        null,
+        { params: { page },},
     );
     return response.data;
 };
@@ -64,10 +65,10 @@ export async function addFavouriteCarwash(car_wash_id: number): Promise<string> 
 }
 
 export async function deleteFavouriteCarwash(
-    fav_car_wash_id: number
+    car_wash_id: number
 ): Promise<string> {
     const response = await axiosInstance.delete('/api/car_wash/favourite', {
-        params: { fav_car_wash_id },
+        params: { car_wash_id },
     });
 
     return response.data;
