@@ -22,3 +22,10 @@ export function pluralizeBox(n: number): string {
 
     return `${n} ${word}`;
 }
+
+export function pluralizeReview(n: number): string {
+    const form = getPluralForm(n);
+    const word = form === 'one' ? 'отзыв' : form === 'few' ? 'отзыва' : 'отзывов';
+
+    return `${n} ${word}`;
+}

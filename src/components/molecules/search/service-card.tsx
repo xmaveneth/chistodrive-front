@@ -4,6 +4,7 @@ import useToggle from '@/lib/hooks/utils/use-toggle';
 import { cn } from '@/lib/utils/cn';
 import { ServiceResult, Slot } from '@/lib/utils/search-services';
 import { MapPinIcon } from '@heroicons/react/24/solid';
+import Rating from '@mui/material/Rating';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -58,10 +59,15 @@ export default function ServiceCard({
                 )}
             </Link>
             <div className="p-2 pb-3.5 sm:p-3 sm:pb-4.5">
+                <div className="flex items-center gap-2 mb-2.5 text-xs">
+                    <div>{service.rating + ".0"}</div>
+                    <Rating name="read-only" value={service.rating} size="small" readOnly />
+                </div>
                 <p className="flex items-start gap-1 mb-2.5 text-sm min-h-[3em] text-white/70">
                     <MapPinIcon className="size-4 shrink-0 text-btn-bg" />
                     {address && address}
                 </p>
+
                 <p className="mb-2.5 text-2xl">{name}</p>
                 <div className="my-5">
                     <span className='px-8 block max-w-full text-balance py-3 rounded-full text-sm bg-background'>{serviceName}</span>

@@ -8,13 +8,9 @@ import { useParams } from "react-router-dom";
 import { ReviewImage } from "@/components/molecules/account/show-review-dialog";
 import { formatDateForReviews } from "@/lib/utils/format-date";
 import PrimaryBtn from "@/components/atoms/primary-btn";
-import { includes } from "lodash";
+import { pluralizeReview } from "@/lib/utils/pluralizer";
 
-type CarwashReviewsProps = {
-
-}
-
-export default function CarwashReviews({ }: CarwashReviewsProps) {
+export default function CarwashReviews() {
     const { id } = useParams();
     const [reviews, setReviews] = useState<CarwashReview[]>([]);
     const [page, setPage] = useState(0);
@@ -52,21 +48,27 @@ export default function CarwashReviews({ }: CarwashReviewsProps) {
         handleSearchClick(0);
     }, []);
 
+    if (isPending) return <Skeleton />
+
     return (
         <div className="max-w-125 mx-auto lg:max-w-154 mt-5 md:mt-7 xl:mt-10">
             <div>
-                <div className="flex mb-4 md:mb-8 items-center gap-2">
-                    <Rating name="read-only" value={rating.current} size="large" readOnly />
-                    <span className="text-white">{rating.current}</span>
-                    <span className="text-gray-300 ml-2">{totalReviews.current} {conjugateReviewWord(totalReviews.current)}</span>
+                <div className="flex mb-4 md:mb-8 items-center mx-auto w-max bg-white/10 px-5 py-4.5 gap-4 rounded-md">
+                    <div className="text-white text-4xl font-bold">{rating.current}</div>
+                    <div>
+                        <Rating name="read-only" value={rating.current} readOnly />
+                        <div className="text-gray-300 text-center -mt-1 text-xs">{totalReviews.current} {conjugateReviewWord(totalReviews.current)}</div>
+
+                    </div>
                 </div>
 
+                <div className="text-white md:text-lg mb-3"> {pluralizeReview(totalReviews.current)}</div>
                 <div className="space-y-4">
                     {reviews.map((review, idx) => (
                         <ReviewCard key={`archive-review-card-${idx}`} review={review} />
                     ))}
                 </div>
-                
+
                 <PrimaryBtn disabled={isPending} className="mx-auto mt-4 md:mt-8" onClick={incrementCurrentPage}>Показать еще</PrimaryBtn>
             </div>
         </div>
@@ -114,3 +116,22 @@ function ReviewCard({ review }: ReviewCardProps) {
         </>
     )
 }
+
+function Skeleton() {
+    return (
+        <div className="max-w-125 mx-auto lg:max-w-154 mt-5 md:mt-7 xl:mt-10">
+            <div className="mb-8 mx-auto w-70 rounded-xl h-20 bg-gray-100 animate-pulse">
+
+            </div>
+            <div className="w-full mb-4">
+                <div className="rounded-xl w-full h-50 bg-gray-100 animate-pulse"></div>
+            </div>
+            <div className="w-full mb-4">
+                <div className="rounded-xl w-full h-50 bg-gray-100 animate-pulse"></div>
+            </div>
+            <div className="w-full mb-4">
+                <div className="rounded-xl w-full h-50 bg-gray-100 animate-pulse"></div>
+            </div>
+        </div>)
+}
+

@@ -30,6 +30,7 @@ export type ServiceResult = {
     service_name: string;
     description: string;
     price: number;
+    rating: number;
     start_price: number;
     end_price: number;
     slots: Slot[];

@@ -131,14 +131,14 @@ const Info: React.FC<{ carwashData: CarwashData, onClick: (price: number, slot: 
                     </div>
                 </div>
 
-                <AddFavouriteBtn
+                {user != null && <AddFavouriteBtn
                     addClick={handleAddFavourite}
                     deleteClick={handleDeleteFavourite}
                     disabled={isFavoritePending || isDeleteFavoritePending}
                     sizeClass="size-5"
                     className="p-2"
                     isAdded={isFavourite}
-                />
+                />}
 
             </div>
             <div className="mt-4">
