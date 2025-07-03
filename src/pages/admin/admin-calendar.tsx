@@ -1,11 +1,14 @@
 import PrimaryBtn from '@/components/atoms/primary-btn';
+import DialogLayout from '@/components/layouts/dialog-layout';
 import AppliedScriptVersion from '@/components/molecules/admin/applied-script-version';
+import ClearDayDialog from '@/components/molecules/admin/clear-day-dialog';
 import { InitialScriptVersions } from '@/components/molecules/admin/initial-script-versions';
 import { DatePicker } from '@/components/organisms/admin/date-picker';
 import { useActivateCalendarSlot } from '@/lib/hooks/calendar/use-activate-calendar-slot';
 import { useCalendarData } from '@/lib/hooks/calendar/use-calendar-data';
 import { useClearAllDay } from '@/lib/hooks/calendar/use-clear-all-day';
 import { useDeactivateCalendarSlot } from '@/lib/hooks/calendar/use-deactivate-calendar-slot';
+import useToggle from '@/lib/hooks/utils/use-toggle';
 import { formatDateToString } from '@/lib/utils/format-date';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -17,6 +20,8 @@ export default function AdminCalendar() {
         Number(id),
         formatDateToString(date)
     );
+
+    const [showClearDayDialog, toggleClearDayDialog] = useToggle(false);
 
     const { mutate: clearDay, isPending: pendingClearAllDay } =
         useClearAllDay();
@@ -91,13 +96,7 @@ export default function AdminCalendar() {
                         Деактивировать
                     </PrimaryBtn>
                     <PrimaryBtn
-                        disabled={pendingClearAllDay}
-                        onClick={() =>
-                            clearDay({
-                                date_field: formatDateToString(date),
-                                car_wash_id: Number(id),
-                            })
-                        }
+                        onClick={() => toggleClearDayDialog(true)}
                         className="w-50 text-sm lg:text-base"
                     >
                         Очистить все
@@ -116,6 +115,22 @@ export default function AdminCalendar() {
                     {calendarData != null && <AppliedScriptVersion data={calendarData.slots} />}
                 </>
             )}
+
+            <DialogLayout
+                title="Вы уверены что хотите удалить все слоты на данный день?"
+                isOpen={showClearDayDialog}
+                closeDialog={() => toggleClearDayDialog(false)}
+            >
+                <ClearDayDialog
+                    isPending={pendingClearAllDay}
+                    onClick={() =>
+                            clearDay({
+                                date_field: formatDateToString(date),
+                                car_wash_id: Number(id),
+                            })}
+                    closeDialog={() => toggleClearDayDialog(false)}
+                />
+            </DialogLayout>
         </div>
     );
 }
