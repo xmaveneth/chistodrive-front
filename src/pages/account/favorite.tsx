@@ -8,7 +8,7 @@ import AccountSlotDialog from '@/components/molecules/account/account-slot-dialo
 import DeleteCarwashDialog from '@/components/molecules/account/delete-carwash-dialog';
 import DeleteSlotDialog from '@/components/molecules/account/delete-slot-dialog';
 import { useCurrentUser } from '@/lib/hooks/auth/use-current-user';
-import { FavouriteCarWash, FavouriteSlot } from '@/lib/types/user';
+import { FavouriteSlot } from '@/lib/types/user';
 import { range } from '@/lib/utils/range';
 import { useState } from 'react';
 
