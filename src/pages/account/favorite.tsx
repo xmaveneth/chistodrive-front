@@ -8,7 +8,7 @@ import AccountSlotDialog from '@/components/molecules/account/account-slot-dialo
 import DeleteCarwashDialog from '@/components/molecules/account/delete-carwash-dialog';
 import DeleteSlotDialog from '@/components/molecules/account/delete-slot-dialog';
 import { useCurrentUser } from '@/lib/hooks/auth/use-current-user';
-import { FavouriteSlot } from '@/lib/types/user';
+import { FavouriteCarWash, FavouriteSlot } from '@/lib/types/user';
 import { range } from '@/lib/utils/range';
 import { useState } from 'react';
 
@@ -21,6 +21,9 @@ export default function AccountFavorite() {
     const { data: user } = useCurrentUser();
 
     const [selectedSlot, setSelectedSlot] = useState<FavouriteSlot | null>(
+        null
+    );
+    const [selectedCarwashId, setSelectedCarwashId] = useState<number | null>(
         null
     );
     const [showSlotDialog, setShowSlotDialog] = useState(false);
@@ -70,8 +73,10 @@ export default function AccountFavorite() {
                 <FavouriteCarwash
                     key={`${carwash.id}-${idx}`}
                     carwash={carwash}
-                    deleteCarwash={() =>
-                        setShowDeleteCarwashDialog(true)
+                    deleteCarwash={() => {
+                        setShowDeleteCarwashDialog(true);
+                        setSelectedCarwashId(carwash.car_wash_id)
+                    }
                     }
                 />
             ))
@@ -142,8 +147,10 @@ export default function AccountFavorite() {
                                     <FavouriteCarwash
                                         key={`${carwash.id}-${idx}`}
                                         carwash={carwash}
-                                        deleteCarwash={() =>
+                                        deleteCarwash={() => {
+                                            setSelectedCarwashId(carwash.car_wash_id);
                                             setShowDeleteCarwashDialog(true)
+                                        }
                                         }
                                     />
                                 ))
@@ -190,6 +197,7 @@ export default function AccountFavorite() {
                 closeDialog={() => setShowDeleteCarwashDialog(false)}
             >
                 <DeleteCarwashDialog
+                    car_wash_id={selectedCarwashId}
                     closeDialog={() => setShowDeleteCarwashDialog(false)}
                 />
             </DialogLayout>
