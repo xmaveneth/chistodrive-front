@@ -23,8 +23,8 @@ export default function Footer() {
                 </Link>
 
                 <div className="flex items-center gap-1.5 xs:gap-2.5">
-                    <FooterSocial url="" html={vkSvg} />
-                    <FooterSocial url="" html={tgSvg} />
+                    <FooterSocial url="https://vk.com/chisto.drive" html={vkSvg} />
+                    <FooterSocial url="https://t.me/chisto_drive" html={tgSvg} />
                 </div>
 
                 <div className="flex items-center gap-3 sm:gap-6 md:mr-auto">

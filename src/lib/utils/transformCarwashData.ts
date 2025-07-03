@@ -7,6 +7,7 @@ export default function transformCarwashData(carwashData: CarwashData, price: nu
 
     const serviceResult: ServiceResult = {
         car_wash_id: id,
+        rating: extracted.rating,
         car_wash_name: extracted.name,
         address: extracted.location,
         lat: extracted.lat,
