@@ -10,7 +10,7 @@ export function formatUserCars(
     return (
         userVehicles[vehicleTypeId].map((car) => ({
             id: car.id,
-            label: car.brand,
+            label: car.brand + " " + car.reg_number,
         })) ?? []
     );
 }
