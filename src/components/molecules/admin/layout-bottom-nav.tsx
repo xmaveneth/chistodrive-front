@@ -57,7 +57,7 @@ export default function LayoutBottomNav({
                     Боксы
                 </AdminItemBtn>
                 <AdminItemBtn
-                    routeName={`/admin/carwash/${carwashId}`}
+                    routeName={`/admin/carwash/${carwashId}/scripts`}
                     className="text-xs sm:text-sm"
                 >
                     <WindowIcon className="text-btn-bg size-[1.5em]" />

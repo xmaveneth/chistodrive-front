@@ -58,10 +58,10 @@ export const routes = [
                         path: 'carwash/:id',
                         element: <CarwashLayout />,
                         children: [
-                            { index: true, element: <AdminScripts /> },
+                            { index: true, element: <AdminEntries /> },
                             { path: 'employees', element: <AdminEmployees /> },
                             { path: 'boxes', element: <AdminBoxes /> },
-                            { path: 'entries', element: <AdminEntries /> },
+                            { path: 'scripts', element: <AdminScripts /> },
                             { path: 'reviews', element: <AdminReviews /> },
                             { path: 'calendar', element: <AdminCalendar /> },
                             { path: 'services', element: <AdminServices /> },

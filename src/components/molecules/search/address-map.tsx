@@ -2,7 +2,6 @@ import { MapContainer, TileLayer, Marker, Tooltip } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import { useCityContext } from '@/lib/hooks/context/use-city-context';
-import useMediaQuery from '@/lib/hooks/utils/use-media-query';
 import { Address } from '@/lib/types/address';
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 
@@ -19,12 +18,10 @@ type AddressMapProps = {
 
 export default function AddressMap({isLoading, addresses}: AddressMapProps) {
     const { currentCity } = useCityContext();
-    const isMobile = useMediaQuery('(max-width: 640px)');
 
     if (isLoading)
         return <div className="bg-gray-200/50 h-[500px] animate-pulse"></div>;
 
-    const mapHeight = isMobile ? '250px' : '500px';
 
     return (
         <div className='h-[250px] md:h-[500px]'>
@@ -36,7 +33,7 @@ export default function AddressMap({isLoading, addresses}: AddressMapProps) {
                 }
                 zoom={12}
                 scrollWheelZoom={true}
-                style={{ height: mapHeight, width: '100%', zIndex: '0' }}
+                style={{ height: '100%', width: '100%', zIndex: '0' }}
             >
                 <TileLayer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

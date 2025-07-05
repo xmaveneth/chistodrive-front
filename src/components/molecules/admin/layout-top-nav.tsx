@@ -11,7 +11,7 @@ export default function LayoutTopNav({ carwashId, appointmentNum, reviewNum }: L
     return (
         <nav className="bg-light-bg flex flex-wrap items-center gap-2 sm:gap-4 rounded-xl px-3 py-1.5 sm:py-2 sm:px-4">
             <AdminItemBtn
-                routeName={`/admin/carwash/${carwashId}/entries`}
+                routeName={`/admin/carwash/${carwashId}`}
                 className="relative text-xs sm:text-sm"
             >
                 <DocumentIcon className="text-btn-bg size-[1.5em]" />

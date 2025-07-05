@@ -30,7 +30,7 @@ export default function Carwash() {
                 <section className="px-4 sm:px-8 sm:pb-9 xl:pb-8 xl:px-9 xl:pt-7 pt-5 pb-7 border border-border rounded-xl">
                     <div className="rounded-3xl overflow-clip z-0">
                         <ErrorBoundary FallbackComponent={ErrorFallback}>
-                            <AddressMap addresses={addresses} isLoading={isLoading} />
+                            <AddressMap key="carwash-page-map" addresses={addresses} isLoading={isLoading} />
                         </ErrorBoundary>
                     </div>
                     

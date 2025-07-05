@@ -1,5 +1,6 @@
 import { FavouriteCarWash } from '@/lib/types/user';
 import { MapPinIcon, XMarkIcon } from '@heroicons/react/16/solid';
+import { Link } from 'react-router-dom';
 
 type FavouriteCarwashProps = {
     carwash: FavouriteCarWash;
@@ -12,7 +13,7 @@ export function FavouriteCarwash({
 }: FavouriteCarwashProps) {
     return (
         <article className="w-full text-left px-3 py-3 pl-6 bg-input-bg flex items-center flex-col xs:flex-row justify-between gap-3 sm:gap-5 rounded-2xl">
-            <button className="flex-1 break-word cursor-pointer">
+            <Link to={`../../carwash/${carwash.car_wash_id}`} className="flex-1 break-word cursor-pointer">
                 <div className="mb-1 md:text-lg text-center xs:text-left">
                     {carwash.car_wash_name}
                 </div>
@@ -20,7 +21,7 @@ export function FavouriteCarwash({
                     <MapPinIcon className="size-4 shrink-0 xs:mt-1 text-btn-bg" />
                     {carwash.location && carwash.location}
                 </p>
-            </button>
+            </Link>
             <div className="flex items-center basis-1/3 justify-end">
                 <button
                     onClick={deleteCarwash}

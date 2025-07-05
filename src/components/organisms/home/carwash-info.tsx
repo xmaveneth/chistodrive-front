@@ -46,7 +46,7 @@ const SlotSection: React.FC<SlotSectionProps> = ({ slots, onClick }) => {
     const { toggleLoginDialog } = useAuthContext();
 
     return (
-        <div className={cn('flex flex-wrap items-center gap-2 md:gap-x-3 overflow-clip transition-all duration-300 ease-in-out'
+        <div className={cn('flex flex-wrap justify-between items-center gap-2 md:gap-x-3 overflow-clip transition-all duration-300 ease-in-out'
         )}>
             {slots && slots.map(slot => (
                 <button disabled={isLoading} key={`slot-${slot.slot_id}`} onClick={() => isLoggedIn ? onClick(slot.price, slot) : toggleLoginDialog(true)} className='px-3 py-1.5 rounded-full bg-btn-bg cursor-pointer font-medium hover:bg-btn-hover transition-colors duration-200 ease-in'>{formatTimeToHHMM(slot.time)}</button>

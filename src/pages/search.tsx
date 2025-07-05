@@ -49,7 +49,7 @@ function MapWrapper() {
         useSearchServicesContext();
     const addresses = convertToAddresses(servicesData?.data);
 
-    return <AddressMap addresses={addresses} isLoading={areServicesLoading || areFiltersLoading} />
+    return <AddressMap key="search-page-map" addresses={addresses} isLoading={areServicesLoading || areFiltersLoading} />
 }
 
 function FilterWrapper() {

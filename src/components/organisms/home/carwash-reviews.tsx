@@ -69,7 +69,7 @@ export default function CarwashReviews() {
                     ))}
                 </div>
 
-                <PrimaryBtn disabled={isPending} className="mx-auto mt-4 md:mt-8" onClick={incrementCurrentPage}>Показать еще</PrimaryBtn>
+               {reviews.length > 0 && <PrimaryBtn disabled={isPending} className="mx-auto mt-4 md:mt-8" onClick={incrementCurrentPage}>Показать еще</PrimaryBtn>} 
             </div>
         </div>
     )
