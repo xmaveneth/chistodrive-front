@@ -44,9 +44,9 @@ export default function AddIntervalDialog({
             return;
         }
 
-        if (endTime < startTime) {
+        if (endTime <= startTime) {
             setEndTimeError(
-                'Время начала не может быть больше времени окончания'
+                'Время начала не может быть больше или равным времени окончания'
             );
             return;
         }
