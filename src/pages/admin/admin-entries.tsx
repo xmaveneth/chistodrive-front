@@ -1,5 +1,4 @@
 import AdminSkeleton from '@/components/atoms/admin-skeleton';
-import PrimaryBtn from '@/components/atoms/primary-btn';
 import DatePicker from '@/components/forms/date-picker';
 import PriceRangePicker from '@/components/forms/price-range-picker';
 import SelectField from '@/components/forms/select-field';
