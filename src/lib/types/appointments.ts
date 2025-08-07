@@ -34,6 +34,7 @@ export interface Service {
 
 export interface Filters {
     services: Service[];
+    statuses: Status[];
 }
 
 export interface FiltersResponse {
@@ -41,10 +42,11 @@ export interface FiltersResponse {
 }
 
 export type FiltersPayload = {
-  date: string, 
-  start_time: string, 
-  end_time: string, 
-  start_price: number,
-  end_price: number,
-  service_id: number,
-}
+    date: string;
+    start_time: string;
+    end_time: string;
+    start_price: number;
+    end_price: number;
+    service_id: number;
+    status_id: number;
+};

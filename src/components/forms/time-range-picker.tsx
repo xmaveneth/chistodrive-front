@@ -1,12 +1,14 @@
 import { cn } from '@/lib/utils';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Range } from 'react-range';
+import useDebounce from '@/lib/hooks/utils/use-debounce';
 
 type TimeRangePickerProps = {
     from: string;
     to: string;
     onChange: (range: { from: string; to: string }) => void;
     className?: string;
+    cb?: () => void;
 };
 
 const STEP = 1;
@@ -29,15 +31,25 @@ export default function TimeRangePicker({
     to,
     onChange,
     className,
+    cb,
 }: TimeRangePickerProps) {
     const [values, setValues] = useState([parseTime(from), parseTime(to)]);
 
-    useEffect(() => {
+    useDebounce(
+        () => {
+            if (cb) cb();
+        },
+        500,
+        [values[0], values[1]]
+    );
+
+    function handleChange(ranges: number[]) {
+        setValues(ranges);
         onChange({
             from: convertToTime(values[0]),
             to: convertToTime(values[1]),
         });
-    }, [values]);
+    }
 
     return (
         <div className={cn('mb-3 bg-input-bg rounded-full', className)}>
@@ -47,7 +59,9 @@ export default function TimeRangePicker({
                     {convertToTime(values[0])}
                 </div>
                 <div className="flex-1 text-end">
-                    <span className="text-xs text-text-muted ml-auto mr-2">до</span>
+                    <span className="text-xs text-text-muted ml-auto mr-2">
+                        до
+                    </span>
                     {convertToTime(values[1])}
                 </div>
             </div>
@@ -58,7 +72,9 @@ export default function TimeRangePicker({
                     max={MAX}
                     values={values}
                     onChange={(vals) => {
-                        if (vals[0] < vals[1]) setValues(vals);
+                        if (vals[0] < vals[1]) {
+                            handleChange(vals);
+                        }
                     }}
                     renderTrack={({ props, children }) => (
                         <div
@@ -76,7 +92,7 @@ export default function TimeRangePicker({
                                 {...rest}
                                 className="size-2.5 bg-btn-bg rounded-full shadow-md relative"
                             >
-                                <span className='absolute size-7 left-1/2 top-1/2 -translate-1/2 [@media(pointer:fine)]:hidden'></span>
+                                <span className="absolute size-7 left-1/2 top-1/2 -translate-1/2 [@media(pointer:fine)]:hidden"></span>
                             </div>
                         );
                     }}
