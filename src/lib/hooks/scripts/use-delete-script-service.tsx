@@ -4,7 +4,10 @@ import { deleteScriptService } from '@/services/api/scripts';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 
-export function useDeleteScriptService(script_id: number, closeDialog: () => void) {
+export function useDeleteScriptService(
+    script_id: number,
+    closeDialog: () => void
+) {
     const queryClient = useQueryClient();
 
     return useMutation({
@@ -16,6 +19,9 @@ export function useDeleteScriptService(script_id: number, closeDialog: () => voi
             closeDialog();
             queryClient.invalidateQueries({
                 queryKey: [QUERY_KEYS.SCRIPT_SERVICE_PARAMS, script_id],
+            });
+            queryClient.invalidateQueries({
+                queryKey: [QUERY_KEYS.CARWASH_SERVICES],
             });
         },
 

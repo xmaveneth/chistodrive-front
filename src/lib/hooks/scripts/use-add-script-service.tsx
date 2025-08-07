@@ -4,7 +4,10 @@ import { addScriptService } from '@/services/api/scripts';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 
-export function useAddScriptService(script_id: number, closeDialog: () => void) {
+export function useAddScriptService(
+    script_id: number,
+    closeDialog: () => void
+) {
     const queryClient = useQueryClient();
 
     return useMutation({
@@ -17,7 +20,9 @@ export function useAddScriptService(script_id: number, closeDialog: () => void) 
             queryClient.invalidateQueries({
                 queryKey: [QUERY_KEYS.SCRIPT_SERVICE_PARAMS, script_id],
             });
-            
+            queryClient.invalidateQueries({
+                queryKey: [QUERY_KEYS.CARWASH_SERVICES],
+            });
         },
 
         onError: (error: unknown) => {

@@ -38,18 +38,23 @@ export async function getCarWashWorkers(
 
 export const getCarWashServices = async (
     car_wash_id: number,
+    script_id?: number | null,
     service_category_id?: number | null
 ): Promise<CarWashServicesResponse> => {
+    const params: any = {};
+
+    if (script_id != null) {
+        params.script_id = script_id;
+    }
+
+    if (service_category_id != null) {
+        params.service_category_id = service_category_id;
+    }
+
     const response = await axiosInstance.get<CarWashServicesResponse>(
         `/api/car_wash/${car_wash_id}/services`,
-        {
-            params:
-                service_category_id != null
-                    ? { service_category_id }
-                    : undefined,
-        }
+        { params }
     );
-
     return response.data;
 };
 
@@ -94,7 +99,7 @@ export async function createCarwashWorker(
     car_wash_id: number,
     full_name: string,
     job_title: string,
-    telephone: string,
+    telephone: string
 ): Promise<string> {
     const response = await axiosInstance.post<string>(
         `/api/car_wash/${car_wash_id}/workers`,
@@ -112,7 +117,7 @@ export async function updateCarwashWorker(
     id: number,
     full_name: string,
     job_title: string,
-    telephone: string,
+    telephone: string
 ): Promise<string> {
     const response = await axiosInstance.patch<string>(
         `/api/car_wash/${car_wash_id}/workers`,
@@ -128,11 +133,10 @@ export async function updateCarwashWorker(
 
 export async function deleteCarwashWorker(
     car_wash_id: number,
-    id: number,
+    id: number
 ): Promise<string> {
     const response = await axiosInstance.delete<string>(
-        `/api/car_wash/${car_wash_id}/workers/?worker_id=${id}`,
+        `/api/car_wash/${car_wash_id}/workers/?worker_id=${id}`
     );
     return response.data;
 }
-
