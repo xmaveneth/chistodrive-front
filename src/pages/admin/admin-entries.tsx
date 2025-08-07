@@ -28,6 +28,7 @@ export default function AdminEntries() {
     const endPrice = useRef(9900);
     const [date, setDate] = useState<string>(formatDateToString(new Date()));
     const [serviceTypeId, setServiceTypeId] = useState<number>(0);
+    const [statusId, setStatudId] = useState<number>(0);
 
     function triggerSearch() {
         loadAppointments({
@@ -37,6 +38,7 @@ export default function AdminEntries() {
             end_price: endPrice.current,
             date,
             service_id: serviceTypeId,
+            status_id: statusId,
         });
     }
 
@@ -46,26 +48,50 @@ export default function AdminEntries() {
         isPending: isLoadingAppointments,
     } = useCarwashAppointments(parsedId);
 
-    
     const [showUpdateAppointmentDialog, toggleUpdateAppointmentDialog] =
         useToggle(false);
     const [selectedAppointment, setSelectedAppointment] =
         useState<CarwashAppointment | null>(null);
     const [statusUpdated, toggleStatusUpdated] = useToggle(true);
 
-    useEffect(() => {
-            triggerSearch();
-    }, [statusUpdated])
+    // useEffect(() => {
+    //     triggerSearch();
+    // }, [statusUpdated]);
 
-    const filters = filterValues?.filters?.services?.map((service) => {
+    function handleSelectDate(val: string) {
+        setDate(val);
+        triggerSearch();
+    }
+
+    function handleSelectServiceType(val: number) {
+        setServiceTypeId(val);
+        triggerSearch();
+    }
+
+    function handleSelectStatus(val: number) {
+        setStatudId(val);
+        triggerSearch();
+    }
+
+    const services = filterValues?.filters?.services?.map((service) => {
         return {
             id: service.id,
             label: service.name,
         };
     });
 
+    const statuses = filterValues?.filters?.statuses?.map((status) => {
+        return {
+            id: status.id,
+            label: status.name,
+        };
+    });
+
     const currentServiceTypeOption =
-        filters?.find((filter) => filter.id === serviceTypeId) ?? null;
+        services?.find((filter) => filter.id === serviceTypeId) ?? null;
+
+    const currentStatusOption =
+        statuses?.find((filter) => filter.id === statusId) ?? null;
 
     const TableHeadContent = () => (
         <>
@@ -89,7 +115,7 @@ export default function AdminEntries() {
         <div className="flex items-center gap-x-6 mb-8 flex-wrap z-40">
             <FilterField title="Дата">
                 <DatePicker
-                    onChange={(val) => setDate(val)}
+                    onChange={handleSelectDate}
                     value={date}
                     className="w-60"
                 />
@@ -103,6 +129,7 @@ export default function AdminEntries() {
                         startTime.current = range.from;
                         endTime.current = range.to;
                     }}
+                    cb={triggerSearch}
                     className="w-60"
                 />
             </FilterField>
@@ -115,24 +142,39 @@ export default function AdminEntries() {
                         startPrice.current = range.from;
                         endPrice.current = range.to;
                     }}
+                    cb={triggerSearch}
                     className="w-60"
                 />
             </FilterField>
 
-            {currentServiceTypeOption && filters && !isLoadingFilters && (
+            {currentServiceTypeOption && services && !isLoadingFilters && (
                 <FilterField title="Тип услуги">
                     <SelectField
-                        values={filters}
+                        values={services}
                         value={currentServiceTypeOption}
-                        onChange={(val) => setServiceTypeId(val)}
+                        onChange={ handleSelectServiceType}
                         className="w-60 z-40"
                     />
                 </FilterField>
             )}
 
-            <PrimaryBtn onClick={triggerSearch} className="mt-5.5 w-50">
-                Применить
-            </PrimaryBtn>
+            {currentStatusOption && statuses && !isLoadingFilters && (
+                <FilterField title="Статус услуги">
+                    <SelectField
+                        values={statuses}
+                        value={currentStatusOption}
+                        onChange={handleSelectStatus}
+                        className="w-60 z-40"
+                    />
+                </FilterField>
+            )}
+
+            {/* <PrimaryBtn */}
+            {/*     onClick={triggerSearch} */}
+            {/*     className="mt-5.5 w-50" */}
+            {/* > */}
+            {/*     Применить */}
+            {/* </PrimaryBtn> */}
         </div>
     );
 
@@ -163,7 +205,7 @@ export default function AdminEntries() {
                             </div>
                         ))
                     ) : (
-                        <div className='mx-4 w-400 sm:w-460'>
+                        <div className="mx-4 w-400 sm:w-460">
                             По вашему запросу не найдено ни одного результата
                         </div>
                     ))
@@ -181,7 +223,7 @@ export default function AdminEntries() {
                         statuses={appointments.statuses}
                         selectedAppointment={selectedAppointment}
                         closeDialog={() => toggleUpdateAppointmentDialog(false)}
-                        toggleStatus={() => toggleStatusUpdated()}
+                        toggleStatus={triggerSearch}
                     />
                 </DialogLayout>
             )}
