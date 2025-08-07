@@ -1,5 +1,6 @@
+import useDebounce from '@/lib/hooks/utils/use-debounce';
 import { cn } from '@/lib/utils';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Range } from 'react-range';
 
 type PriceRangePickerProps = {
@@ -7,6 +8,7 @@ type PriceRangePickerProps = {
     to: number;
     onChange: (range: { from: number; to: number }) => void;
     className?: string;
+    cb?: () => void;
 };
 
 const STEP = 100;
@@ -18,12 +20,25 @@ export default function PriceRangePicker({
     to,
     onChange,
     className,
+    cb,
 }: PriceRangePickerProps) {
     const [values, setValues] = useState([from, to]);
 
-    useEffect(() => {
-        onChange({ from: values[0], to: values[1] });
-    }, [values]);
+    useDebounce(
+        () => {
+            if (cb) cb();
+        },
+        500,
+        [values[0], values[1]]
+    );
+
+    function handleChange(ranges: number[]) {
+        setValues(ranges);
+        onChange({
+            from: values[0],
+            to: values[1],
+        });
+    }
 
     return (
         <div className={cn('mb-3 bg-input-bg rounded-full', className)}>
@@ -46,7 +61,7 @@ export default function PriceRangePicker({
                     max={MAX}
                     values={values}
                     onChange={(vals) => {
-                        if (vals[0] < vals[1]) setValues(vals);
+                        if (vals[0] < vals[1]) handleChange(vals);
                     }}
                     renderTrack={({ props, children }) => (
                         <div
