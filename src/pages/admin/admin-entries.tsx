@@ -90,17 +90,17 @@ export default function AdminEntries() {
     const TableHeadContent = () => (
         <>
             {' '}
-            <div>Имя</div>
-            <div>Телефон</div>
+            <div>Статус</div>
+            <div>Дата</div>
+            <div>Время</div>
+            <div>Услуга</div>
+            <div>Стоимость</div>
             <div>Исполнитель</div>
             <div>Бокс</div>
             <div>Авто</div>
             <div>Номер авто</div>
-            <div>Услуга</div>
-            <div>Стоимость</div>
-            <div>Время</div>
-            <div>Дата</div>
-            <div>Статус</div>
+            <div>Имя</div>
+            <div>Телефон</div>
             <div></div>
         </>
     );
