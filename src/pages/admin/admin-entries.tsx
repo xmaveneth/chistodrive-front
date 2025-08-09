@@ -1,6 +1,5 @@
 import AdminSkeleton from '@/components/atoms/admin-skeleton';
 import PrimaryBtn from '@/components/atoms/primary-btn';
-import DatePicker from '@/components/forms/date-picker';
 import PriceRangePicker from '@/components/forms/price-range-picker';
 import SelectField from '@/components/forms/select-field';
 import TimeRangePicker from '@/components/forms/time-range-picker';
@@ -13,9 +12,12 @@ import { useFilterValues } from '@/lib/hooks/appointments/use-filter-values';
 import { useCarwashAppointments } from '@/lib/hooks/appointments/use-get-carwash-appointments';
 import useToggle from '@/lib/hooks/utils/use-toggle';
 import { CarwashAppointment } from '@/lib/types/appointments';
-import { formatDateToString } from '@/lib/utils/format-date';
 import { useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { ru } from 'date-fns/locale/ru';
+import { formatDateToString } from '@/lib/utils/format-date';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 export default function AdminEntries() {
     const { id } = useParams();
@@ -26,17 +28,19 @@ export default function AdminEntries() {
     const endTime = useRef('23:00');
     const startPrice = useRef(100);
     const endPrice = useRef(9900);
-    const [date, setDate] = useState<string>(formatDateToString(new Date()));
+    const [date, setDate] = useState<Date | null>(new Date());
     const [serviceTypeId, setServiceTypeId] = useState<number>(0);
     const [statusId, setStatudId] = useState<number>(0);
 
     function triggerSearch() {
+        if (!date) return;
+
         loadAppointments({
             start_time: startTime.current,
             end_time: endTime.current,
             start_price: startPrice.current,
             end_price: endPrice.current,
-            date,
+            date: formatDateToString(date),
             service_id: serviceTypeId,
             status_id: statusId,
         });
@@ -53,17 +57,11 @@ export default function AdminEntries() {
     const [selectedAppointment, setSelectedAppointment] =
         useState<CarwashAppointment | null>(null);
 
-    function handleSelectDate(val: string) {
-        setDate(val);
-    }
-
     function handleSelectServiceType(val: number) {
         setServiceTypeId(val);
     }
 
     function handleSelectStatus(val: number) {
-        console.log("current status ", statusId);
-        console.log("selected status ", val);
         setStatudId(val);
     }
 
@@ -109,9 +107,11 @@ export default function AdminEntries() {
         <div className="flex items-center gap-x-6 mb-8 flex-wrap z-40">
             <FilterField title="Дата">
                 <DatePicker
-                    onChange={handleSelectDate}
-                    value={date}
-                    className="w-60"
+                    locale={ru}
+                    onChange={(date) => setDate(date)}
+                    selected={date}
+                    className="w-60 mb-3 bg-input-bg rounded-full text-sm md:text-base md:py-3 md:px-6 input-field py-2 px-4"
+                    popperClassName="!z-100"
                 />
             </FilterField>
 
@@ -144,7 +144,7 @@ export default function AdminEntries() {
                     <SelectField
                         values={services}
                         value={currentServiceTypeOption}
-                        onChange={ handleSelectServiceType}
+                        onChange={handleSelectServiceType}
                         className="w-60 z-40"
                     />
                 </FilterField>

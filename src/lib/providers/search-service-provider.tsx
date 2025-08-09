@@ -59,7 +59,7 @@ export function SearchServiceProvider({
     const [orderById, setOrderById] = useState<number>(0);
     const [serviceCategoryId, setServiceCategoryId] = useState<number>(0);
     const [serviceTypeId, setServiceTypeId] = useState<number>(0);
-    const [date, setDate] = useState<string>(formatDateToString(new Date()));
+    const [date, setDate] = useState<Date | null>(new Date());
     const [startTime, setStartTime] = useState('00:00');
     const [endTime, setEndTime] = useState('23:30');
     const [startPrice, setStartPrice] = useState(100);
@@ -86,7 +86,7 @@ export function SearchServiceProvider({
             order_by_id: orderById ?? 0,
             service_category_id: serviceCategoryId ?? 0,
             service_type_id: serviceTypeId ?? 0,
-            date: date != '' ? date : formatDateToString(new Date()),
+            date: date != null ?  formatDateToString(date) : formatDateToString(new Date()),
             start_time: startTime,
             end_time: endTime,
             start_price: startPrice,
