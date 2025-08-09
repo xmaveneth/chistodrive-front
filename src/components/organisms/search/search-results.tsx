@@ -3,6 +3,7 @@ import DialogLayout from '@/components/layouts/dialog-layout';
 import EntryDialog from '@/components/molecules/search/entry-dialog';
 import ServiceCard from '@/components/molecules/search/service-card';
 import { useSearchServicesContext } from '@/lib/hooks/context/use-search-services-context';
+import { formatDateToString } from '@/lib/utils/format-date';
 import { ServiceResult, Slot } from '@/lib/utils/search-services';
 import { useState } from 'react';
 
@@ -14,7 +15,7 @@ export default function SearchResult() {
         date,
         incrementCurrentPage,
         showIncrementPageBtn,
-        userCars
+        userCars,
     } = useSearchServicesContext();
 
     const [showEntryDialog, setShowEntryDialog] = useState(false);
@@ -96,7 +97,7 @@ export default function SearchResult() {
                 <EntryDialog
                     userCars={userCars}
                     carwash={selectedCarwash}
-                    date={date}
+                    date={formatDateToString(date ?? new Date())}
                     time={selectedTime}
                     slot={selectedSlot}
                     closeDialog={() => setShowEntryDialog(false)}

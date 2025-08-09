@@ -4,7 +4,6 @@ import TimeRangePicker from '@/components/forms/time-range-picker';
 import FilterField from '@/components/molecules/search/filter-field';
 import { FiltersResponse } from '@/lib/types/filters';
 import { ru } from 'date-fns/locale/ru';
-import { formatDateToString } from '@/lib/utils/format-date';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 

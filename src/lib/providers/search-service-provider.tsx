@@ -12,8 +12,8 @@ import { formatUserCars } from '@/lib/utils/format-user-cars';
 type SearchServiceContextType = {
     areFiltersLoading: boolean;
     filters: FiltersResponse | undefined;
-    date: string;
-    setDate: (val: string) => void;
+    date: Date | null;
+    setDate: (val: Date | null) => void;
     startTime: string;
     endTime: string;
     setStartTime: (val: string) => void;
