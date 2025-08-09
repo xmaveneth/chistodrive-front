@@ -33,6 +33,10 @@ export function formatDateToString(date: Date): string {
     return format(date, 'yyyy-MM-dd');
 }
 
+export function formatDateToRussianFormat(date: Date): string {
+    return format(date, 'dd-MM-yyyy');
+}
+
 export function formatDateToDayMonthLabel(dateString: string): string {
     const parsed = parse(dateString, 'yyyy-MM-dd', new Date());
     return format(parsed, 'd MMMM', { locale: ru });

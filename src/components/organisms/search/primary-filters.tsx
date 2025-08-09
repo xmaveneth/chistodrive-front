@@ -89,6 +89,7 @@ export default function PrimaryFilters({
                     selected={date}
                     className="w-60 md:w-80 mb-3 bg-input-bg rounded-full text-sm md:text-base md:py-3 md:px-6 input-field py-2 px-4"
                     popperClassName="!z-100"
+                    dateFormat="dd/MM/yyyy"
                 />
             </FilterField>
 
