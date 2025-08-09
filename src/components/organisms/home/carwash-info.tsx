@@ -17,7 +17,7 @@ import transformCarwashData from "@/lib/utils/transformCarwashData";
 import transformCarwashSlot from "@/lib/utils/trasnformCarwashSlot";
 import { cn } from "@/lib/utils";
 import { CarwashGallery } from "@/components/molecules/home/carwash-gallery";
-import { formatTimeToHHMM } from "@/lib/utils/format-date";
+import { formatDateToString, formatTimeToHHMM } from "@/lib/utils/format-date";
 import { useAddFavouriteCarwash } from "@/lib/hooks/carwash/use-add-favourite-carwash";
 import { useDeleteFavouriteCarwash } from "@/lib/hooks/carwash/use-delete-favourite-carwash";
 
@@ -194,10 +194,10 @@ export default function CarwashInfo({ carwashData }: CarwashInfoProps) {
                 isOpen={showEntryDialog}
                 closeDialog={() => setShowEntryDialog(false)}
             >
-                {slot != null && <EntryDialog
+                {slot != null && date && <EntryDialog
                     userCars={userCars}
                     carwash={serviceResult}
-                    date={date}
+                    date={formatDateToString(date)}
                     time={slot.time}
                     slot={slot}
                     closeDialog={() => setShowEntryDialog(false)}
