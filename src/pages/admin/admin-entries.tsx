@@ -1,4 +1,5 @@
 import AdminSkeleton from '@/components/atoms/admin-skeleton';
+import PrimaryBtn from '@/components/atoms/primary-btn';
 import DatePicker from '@/components/forms/date-picker';
 import PriceRangePicker from '@/components/forms/price-range-picker';
 import SelectField from '@/components/forms/select-field';
@@ -54,17 +55,16 @@ export default function AdminEntries() {
 
     function handleSelectDate(val: string) {
         setDate(val);
-        triggerSearch();
     }
 
     function handleSelectServiceType(val: number) {
         setServiceTypeId(val);
-        triggerSearch();
     }
 
     function handleSelectStatus(val: number) {
+        console.log("current status ", statusId);
+        console.log("selected status ", val);
         setStatudId(val);
-        triggerSearch();
     }
 
     const services = filterValues?.filters?.services?.map((service) => {
@@ -123,7 +123,6 @@ export default function AdminEntries() {
                         startTime.current = range.from;
                         endTime.current = range.to;
                     }}
-                    cb={triggerSearch}
                     className="w-60"
                 />
             </FilterField>
@@ -136,7 +135,6 @@ export default function AdminEntries() {
                         startPrice.current = range.from;
                         endPrice.current = range.to;
                     }}
-                    cb={triggerSearch}
                     className="w-60"
                 />
             </FilterField>
@@ -163,12 +161,12 @@ export default function AdminEntries() {
                 </FilterField>
             )}
 
-            {/* <PrimaryBtn */}
-            {/*     onClick={triggerSearch} */}
-            {/*     className="mt-5.5 w-50" */}
-            {/* > */}
-            {/*     Применить */}
-            {/* </PrimaryBtn> */}
+            <PrimaryBtn
+                onClick={triggerSearch}
+                className="mt-5.5 w-50"
+            >
+                Применить
+            </PrimaryBtn>
         </div>
     );
 
@@ -176,7 +174,7 @@ export default function AdminEntries() {
         <div>
             <TableFilters />
             <div className="overflow-auto scrollbar-hidden text-xs sm:text-base">
-                <TableHead gridClass="grid-cols-[60px_1fr_1fr_250px_1fr_1fr_1fr_2fr_1fr_1fr_1fr_1.5fr_60px] w-400 sm:w-460 z-10">
+                <TableHead gridClass="grid-cols-[60px_1.5fr_1fr_2fr_1fr_1fr_250px_1fr_1fr_1fr_1fr_1fr_60px] w-400 sm:w-460 z-10">
                     <TableHeadContent />
                 </TableHead>
 
