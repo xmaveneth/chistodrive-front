@@ -15,7 +15,7 @@ type ScriptRowProps = {
 export default function ScriptRow({ script, index, onDelete, onClick, id }: ScriptRowProps) {
     return (
         <div className="w-180 sm:w-282 text-center grid grid-cols-[60px_1fr_1fr_1fr_60px] divide-x-1 mx-4 divide-white/20 border-y border-white/20">
-            <Link to={`/script/${id}/vehicle_types`} className="py-3 cursor-pointer sticky left-0 z-10 flex items-center gap-2 justify-center bg-background text-btn-bg">
+            <Link to={`${id}/vehicle_types`} className="py-3 cursor-pointer sticky left-0 z-10 flex items-center gap-2 justify-center bg-background text-btn-bg">
                 <PencilSquareIcon className="size-4" />
                 {index}
             </Link>

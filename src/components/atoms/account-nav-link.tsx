@@ -13,7 +13,7 @@ export default function AccountNavLink({
 }: AccountNavLinkProps) {
     const { pathname } = useLocation();
 
-    const isActive = pathname === path;
+    const isActive = pathname.endsWith(path);
 
     return (
         <Link

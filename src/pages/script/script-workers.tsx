@@ -4,7 +4,6 @@ import ScriptCheckbox from '@/components/forms/script-checkbox';
 import DialogLayout from '@/components/layouts/dialog-layout';
 import AssignWorkerDialog from '@/components/molecules/scripts/assign-worker-dialog';
 import ScriptCheckboxSkeleton from '@/components/molecules/scripts/script-checkbox-skeleton';
-import { STORAGE_KEYS } from '@/lib/constants/storageKeys';
 import { useScriptBoxes } from '@/lib/hooks/boxes/use-script-boxes';
 import useToggle from '@/lib/hooks/utils/use-toggle';
 import { useAssignedScriptWorkers } from '@/lib/hooks/workers/use-assigned-script-workers';
@@ -22,16 +21,12 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 export default function ScriptWorkers() {
-    const { id } = useParams<{ id: string }>();
+    const { id, carwashId } = useParams<{ id: string; carwashId: string }>();
     const { mutate: updateBoxes } = useUpdateScriptWorkers(Number(id));
 
     const [showAddModal, toggleShowAddModal] = useToggle(false);
     const [currentWorker, setCurrentWorker] = useState<ScriptWorker | null>(
         null
-    );
-
-    const currentCarwashId = localStorage.getItem(
-        STORAGE_KEYS.ADMIN_CARWASH_ID
     );
 
     const {
@@ -43,7 +38,7 @@ export default function ScriptWorkers() {
         data: allWorkers,
         isLoading: isLoadingAllWorkers,
         error: allWorkersError,
-    } = useCarWashWorkers(Number(currentCarwashId));
+    } = useCarWashWorkers(Number(carwashId));
     const {
         data: allBoxes,
         isLoading: isLoadingAllBoxes,

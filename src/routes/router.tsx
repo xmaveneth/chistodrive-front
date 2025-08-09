@@ -28,7 +28,9 @@ const ScriptIntervals = lazy(() => import('@/pages/script/script-intervals'));
 const ScriptServices = lazy(() => import('@/pages/script/script-services'));
 const ScriptVehicles = lazy(() => import('@/pages/script/script-vehicles'));
 const ScriptWorkers = lazy(() => import('@/pages/script/script-workers'));
-const AdminScriptVersion = lazy(() => import('@/pages/admin/admin-script-version'))
+const AdminScriptVersion = lazy(
+    () => import('@/pages/admin/admin-script-version')
+);
 
 export const routes = [
     {
@@ -39,7 +41,7 @@ export const routes = [
             { path: 'search', element: <Search /> },
             { path: 'policy', element: <Policy /> },
             { path: 'rules', element: <Rules /> },
-            { path: 'carwash/:id', element: <Carwash />},
+            { path: 'carwash/:id', element: <Carwash /> },
             {
                 path: 'account',
                 element: <AccountLayout />,
@@ -61,23 +63,35 @@ export const routes = [
                             { index: true, element: <AdminEntries /> },
                             { path: 'employees', element: <AdminEmployees /> },
                             { path: 'boxes', element: <AdminBoxes /> },
-                            { path: 'scripts', element: <AdminScripts /> },
                             { path: 'reviews', element: <AdminReviews /> },
                             { path: 'calendar', element: <AdminCalendar /> },
                             { path: 'services', element: <AdminServices /> },
+                            { path: 'scripts', element: <AdminScripts /> },
                         ],
                     },
-                ],
-            },
-            {
-                path: 'script/:id',
-                element: <ScriptLayout />,
-                children: [
-                    { path: 'vehicle_types', element: <ScriptVehicles /> },
-                    { path: 'services', element: <ScriptServices /> },
-                    { path: 'intervals', element: <ScriptIntervals /> },
-                    { path: 'boxes', element: <ScriptBoxes /> },
-                    { path: 'workers', element: <ScriptWorkers /> },
+                    {
+                        path: 'carwash/:carwashId/scripts/:id',
+                        element: <ScriptLayout />,
+                        children: [
+                            {
+                                path: 'vehicle_types',
+                                element: <ScriptVehicles />,
+                            },
+                            {
+                                path: 'services',
+                                element: <ScriptServices />,
+                            },
+                            {
+                                path: 'intervals',
+                                element: <ScriptIntervals />,
+                            },
+                            { path: 'boxes', element: <ScriptBoxes /> },
+                            {
+                                path: 'workers',
+                                element: <ScriptWorkers />,
+                            },
+                        ],
+                    },
                 ],
             },
             {

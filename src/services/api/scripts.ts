@@ -105,3 +105,14 @@ export async function addScriptService(
     );
     return response.data;
 }
+
+export async function launchScript(
+    script_id: number,
+): Promise<string> {
+    const response = await axiosInstance.post<string>(
+        `/api/script/${script_id}/to_ready`,
+        null
+    );
+    return response.data;
+}
+

@@ -1,7 +1,6 @@
 import SecondaryBtn from '@/components/atoms/secondary-btn';
 import ScriptCheckbox from '@/components/forms/script-checkbox';
 import ScriptCheckboxSkeleton from '@/components/molecules/scripts/script-checkbox-skeleton';
-import { STORAGE_KEYS } from '@/lib/constants/storageKeys';
 import { useCarWashBoxes } from '@/lib/hooks/boxes/use-carwash-boxes';
 import { useScriptBoxes } from '@/lib/hooks/boxes/use-script-boxes';
 import { useUpdateScriptBoxes } from '@/lib/hooks/boxes/use-update-script-boxes';
@@ -14,9 +13,8 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 export default function ScriptBoxes() {
-    const { id } = useParams<{ id: string }>();
+    const { id, carwashId } = useParams<{ id: string, carwashId: string }>();
     const { mutate: updateBoxes } = useUpdateScriptBoxes(Number(id));
-    const currentCarwashId = localStorage.getItem(STORAGE_KEYS.ADMIN_CARWASH_ID);
 
     const {
         data: selectedBoxes,
@@ -27,7 +25,7 @@ export default function ScriptBoxes() {
         data: allBoxes,
         isLoading: isLoadingAllBoxes,
         error: allBoxesError,
-    } = useCarWashBoxes(Number(currentCarwashId));
+    } = useCarWashBoxes(Number(carwashId));
 
     const [allBoxeNames, setAllBoxeNames] = useState(
         createAllBoxesArray(allBoxes)

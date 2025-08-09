@@ -24,3 +24,14 @@ export async function deleteScriptVersionInfo(
 
     return response.data;
 }
+
+export async function launchScriptVersion(
+    script_version_id: number,
+): Promise<string> {
+    const response = await axiosInstance.post<string>(
+        `/api/script_version/${script_version_id}/to_ready`,
+        null
+    );
+    return response.data;
+}
+

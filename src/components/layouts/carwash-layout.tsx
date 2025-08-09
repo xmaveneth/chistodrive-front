@@ -1,5 +1,4 @@
 import { Outlet, useParams } from 'react-router-dom';
-
 import { ErrorBoundary } from 'react-error-boundary';
 import ErrorFallback from '@/components/organisms/shared/error-boundary';
 import { Ellipsis } from 'lucide-react';
