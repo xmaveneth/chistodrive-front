@@ -34,7 +34,7 @@ export default function AdminLayout() {
         const path = location.pathname;
 
         switch (true) {
-            case path.includes('/scripts/'):
+            case path.includes('/scripts/') || path.includes('/script-version/'):
                 navigate(`/admin/carwash/${carwashId}/scripts`);
                 break;
 

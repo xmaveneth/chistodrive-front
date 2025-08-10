@@ -1,7 +1,7 @@
 import { ScriptVersion } from '@/lib/types/scripts';
 import { formatDateForScripts } from '@/lib/utils/format-date';
 import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/solid';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 type ScriptVersionRowProps = {
     version: ScriptVersion;
     order: string;
@@ -13,12 +13,14 @@ export default function ScriptVersionRow({
     order,
     onDelete,
 }: ScriptVersionRowProps) {
+    const { id } = useParams();
+
     return (
         <div className="w-180 sm:w-282 text-center relative grid grid-cols-[60px_100px_100px_1fr_1fr_60px] sm:grid-cols-[60px_100px_236px_1fr_1fr_60px] divide-x-1 mx-4 divide-white/20 border-b border-white/20">
             <div></div>
             <div className="flex sticky left-0 bg-background z-20">
                 <Link
-                    to={`/script-version/${version.version_id}`}
+                    to={`/admin/carwash/${id}/script-version/${version.version_id}`}
                     className="cursor-pointer px-4 border-r border-white/20 flex items-center justify-center bg-background text-btn-bg"
                 >
                     <PencilSquareIcon className="size-4" />
@@ -36,7 +38,10 @@ export default function ScriptVersionRow({
             <div className="py-3">{version.version_status}</div>
             <div className="py-3">
                 {' '}
-                <button onClick={onDelete} className="cursor-pointer">
+                <button
+                    onClick={onDelete}
+                    className="cursor-pointer"
+                >
                     <TrashIcon className="text-btn-bg size-4 mx-auto" />
                 </button>
             </div>

@@ -1,24 +1,25 @@
-import DarkBtn from '@/components/atoms/dark-btn';
-import Logo from '@/components/atoms/logo';
 import ScriptBtn from '@/components/atoms/script-btn';
+import SecondaryBtn from '@/components/atoms/secondary-btn';
 import DialogLayout from '@/components/layouts/dialog-layout';
 import DeleteTemplateSlotDialog from '@/components/molecules/admin/delete-template-slot-dialog';
 import IntervalSkeleton from '@/components/molecules/admin/interval-skeleton';
+import LaunchScriptVersionDialog from '@/components/molecules/scripts/launch-script-version-dialog';
 import ScriptVersionTableRow from '@/components/organisms/scripts/script-version-table-row';
-import ErrorFallback from '@/components/organisms/shared/error-boundary';
-import { STORAGE_KEYS } from '@/lib/constants/storageKeys';
 import { useScriptVersion } from '@/lib/hooks/scripts/use-script-version';
-import { useLocalStorage } from '@/lib/hooks/utils/use-local-storage';
+import { useScripts } from '@/lib/hooks/scripts/use-scripts';
 import useToggle from '@/lib/hooks/utils/use-toggle';
 import { ScriptVersionTimeSlot } from '@/lib/types/script-version';
-import { ArrowBigLeft } from 'lucide-react';
 import { useState } from 'react';
-import { ErrorBoundary } from 'react-error-boundary';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 export default function AdminScriptVersion() {
-    const { id } = useParams<{ id: string }>();
+    const { id, carwashId } = useParams<{ id: string; carwashId: string }>();
     const { data, isLoading } = useScriptVersion(Number(id));
+    const { data: scripts, isLoading: scriptsLoading } = useScripts(
+        Number(carwashId)
+    );
+
+    const [showModal, toggleModal] = useToggle(false);
     const [currentVersionInterval, setCurrentVersionInterval] = useState(0);
     const [showDeleteSlotDialog, toggleDeleteSlotDialog] = useToggle(false);
     const [selectedSlot, setSelectedSlot] =
@@ -30,18 +31,55 @@ export default function AdminScriptVersion() {
             index: idx,
         })) ?? [];
 
-    if (isLoading)
-        return (
-            <ScriptVersionLayout>
-                <IntervalSkeleton />
-            </ScriptVersionLayout>
+    function handleClick() {
+        toggleModal(true);
+    }
+
+    const currentScriptVersion = scripts?.data
+        .flatMap((script) => script.versions)
+        .find((scriptVersion) => scriptVersion.version_id === Number(id));
+
+    const isReady = currentScriptVersion?.version_status === 'Готов';
+
+    const ScriptVersionInfo = () =>
+        currentScriptVersion ? (
+            <div className="flex justify-between flex-wrap gap-3">
+                <div className="flex items-center gap-3">
+                    {currentScriptVersion.version_name}
+                    <div className="text-[0.6rem] border border-white px-1 py-0.5 w-max shrink-0 rounded-sm">
+                        {currentScriptVersion.version_status}
+                    </div>
+                </div>
+                {isReady === false && (
+                    <SecondaryBtn
+                        onClick={handleClick}
+                        className="text-xs sm:text-sm md:text-base py-2 rounded-lg"
+                    >
+                        Готов
+                    </SecondaryBtn>
+                )}
+            </div>
+        ) : null;
+
+    {
+        scriptsLoading ? (
+            <div className="text-transparent bg-gray-200 animate-pulse w-70 rounded-sm">
+                loading
+            </div>
+        ) : (
+            <ScriptVersionInfo />
         );
+    }
+
+    if (isLoading) return <IntervalSkeleton />;
 
     if (data == null) return null;
 
     return (
-        <ScriptVersionLayout>
-            {' '}
+        <>
+            <div className="mb-4 xs:mb-6 text-lg sm:text-xl md:text-2xl md:mb-12">
+                <ScriptVersionInfo />
+            </div>{' '}
             <div>
                 <div className="flex items-center gap-4 my-8 flex-wrap">
                     {versionInfo.map((slot, vehicleIntervalIdx) => (
@@ -82,7 +120,15 @@ export default function AdminScriptVersion() {
                                                         workers={
                                                             service.workers
                                                         }
-                                                        onDelete={(slot) => {setSelectedSlot(slot); toggleDeleteSlotDialog(true)}}
+                                                        onDelete={(slot) => {
+                                                            setSelectedSlot(
+                                                                slot
+                                                            );
+                                                            toggleDeleteSlotDialog(
+                                                                true
+                                                            );
+                                                        }}
+                                                        readonly={isReady === true}
                                                     />
                                                 </div>
                                             )
@@ -103,71 +149,16 @@ export default function AdminScriptVersion() {
                     closeDialog={() => toggleDeleteSlotDialog(false)}
                 />
             </DialogLayout>
-        </ScriptVersionLayout>
-    );
-}
-
-type ScriptVersionLayoutProps = {
-    children: React.ReactNode;
-};
-
-function ScriptVersionLayout({ children }: ScriptVersionLayoutProps) {
-    const navigate = useNavigate();
-
-    const handleBackClick = () => {
-        const path = location.pathname;
-
-        switch (true) {
-            case path.startsWith('/script'): {
-                const savedId = localStorage.getItem(
-                    STORAGE_KEYS.ADMIN_CARWASH_ID
-                );
-                if (savedId) {
-                    navigate(`/admin/carwash/${savedId}`);
-                } else {
-                    navigate('/admin');
-                }
-                break;
-            }
-
-            default:
-                navigate(-1);
-                break;
-        }
-    };
-
-    const [scriptVersionNamesMap] = useLocalStorage<Record<number, string>>(
-        'script_version_names_map',
-        {}
-    );
-
-    const { id } = useParams<{ id: string }>();
-    const parsedId = Number(id);
-
-    return (
-        <div className="primary-px primary-py">
-            <header className="flex items-center justify-between mb-6 sm:mb-10 xl:mb-12">
-                <div className="w-15 md:w-50">
-                    <DarkBtn onClick={handleBackClick} className="mr-auto">
-                        <ArrowBigLeft className="size-4 text-white" />
-                        <span className="hidden md:block text-sm ml-1 mr-2">
-                            Вернуться назад
-                        </span>
-                    </DarkBtn>
-                </div>
-
-                <Logo className="w-33.5 sm:w-80 xl:w-123.5" isHeading={false} />
-
-                <div className="w-15 md:w-50" aria-hidden={true}></div>
-            </header>
-            <section className="px-4 sm:px-8 sm:pb-9 xl:pb-8 xl:px-9 xl:pt-7 pt-5 pb-7 border border-border rounded-xl">
-                <div className="mb-4 xs:mb-6 text-lg sm:text-xl md:text-2xl md:mb-12">
-                    {scriptVersionNamesMap[parsedId]}
-                </div>
-                <ErrorBoundary FallbackComponent={ErrorFallback}>
-                    {children}
-                </ErrorBoundary>
-            </section>
-        </div>
+            <DialogLayout
+                isOpen={showModal}
+                title="Вы уверены что хотите перевести данную версию скрипта в работу?"
+                description="После перевода версии скрипта в работу, она станет недоступна для редактирования"
+                closeDialog={() => toggleModal(false)}
+            >
+                <LaunchScriptVersionDialog
+                    closeDialog={() => toggleModal(false)}
+                />
+            </DialogLayout>
+        </>
     );
 }

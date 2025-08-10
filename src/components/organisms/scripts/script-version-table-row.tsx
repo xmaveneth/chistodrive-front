@@ -1,5 +1,7 @@
-import AccountAddBtn from '@/components/atoms/account-add-btn';
-import { ScriptVersionTimeSlot, ScriptVersionWorker } from '@/lib/types/script-version';
+import {
+    ScriptVersionTimeSlot,
+    ScriptVersionWorker,
+} from '@/lib/types/script-version';
 import { cn } from '@/lib/utils';
 import { formatTimeToHHMM } from '@/lib/utils/format-date';
 import { Trash2Icon } from 'lucide-react';
@@ -7,10 +9,12 @@ import { Trash2Icon } from 'lucide-react';
 type ScriptVersionTableRowType = {
     workers: ScriptVersionWorker[];
     onDelete: (slot: ScriptVersionTimeSlot) => void;
+    readonly?: boolean;
 };
 export default function ScriptVersionTableRow({
     workers,
-    onDelete
+    onDelete,
+    readonly = false,
 }: ScriptVersionTableRowType) {
     return (
         <div className={cn('scrollbar-hidden overflow-x-auto')}>
@@ -51,19 +55,33 @@ export default function ScriptVersionTableRow({
                                     key={`slot-index-${slotIdx}`}
                                     className="flex items-center gap-1"
                                 >
-                                    <div className={cn("rounded-full bg-input-bg px-3 py-2 text-sm", slot.is_active ? "bg-[#BDA57E]" : "bg-[#181B24]", slot.is_booked && "bg-[#FFFFFF] text-black")}>
+                                    <div
+                                        className={cn(
+                                            'rounded-full bg-input-bg px-3 py-2 text-sm',
+                                            slot.is_active
+                                                ? 'bg-[#BDA57E]'
+                                                : 'bg-[#181B24]',
+                                            slot.is_booked &&
+                                                'bg-[#FFFFFF] text-black'
+                                        )}
+                                    >
                                         {formatTimeToHHMM(slot.time)}
                                     </div>
-                                    <button onClick={() => onDelete(slot)} className="cursor-pointer">
-                                        <Trash2Icon className="size-3 text-btn-bg" />
-                                    </button>
+                                    {readonly === false && (
+                                        <button
+                                            onClick={() => onDelete(slot)}
+                                            className="cursor-pointer"
+                                        >
+                                            <Trash2Icon className="size-3 text-btn-bg" />
+                                        </button>
+                                    )}
                                 </li>
                             ))}
                         </ul>
                         <div className="py-3 flex items-center justify-center border-l border-white/20">
-                            <div className="cursor-pointer">
-                                <AccountAddBtn onClick={() => {}} />
-                            </div>
+                            {/* <div className="cursor-pointer"> */}
+                            {/*     <AccountAddBtn onClick={() => {}} /> */}
+                            {/* </div> */}
                         </div>
                     </div>
                 ))}

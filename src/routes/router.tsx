@@ -92,11 +92,11 @@ export const routes = [
                             },
                         ],
                     },
+                    {
+                        path: 'carwash/:carwashId/script-version/:id',
+                        element: <AdminScriptVersion />,
+                    },
                 ],
-            },
-            {
-                path: 'script-version/:id',
-                element: <AdminScriptVersion />,
             },
         ],
     },
