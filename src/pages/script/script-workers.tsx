@@ -5,6 +5,7 @@ import DialogLayout from '@/components/layouts/dialog-layout';
 import AssignWorkerDialog from '@/components/molecules/scripts/assign-worker-dialog';
 import ScriptCheckboxSkeleton from '@/components/molecules/scripts/script-checkbox-skeleton';
 import { useScriptBoxes } from '@/lib/hooks/boxes/use-script-boxes';
+import { useScripts } from '@/lib/hooks/scripts/use-scripts';
 import useToggle from '@/lib/hooks/utils/use-toggle';
 import { useAssignedScriptWorkers } from '@/lib/hooks/workers/use-assigned-script-workers';
 import { useCarWashWorkers } from '@/lib/hooks/workers/use-carwash-workers';
@@ -28,6 +29,16 @@ export default function ScriptWorkers() {
     const [currentWorker, setCurrentWorker] = useState<ScriptWorker | null>(
         null
     );
+
+    const { data: scripts, isLoading: scriptsLoading } = useScripts(
+        Number(carwashId)
+    );
+
+    const currentScript = scripts?.data.find(
+        (script) => script.script_id === Number(id)
+    );
+
+    const isReady = currentScript?.script_status === 'Готов';
 
     const {
         data: selectedWorkers,
@@ -94,7 +105,8 @@ export default function ScriptWorkers() {
         isLoadingSelectedWorkers ||
         isLoadingAllWorkers ||
         isLoadingAssignedWorkers ||
-        isLoadingAllBoxes
+        isLoadingAllBoxes ||
+        scriptsLoading
     )
         return <ScriptCheckboxSkeleton />;
     if (
@@ -140,6 +152,7 @@ export default function ScriptWorkers() {
                                         onBlur={() => {}}
                                         key={workerName}
                                         isChecked={isChecked}
+                                        readonly={isReady === true}
                                     >
                                         {workerName}
                                     </ScriptCheckbox>
@@ -154,13 +167,14 @@ export default function ScriptWorkers() {
                                                 assignmentId={
                                                     boxItem.assignmentId
                                                 }
+                                                readonly={isReady === true}
                                             />
                                         ))}
                                     </div>
                                 )}
                             </div>
 
-                            {isSelected && (
+                            {isSelected && isReady === false && (
                                 <button
                                     onClick={() =>
                                         handleDialogClick(workerName)
@@ -175,12 +189,14 @@ export default function ScriptWorkers() {
                 })}
             </div>
 
-            <SecondaryBtn
-                onClick={handleClick}
-                className="mt-6 py-2 rounded-lg"
-            >
-                Сохранить
-            </SecondaryBtn>
+            {isReady === false && (
+                <SecondaryBtn
+                    onClick={handleClick}
+                    className="mt-6 py-2 rounded-lg"
+                >
+                    Сохранить
+                </SecondaryBtn>
+            )}
 
             <DialogLayout
                 title="Добавление сотрудника в бокс"

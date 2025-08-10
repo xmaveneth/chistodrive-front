@@ -9,11 +9,9 @@ import ScriptRow from '@/components/molecules/admin/script-row';
 import ScriptVersionRow from '@/components/molecules/admin/script-version-row';
 import TableHead from '@/components/molecules/admin/table-head';
 import { useScripts } from '@/lib/hooks/scripts/use-scripts';
-import { useLocalStorage } from '@/lib/hooks/utils/use-local-storage';
 import useToggle from '@/lib/hooks/utils/use-toggle';
 import { Script, ScriptVersion } from '@/lib/types/scripts';
-import { createScriptNameMap, createScriptVersionNameMap } from '@/lib/utils/create-script-name-map';
-import { useEffect, useMemo, useState } from 'react';
+import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 export default function AdminScripts() {
@@ -29,17 +27,6 @@ export default function AdminScripts() {
     const { data: scripts, isLoading } = useScripts(parsedId);
     const [selectedScript, setSelectedScript] = useState<Script | null>(null);
     const [selectedScriptVersion, setSelectedScriptVersion] = useState<ScriptVersion | null>(null);
-
-    const [, setScriptNamesMap] = useLocalStorage<Record<number, string>>('script_names_map', {});
-    const [, setScriptVersionNamesMap] = useLocalStorage<Record<number, string>>('script_version_names_map', {});
-
-    const scriptMap = useMemo(() => createScriptNameMap(scripts), [scripts]);
-    const scriptVersionMap = useMemo(() => createScriptVersionNameMap(scripts), [scripts]);
-    
-    useEffect(() => {
-        setScriptNamesMap(scriptMap);
-        setScriptVersionNamesMap(scriptVersionMap);
-    }, [scriptMap, isLoading]);
 
     return (
         <div className="overflow-auto scrollbar-hidden text-xs sm:text-base">

@@ -7,6 +7,7 @@ import DeleteIntervalDialog from '@/components/molecules/scripts/delete-interval
 import UpdateIntervalDialog from '@/components/molecules/scripts/update-interval-dialog';
 import ScriptTableRow from '@/components/organisms/scripts/script-table-row';
 import { useScriptIntervals } from '@/lib/hooks/scripts/use-script-intervals';
+import { useScripts } from '@/lib/hooks/scripts/use-scripts';
 import useMediaQuery from '@/lib/hooks/utils/use-media-query';
 import { Interval, ServiceWithIntervals } from '@/lib/types/intervals';
 import { formatTimeToHHMM } from '@/lib/utils/format-date';
@@ -18,7 +19,7 @@ import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 export default function ScriptIntervals() {
-    const { id } = useParams<{ id: string }>();
+    const { id, carwashId } = useParams<{ id: string; carwashId: string }>();
     const { data, isLoading } = useScriptIntervals(Number(id));
     const isMobile = useMediaQuery('(max-width: 640px)');
     const [currentVehicleInterval, setCurrentVehicleInterval] = useState(0);
@@ -38,7 +39,17 @@ export default function ScriptIntervals() {
             index: idx,
         })) ?? [];
 
-    if (isLoading) return <IntervalSkeleton />;
+    const { data: scripts, isLoading: scriptsLoading } = useScripts(
+        Number(carwashId)
+    );
+
+    const currentScript = scripts?.data.find(
+        (script) => script.script_id === Number(id)
+    );
+
+    const isReady = currentScript?.script_status === 'Готов';
+
+    if (isLoading || scriptsLoading) return <IntervalSkeleton />;
 
     if (data == null) return null;
 
@@ -90,17 +101,20 @@ export default function ScriptIntervals() {
                                                     onEdit={
                                                         setSelectIntervalForUpdate
                                                     }
+                                                    readonly={isReady === true}
                                                 />
-                                                <div className="py-3 mt-1 w-188 sm:w-290">
-                                                    <AccountAddBtn
-                                                        onClick={() =>
-                                                            setSelectServiceWithIntervals(
-                                                                service
-                                                            )
-                                                        }
-                                                        className="sticky left-40 sm:left-52 mx-0 z-20 ml-40"
-                                                    />
-                                                </div>
+                                                {isReady === false && (
+                                                    <div className="py-3 mt-1 w-188 sm:w-290">
+                                                        <AccountAddBtn
+                                                            onClick={() =>
+                                                                setSelectServiceWithIntervals(
+                                                                    service
+                                                                )
+                                                            }
+                                                            className="sticky left-40 sm:left-52 mx-0 z-20 ml-40"
+                                                        />
+                                                    </div>
+                                                )}
                                             </div>
                                         )
                                     )}
@@ -156,4 +170,3 @@ export default function ScriptIntervals() {
         </div>
     );
 }
-

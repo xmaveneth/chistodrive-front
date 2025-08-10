@@ -5,11 +5,13 @@ import { useParams } from 'react-router-dom';
 type ScriptUnassignWorkerProps = {
     boxName: string;
     assignmentId: number;
+    readonly?: boolean;
 };
 
 export default function ScriptUnassignWorker({
     boxName,
     assignmentId,
+    readonly = false
 }: ScriptUnassignWorkerProps) {
     const { id } = useParams<{ id: string }>();
     const { mutate, isPending } = useUnassignScriptWorker(Number(id));
@@ -23,13 +25,13 @@ export default function ScriptUnassignWorker({
             <div className="bg-input-bg py-1 text-xs px-3 rounded-full text-text-muted">
                 {boxName}
             </div>
-            <button
+            {! readonly && <button
                 onClick={handleClick}
                 disabled={isPending}
                 className="cursor-pointer aspect-square rounded-full flex items-center justify-center bg-input-bg p-1"
             >
                 <X className="size-3.5" />
-            </button>
+            </button>}
         </div>
     );
 }

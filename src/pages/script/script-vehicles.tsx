@@ -1,6 +1,7 @@
 import SecondaryBtn from '@/components/atoms/secondary-btn';
 import ScriptCheckbox from '@/components/forms/script-checkbox';
 import ScriptCheckboxSkeleton from '@/components/molecules/scripts/script-checkbox-skeleton';
+import { useScripts } from '@/lib/hooks/scripts/use-scripts';
 import { useGetScriptVehicleTypes } from '@/lib/hooks/vehicles/use-get-script-vehicle-types';
 import { useUpdateScriptVehicleTypes } from '@/lib/hooks/vehicles/use-update-script-vehicle-types';
 import { useVehicleTypes } from '@/lib/hooks/vehicles/use-vehicle-types';
@@ -14,8 +15,18 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 export default function ScriptVehicles() {
-    const { id } = useParams<{ id: string }>();
+    const { carwashId, id } = useParams();
     const { mutate: updateVehicles } = useUpdateScriptVehicleTypes(Number(id));
+
+    const { data: scripts, isLoading: scriptsLoading } = useScripts(
+        Number(carwashId)
+    );
+
+    const currentScript = scripts?.data.find(
+        (script) => script.script_id === Number(id)
+    );
+
+    const isReady = currentScript?.script_status === 'Готов';
 
     const {
         data: selectedVehicles,
@@ -59,7 +70,7 @@ export default function ScriptVehicles() {
         }
     }
 
-    if (isLoadingSelectedVehicles || isLoadingAllVehicles)
+    if (isLoadingSelectedVehicles || isLoadingAllVehicles || scriptsLoading)
         return <ScriptCheckboxSkeleton />;
     if (selectedVehiclesError || allVehiclesError)
         return <p>Произошла ошибка загрузки типов авто, попробуйте позже</p>;
@@ -73,6 +84,7 @@ export default function ScriptVehicles() {
                         onChange={() => handleChange(vehicleName)}
                         onBlur={() => {}}
                         key={vehicleName}
+                        readonly={isReady === true}
                         isChecked={selectedVehicleNames.includes(vehicleName)}
                     >
                         {vehicleName}
@@ -80,12 +92,12 @@ export default function ScriptVehicles() {
                 ))}
             </div>
 
-            <SecondaryBtn
+            {isReady === false && <SecondaryBtn
                 onClick={handleClick}
                 className="mt-6 py-2 rounded-lg"
             >
                 Сохранить
-            </SecondaryBtn>
+            </SecondaryBtn>}
         </div>
     );
 }

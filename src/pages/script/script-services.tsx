@@ -7,6 +7,7 @@ import EditServiceParamDialog from '@/components/molecules/scripts/edit-service-
 import ScriptServiceRow from '@/components/molecules/scripts/script-service-row';
 import ScriptTableHead from '@/components/molecules/scripts/script-table-head';
 import { useGetScriptServiceParams } from '@/lib/hooks/scripts/use-get-script-service-params';
+import { useScripts } from '@/lib/hooks/scripts/use-scripts';
 import useMediaQuery from '@/lib/hooks/utils/use-media-query';
 import {
     Service,
@@ -27,7 +28,7 @@ export type ScriptService = {
 };
 
 export default function ScriptServices() {
-    const { id } = useParams<{ id: string }>();
+    const { id, carwashId } = useParams<{ id: string, carwashId: string }>();
     const { data, isLoading } = useGetScriptServiceParams(Number(id));
     const isMobile = useMediaQuery('(max-width: 640px)');
     const [selectedScriptService, setSelectedScriptService] =
@@ -39,7 +40,17 @@ export default function ScriptServices() {
     const [deleteScriptService, setDeleteScriptService] =
         useState<Service | null>(null);
 
-    if (isLoading) return <Skeleton />;
+    const { data: scripts, isLoading: scriptsLoading } = useScripts(
+        Number(carwashId)
+    );
+
+    const currentScript = scripts?.data.find(
+        (script) => script.script_id === Number(id)
+    );
+
+    const isReady = currentScript?.script_status === 'Готов';
+
+    if (isLoading || scriptsLoading) return <Skeleton />;
 
     if (data == null) return null;
 
@@ -95,13 +106,16 @@ export default function ScriptServices() {
                                     width={tableWidth - 30}
                                     index={serviceIndex + 1}
                                     scriptName={service.service_name}
-                                    onDelete={() => setDeleteScriptService(service)}
+                                    onDelete={() =>
+                                        setDeleteScriptService(service)
+                                    }
                                     onEdit={() =>
                                         setSelectedScriptService({
                                             script_service: service,
                                             vehicles: service.service_params,
                                         })
                                     }
+                                    readonly={isReady === true}
                                 >
                                     {service.service_params.map(
                                         (parameter, parameterIndex) => (
@@ -126,14 +140,14 @@ export default function ScriptServices() {
                             )
                         )}
 
-                        <div className="py-3 mt-1 w-188 sm:w-290">
+                        {isReady === false && <div className="py-3 mt-1 w-188 sm:w-290">
                             <AccountAddBtn
                                 onClick={() =>
                                     setSelectedServiceCategory(serviceCategory)
                                 }
                                 className="sticky left-40 sm:left-52 mx-0 z-20"
                             />
-                        </div>
+                        </div>}
                     </div>
                 );
             })}

@@ -9,12 +9,16 @@ import useToggle from '@/lib/hooks/utils/use-toggle';
 import useMediaQuery from '@/lib/hooks/utils/use-media-query';
 import { cn } from '@/lib/utils';
 import { useScripts } from '@/lib/hooks/scripts/use-scripts';
+import SecondaryBtn from '../atoms/secondary-btn';
+import DialogLayout from './dialog-layout';
+import LaunchScriptDialog from '../molecules/scripts/launch-script-dialog';
 
 export default function ScriptLayout() {
     const { data: isAdmin, isLoading } = useIsCurrentUserAdmin();
     const [showMenu, toggleShowMenu] = useToggle(false);
     const isMobile = useMediaQuery('(max-width: 420px)');
     const { carwashId, id } = useParams();
+    const [showModal, toggleModal] = useToggle(false);
 
     const { data: scripts, isLoading: scriptsLoading } = useScripts(
         Number(carwashId)
@@ -31,6 +35,34 @@ export default function ScriptLayout() {
         );
     }
 
+    function handleClick() {
+        toggleModal(true);
+    }
+
+    const currentScript = scripts?.data.find(
+        (script) => script.script_id === Number(id)
+    );
+
+    const isReady = currentScript?.script_status === "Готов";
+
+    const ScriptInfo = () =>
+        currentScript ? (
+            <div className="flex justify-between flex-wrap gap-3">
+                <div className="flex items-center gap-3">
+                    {currentScript.script_name}
+                    <div className="text-[0.6rem] border border-white px-1 py-0.5 w-max shrink-0 rounded-sm">
+                        {currentScript.script_status}
+                    </div>
+                </div>
+                {isReady === false && <SecondaryBtn
+                    onClick={handleClick}
+                    className="text-xs sm:text-sm md:text-base py-2 rounded-lg"
+                >
+                    Готов
+                </SecondaryBtn>}
+            </div>
+        ) : null;
+
     return (
         <>
             <div className="mb-4 xs:mb-6 text-lg sm:text-xl md:text-2xl md:mb-12">
@@ -39,9 +71,7 @@ export default function ScriptLayout() {
                         loading
                     </div>
                 ) : (
-                    (scripts?.data.find(
-                        (script) => script.script_id === Number(id)
-                    )?.script_name ?? '')
+                    <ScriptInfo />
                 )}
             </div>
             <div className="mb-4">
@@ -105,6 +135,17 @@ export default function ScriptLayout() {
             <ErrorBoundary FallbackComponent={ErrorFallback}>
                 <Outlet />
             </ErrorBoundary>
+
+            <DialogLayout
+                isOpen={showModal}
+                title="Вы уверены что хотите перевести скрипт в работу?"
+                description="После перевода скрипта в работу, он станет недоступен для редактирования"
+                closeDialog={() => toggleModal(false)}
+            >
+                <LaunchScriptDialog
+                    closeDialog={() => toggleModal(false)}
+                />
+            </DialogLayout>
         </>
     );
 }

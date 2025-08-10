@@ -4,6 +4,7 @@ import ScriptCheckboxSkeleton from '@/components/molecules/scripts/script-checkb
 import { useCarWashBoxes } from '@/lib/hooks/boxes/use-carwash-boxes';
 import { useScriptBoxes } from '@/lib/hooks/boxes/use-script-boxes';
 import { useUpdateScriptBoxes } from '@/lib/hooks/boxes/use-update-script-boxes';
+import { useScripts } from '@/lib/hooks/scripts/use-scripts';
 import {
     createAllBoxesArray,
     createSelectedBoxesArray,
@@ -15,6 +16,16 @@ import { useParams } from 'react-router-dom';
 export default function ScriptBoxes() {
     const { id, carwashId } = useParams<{ id: string, carwashId: string }>();
     const { mutate: updateBoxes } = useUpdateScriptBoxes(Number(id));
+
+    const { data: scripts, isLoading: scriptsLoading } = useScripts(
+        Number(carwashId)
+    );
+
+    const currentScript = scripts?.data.find(
+        (script) => script.script_id === Number(id)
+    );
+
+    const isReady = currentScript?.script_status === 'Готов';
 
     const {
         data: selectedBoxes,
@@ -56,7 +67,7 @@ export default function ScriptBoxes() {
         }
     }
 
-    if (isLoadingSelectedBoxes || isLoadingAllBoxes)
+    if (isLoadingSelectedBoxes || isLoadingAllBoxes || scriptsLoading)
         return <ScriptCheckboxSkeleton />;
     if (selectedBoxesError || allBoxesError)
         return <p>Произошла ошибка загрузки боксов, попробуйте позже</p>;
@@ -71,18 +82,19 @@ export default function ScriptBoxes() {
                         onBlur={() => {}}
                         key={boxName}
                         isChecked={selectedboxNames.includes(boxName)}
+                        readonly={isReady === true}
                     >
                         {boxName}
                     </ScriptCheckbox>
                 ))}
             </div>
 
-            <SecondaryBtn
+            {isReady === false && <SecondaryBtn
                 onClick={handleClick}
                 className="mt-6 py-2 rounded-lg"
             >
                 Сохранить
-            </SecondaryBtn>
+            </SecondaryBtn>}
         </div>
     );
 }

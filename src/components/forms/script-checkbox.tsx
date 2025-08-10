@@ -7,6 +7,7 @@ type ScriptCheckboxProps = {
     onChange: (event: { target: { name: string; value: boolean } }) => void;
     onBlur: (event: React.FocusEvent) => void;
     isChecked?: boolean;
+    readonly?: boolean;
 };
 
 export default function ScriptCheckbox({
@@ -15,6 +16,7 @@ export default function ScriptCheckbox({
     onChange,
     onBlur,
     isChecked = false,
+    readonly = false,
 }: ScriptCheckboxProps) {
     return (
         <Field>
@@ -25,7 +27,8 @@ export default function ScriptCheckbox({
                     onChange={(checked) =>
                         onChange({ target: { name, value: checked } })
                     }
-                    className="group block size-4 rounded-sm border border-btn-bg shrink-0 mt-0.5"
+                    disabled={readonly}
+                    className="data-disabled:opacity-50 group block size-4 rounded-sm border border-btn-bg shrink-0 mt-0.5"
                 >
                     <ChevronDownIcon className="text-white opacity-0 group-data-[checked]:opacity-100" />
                 </Checkbox>

@@ -96,6 +96,7 @@ export default function Slider() {
                                 (carwash: FetchedCarwash | null, index) =>
                                     carwash != null ? (
                                         <CarwashCard
+                                            id={carwash.id}
                                             key={`carswash-${index}`}
                                             imgPath={carwash.img}
                                             rating={carwash.rating}
@@ -103,7 +104,6 @@ export default function Slider() {
                                             address={carwash.location}
                                             description={carwash.description}
                                             price={carwash.price}
-                                            url={carwash.url}
                                         />
                                     ) : null
                             )}

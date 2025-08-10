@@ -2,6 +2,7 @@ import { cn } from '@/lib/utils/cn';
 import { ArrowUpRightIcon } from '@heroicons/react/16/solid';
 import { MapPinIcon, StarIcon } from '@heroicons/react/24/solid';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 export type CarwashCardProps = {
     imgPath: string;
@@ -10,7 +11,7 @@ export type CarwashCardProps = {
     address: string;
     description: string;
     price: number;
-    url: string;
+    id: number;
 };
 
 export default function CarwashCard({
@@ -20,7 +21,7 @@ export default function CarwashCard({
     address,
     description,
     price,
-    url
+    id
 }: CarwashCardProps) {
     const [isLoading, setIsLoading] = useState(true);
 
@@ -38,7 +39,7 @@ export default function CarwashCard({
                 />
                 {isLoading && (
                     <div className="inset-0 absolute z-10 flex items-center justify-center">
-                        <span className='card-loader'></span>
+                        <span className="card-loader"></span>
                     </div>
                 )}
             </div>
@@ -48,7 +49,9 @@ export default function CarwashCard({
                     {address && address}
                 </p>
                 <div className="flex items-center mb-3">
-                    <div className="text-xs sm:text-sm mr-1.5">{rating}</div>
+                    <div className="text-xs sm:text-sm mr-1.5">
+                        {rating.toFixed(1)}
+                    </div>
                     {Array.from({ length: 5 }, (_, index) => (
                         <StarIcon
                             key={index}
@@ -62,19 +65,20 @@ export default function CarwashCard({
                     ))}
                 </div>
                 <p className="mb-2.5 text-lg sm:text-xl">{name}</p>
-                <p className="mb-2.5 text-xs sm:text-sm text-white/70 min-h-26 sm:min-h-30">{description}</p>
+                <p className="mb-2.5 text-xs sm:text-sm text-white/70 min-h-26 sm:min-h-30">
+                    {description}
+                </p>
                 <p className="mb-2.5 text-sm sm:text-base">
                     от{' '}
                     <span className="text-2xl ml-1 text-btn-bg">{price} ₽</span>
                 </p>
-                <a
-                    href={url}
-                    target="_blank"
+                <Link
+                    to={`/carwash/${id}`}
                     className="flex items-center justify-between gap-1 text-xs sm:text-sm text-white/70 hover:ring-1 hover:ring-btn-bg/50 rounded-sm p-1 transition-all duration-300 ease"
                 >
                     Узнать подробнее
                     <ArrowUpRightIcon className="size-4 sm:size-5 text-btn-bg shrink-0" />
-                </a>
+                </Link>
             </div>
         </div>
     );

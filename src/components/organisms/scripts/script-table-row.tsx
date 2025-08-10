@@ -12,6 +12,7 @@ type ScriptTableRowType = {
     tableWidth: number;
     onDelete: (value: React.SetStateAction<Interval | null>) => void;
     onEdit: (value: React.SetStateAction<Interval | null>) => void;
+    readonly?: boolean;
 };
 export default function ScriptTableRow({
     service,
@@ -19,6 +20,7 @@ export default function ScriptTableRow({
     tableWidth,
     onDelete,
     onEdit,
+    readonly = false
 }: ScriptTableRowType) {
     return (
         <div className={cn('scrollbar-hidden overflow-x-auto')}>
@@ -44,6 +46,7 @@ export default function ScriptTableRow({
                     width={tableWidth - 30}
                     onDelete={() => onDelete(interval)}
                     onEdit={() => onEdit(interval)}
+                    readonly={readonly}
                 >
                     <div className="flex-1 flex items-center justify-center">
                         {`${formatTimeToHHMM(

@@ -109,7 +109,7 @@ export async function addScriptService(
 export async function launchScript(
     script_id: number,
 ): Promise<string> {
-    const response = await axiosInstance.post<string>(
+    const response = await axiosInstance.patch<string>(
         `/api/script/${script_id}/to_ready`,
         null
     );
