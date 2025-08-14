@@ -9,9 +9,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { AxiosError } from 'axios';
 import { Button } from '@headlessui/react';
 import { useAuthContext } from '@/lib/hooks/context/use-auth-context';
-import Cookies from 'js-cookie';
 import notify from '@/lib/utils/notify';
 import { QUERY_KEYS } from '@/lib/constants/queryKeys';
+import setAccessToken from '@/lib/utils/set-access-token';
 
 const loginSchema = z.object({
     telephone: z
@@ -24,8 +24,9 @@ type LoginFormInputs = z.infer<typeof loginSchema>;
 
 type LoginProps = {
     onClick: () => void;
+    onForgotPasswordClick: () => void;
 };
-export default function Login({ onClick }: LoginProps) {
+export default function Login({ onClick, onForgotPasswordClick }: LoginProps) {
     const queryClient = useQueryClient();
     const { toggleLoginDialog } = useAuthContext();
 
@@ -41,16 +42,11 @@ export default function Login({ onClick }: LoginProps) {
     const mutation = useMutation({
         mutationFn: loginUser,
         onSuccess: (data) => {
-            Cookies.set('access_token', data.access_token, {
-                secure: true,
-                sameSite: 'Strict',
-            });
-            Cookies.set('refresh_token', data.refresh_token, {
-                secure: true,
-                sameSite: 'Strict',
-            });
+            setAccessToken(data);
 
-            queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CURRENT_USER] });
+            queryClient.invalidateQueries({
+                queryKey: [QUERY_KEYS.CURRENT_USER],
+            });
             setTimeout(() => {
                 notify('Добро пожаловать!');
                 toggleLoginDialog(false);
@@ -91,13 +87,24 @@ export default function Login({ onClick }: LoginProps) {
                 shouldFocus
             />
 
-            <PasswordField
-                label="Пароль"
-                error={errors.password?.message}
-                registration={register('password')}
-            />
+            <div>
+                <PasswordField
+                    label="Пароль"
+                    error={errors.password?.message}
+                    registration={register('password')}
+                />
 
-            <PrimaryBtn type="submit" className="w-full">
+                <Button
+                    onClick={onForgotPasswordClick}
+                    className="underline mt-2 text-xs ml-2 underline-offset-3 text-center cursor-pointer"
+                >
+                    Забыли пароль?
+                </Button>
+            </div>
+            <PrimaryBtn
+                type="submit"
+                className="w-full"
+            >
                 Войти
             </PrimaryBtn>
 

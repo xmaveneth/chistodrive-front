@@ -8,13 +8,16 @@ import { CityProvider } from '@/lib/providers/city-provider';
 import { ErrorBoundary } from 'react-error-boundary';
 import { Outlet, ScrollRestoration } from 'react-router-dom';
 import { ToastContainer, Zoom } from 'react-toastify';
+import RestorePassword from '../organisms/home/restore-password';
 
 export function RootLayout() {
     const {
         showLoginDialog,
         showSignupDialog,
+        showForgotPasswordDialog,
         toggleLoginDialog,
         toggleSignupDialog,
+        toggleForgotPasswordDialog,
     } = useAuthContext();
 
     return (
@@ -29,6 +32,15 @@ export function RootLayout() {
             </div>
 
             <DialogLayout
+                title="Восстановление пароля"
+                description="Подтвердите свой емаил для того, чтобы восстановить пароль к вашему аккаунту"
+                isOpen={showForgotPasswordDialog}
+                closeDialog={() => toggleForgotPasswordDialog(false)}
+            >
+                <RestorePassword />
+            </DialogLayout>
+
+            <DialogLayout
                 title="Авторизация"
                 description="Войдите в свой аккаунт на сайте"
                 isOpen={showLoginDialog}
@@ -38,6 +50,10 @@ export function RootLayout() {
                     onClick={() => {
                         toggleLoginDialog(false);
                         toggleSignupDialog(true);
+                    }}
+                    onForgotPasswordClick={() => {
+                        toggleLoginDialog(false);
+                        toggleForgotPasswordDialog(true);
                     }}
                 />
             </DialogLayout>

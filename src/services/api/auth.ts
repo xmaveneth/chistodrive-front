@@ -93,7 +93,6 @@ export const resendEmailCode = async ({ user_uuid }: { user_uuid: string }) => {
     return response.data;
 };
 
-
 export const resendSmsCode = async ({ user_uuid }: { user_uuid: string }) => {
     const response = await axiosInstance.post(
         'api/auth/v2.0/resend_phone_code',
@@ -102,6 +101,41 @@ export const resendSmsCode = async ({ user_uuid }: { user_uuid: string }) => {
             params: {
                 user_uuid,
             },
+        }
+    );
+    return response.data;
+};
+
+export const sendPasswordResetEmail = async ({ email }: { email: string }) => {
+    const response = await axiosInstance.post(
+        'api/auth/v2.0/send_restore_email',
+        {},
+        {
+            params: {
+                email,
+            },
+        }
+    );
+    return response.data;
+};
+
+export type ResetPasswordInput = {
+    token: string;
+    password: string;
+    confirm_password: string;
+};
+
+export const resetPassword = async ({
+    token,
+    password,
+    confirm_password,
+}: ResetPasswordInput) => {
+    const response = await axiosInstance.post(
+        'api/auth/v2.0/restore_password',
+        {
+            token,
+            password,
+            confirm_password,
         }
     );
     return response.data;
