@@ -1,4 +1,5 @@
 import { User } from '@/lib/types/user';
+import { FinalSignupResponseType } from '@/lib/utils/set-access-token';
 import { axiosInstance } from '@/services/api/axios-instance';
 import axios from 'axios';
 
@@ -29,21 +30,80 @@ export const loginUser = async ({ telephone, password }: LoginCredentials) => {
 
 type SignupCredentials = {
     name: string;
+    email: string;
     telephone: string;
     password: string;
 };
 
+type SignupResposeResponse = {
+    uuid: string;
+};
+
 export const signupUser = async ({
     name,
+    email,
     telephone,
     password,
-}: SignupCredentials) => {
-    const response = await axiosInstance.post('api/auth/registration', {
+}: SignupCredentials): Promise<SignupResposeResponse> => {
+    const response = await axiosInstance.post('api/auth/v2.0/registration', {
         name,
+        email,
         telephone,
         password,
     });
 
+    return response.data;
+};
+
+export type ValidateSingupCodeType = {
+    sms_code: string;
+    email_code: string;
+    user_uuid: string;
+};
+
+export const validateSignupCode = async ({
+    sms_code,
+    email_code,
+    user_uuid,
+}: ValidateSingupCodeType): Promise<FinalSignupResponseType> => {
+    const response = await axiosInstance.post(
+        'api/auth/v2.0/final_registration',
+        {},
+        {
+            params: {
+                sms_code,
+                email_code,
+                user_uuid,
+            },
+        }
+    );
+    return response.data;
+};
+
+export const resendEmailCode = async ({ user_uuid }: { user_uuid: string }) => {
+    const response = await axiosInstance.post(
+        'api/auth/v2.0/resend_email_code',
+        {},
+        {
+            params: {
+                user_uuid,
+            },
+        }
+    );
+    return response.data;
+};
+
+
+export const resendSmsCode = async ({ user_uuid }: { user_uuid: string }) => {
+    const response = await axiosInstance.post(
+        'api/auth/v2.0/resend_phone_code',
+        {},
+        {
+            params: {
+                user_uuid,
+            },
+        }
+    );
     return response.data;
 };
 
