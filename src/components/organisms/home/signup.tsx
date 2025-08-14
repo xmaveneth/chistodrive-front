@@ -3,23 +3,34 @@ import PasswordField from '@/components/forms/password-field';
 import TextField from '@/components/forms/text-field';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
-import { signupUser } from '@/services/api/auth';
+import {
+    resendEmailCode,
+    resendSmsCode,
+    signupUser,
+    validateSignupCode,
+    ValidateSingupCodeType,
+} from '@/services/api/auth';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AxiosError } from 'axios';
-import { Button } from '@headlessui/react';
+import { Button, Transition } from '@headlessui/react';
 import { useNavigate } from 'react-router-dom';
 import CheckboxField from '@/components/forms/checkbox-field';
 import { useAuthContext } from '@/lib/hooks/context/use-auth-context';
-import Cookies from 'js-cookie';
 import notify from '@/lib/utils/notify';
 import { QUERY_KEYS } from '@/lib/constants/queryKeys';
-const signupSchema = z
+import setAccessToken, {
+    FinalSignupResponseType,
+} from '@/lib/utils/set-access-token';
+import { useState } from 'react';
+import SecondaryBtn from '@/components/atoms/secondary-btn';
+const initialFormSchema = z
     .object({
         name: z.string().min(1, 'Введите имя'),
         telephone: z
             .string()
             .regex(/^\+?\d{10,15}$/, 'Введите правильный номер телефона'),
+        email: z.string().email('Введите правильный email'),
         password: z
             .string()
             .min(6, 'Пароль должен содержать минимум 6 символов'),
@@ -40,7 +51,13 @@ const signupSchema = z
         path: ['confirmPassword'],
     });
 
-export type SignupFormInputs = z.infer<typeof signupSchema>;
+const finalFormSchema = z.object({
+    smsCode: z.string().min(1, 'Введите код из смс'),
+    emailCode: z.string().min(1, 'Введите код из email'),
+});
+
+export type InitialFormInputs = z.infer<typeof initialFormSchema>;
+export type FinalFormInputs = z.infer<typeof finalFormSchema>;
 
 type SignupProps = {
     onClick: () => void;
@@ -50,120 +67,289 @@ export default function Signup({ onClick }: SignupProps) {
     const queryClient = useQueryClient();
     const navigate = useNavigate();
     const { toggleSignupDialog } = useAuthContext();
+    const [userUUID, setUserUUID] = useState<string | null>(null);
 
     const {
-        register,
-        handleSubmit,
-        formState: { errors },
-        setError,
+        register: initialFormRegister,
+        handleSubmit: initialFormSubmit,
+        formState: { errors: initialFormErrors },
+        setError: setInitialFormError,
         watch,
-    } = useForm<SignupFormInputs>({
-        resolver: zodResolver(signupSchema),
+    } = useForm<InitialFormInputs>({
+        resolver: zodResolver(initialFormSchema),
     });
 
-    const mutation = useMutation({
-        mutationFn: ({ name, telephone, password }: SignupFormInputs) =>
-            signupUser({ name, telephone, password }),
-        onSuccess: (data) => {
-             Cookies.set('access_token', data.access_token, {
-                secure: true,
-                sameSite: 'Strict',
-            });
-            Cookies.set('refresh_token', data.refresh_token, {
-                secure: true,
-                sameSite: 'Strict',
-            });
+    const {
+        register: finalFormRegister,
+        handleSubmit: finalFormSubmit,
+        formState: { errors: finalFormErrors },
+        setError: setFinalFormError,
+    } = useForm<FinalFormInputs>({
+        resolver: zodResolver(finalFormSchema),
+    });
 
-            queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CURRENT_USER] });
-         
-            setTimeout(() => {
-                navigate('/account');
-                notify("Пользователь успешно зарегистрирован!");
-                toggleSignupDialog(false);
-            }, 500);
+    function handleSignupSuccess(finalSignupResponse: FinalSignupResponseType) {
+        setAccessToken(finalSignupResponse);
+
+        queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CURRENT_USER] });
+
+        setTimeout(() => {
+            navigate('/account');
+            notify('Пользователь успешно зарегистрирован!');
+            toggleSignupDialog(false);
+        }, 500);
+    }
+
+    const submitInitialFormRequest = useMutation({
+        mutationFn: ({ name, email, telephone, password }: InitialFormInputs) =>
+            signupUser({ name, email, telephone, password }),
+        onSuccess: (data) => {
+            setUserUUID(data.uuid);
         },
         onError: (error: unknown) => {
             if (error instanceof AxiosError && error.response) {
-                const detail = error.response.data?.detail;
-                setError('telephone', {
+                const detail = error.response.data?.ru_message;
+                setInitialFormError('telephone', {
                     message:
                         typeof detail === 'string'
                             ? detail
                             : 'Ошибка регистрации. Попробуйте позже.',
                 });
             } else {
-                setError('telephone', {
+                setInitialFormError('telephone', {
                     message: 'Ошибка регистрации. Попробуйте позже.',
                 });
             }
         },
     });
 
-    const onSubmit = (data: SignupFormInputs) => {
-        mutation.mutate(data);
+    const submitFinalFormRequest = useMutation({
+        mutationFn: ({
+            sms_code,
+            email_code,
+            user_uuid,
+        }: ValidateSingupCodeType) =>
+            validateSignupCode({
+                sms_code,
+                email_code,
+                user_uuid,
+            }),
+        onSuccess: (data) => {
+            handleSignupSuccess(data);
+        },
+        onError: (error: unknown) => {
+            if (error instanceof AxiosError && error.response) {
+                const detail = error.response.data?.ru_message;
+                setFinalFormError('smsCode', {
+                    message:
+                        typeof detail === 'string'
+                            ? detail
+                            : 'Ошибка валидации кода. Попробуйте позже.',
+                });
+            } else {
+                setFinalFormError('smsCode', {
+                    message: 'Ошибка валидации кода. Попробуйте позже.',
+                });
+            }
+        },
+    });
+
+    const submitResendEmailCodeRequest = useMutation({
+        mutationFn: ({ user_uuid }: { user_uuid: string }) =>
+            resendEmailCode({ user_uuid }),
+        onSuccess: (data) => {
+            notify(data.ru_message);
+        },
+        onError: (error: unknown) => {
+            if (error instanceof AxiosError && error.response) {
+                const detail = error.response.data?.ru_message;
+                setFinalFormError('emailCode', {
+                    message:
+                        typeof detail === 'string'
+                            ? detail
+                            : 'Ошибка регистрации. Попробуйте позже.',
+                });
+            } else {
+                setFinalFormError('emailCode', {
+                    message: 'Ошибка регистрации. Попробуйте позже.',
+                });
+            }
+        },
+    });
+
+    const submitResendSmsCodeRequest = useMutation({
+        mutationFn: ({ user_uuid }: { user_uuid: string }) =>
+            resendSmsCode({ user_uuid }),
+        onSuccess: (data) => {
+            notify(data.ru_message);
+        },
+        onError: (error: unknown) => {
+            if (error instanceof AxiosError && error.response) {
+                const detail = error.response.data?.ru_message;
+                setFinalFormError('smsCode', {
+                    message:
+                        typeof detail === 'string'
+                            ? detail
+                            : 'Ошибка регистрации. Попробуйте позже.',
+                });
+            } else {
+                setFinalFormError('smsCode', {
+                    message: 'Ошибка регистрации. Попробуйте позже.',
+                });
+            }
+        },
+    });
+
+    const onInitialFormSubmit = (data: InitialFormInputs) => {
+        submitInitialFormRequest.mutate(data);
+    };
+
+    const onValidationSubmit = (data: FinalFormInputs) => {
+        if (!userUUID) return;
+        submitFinalFormRequest.mutate({
+            sms_code: data.smsCode,
+            email_code: data.emailCode,
+            user_uuid: userUUID,
+        });
+    };
+
+    const onSubmitResendEmail = () => {
+        if (!userUUID) return;
+        submitResendEmailCodeRequest.mutate({
+            user_uuid: userUUID,
+        });
+    };
+
+    const onSubmitResendSms = () => {
+        if (!userUUID) return;
+        submitResendSmsCodeRequest.mutate({
+            user_uuid: userUUID,
+        });
     };
 
     return (
-        <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="space-y-4 text-sm mt-3"
-        >
-            <TextField
-                registration={register('name')}
-                type="text"
-                error={errors.name?.message}
-                placeholder="Ваше имя"
-                label="Ваше имя"
-                shouldFocus
-            />
+        <>
+            <Transition show={userUUID != null}>
+                <form
+                    onSubmit={finalFormSubmit(onValidationSubmit)}
+                    className="space-y-4 text-sm mt-3 transition duration-500 ease-in data-open:max-h-100 data-closed:max-h-0 data-closed:opacity-0"
+                >
+                    <TextField
+                        registration={finalFormRegister('smsCode')}
+                        type="text"
+                        error={finalFormErrors.smsCode?.message}
+                        placeholder="Введите код из смс"
+                        label="Введите код из смс"
+                        shouldFocus
+                    />
 
-            <TextField
-                registration={register('telephone')}
-                type="tel"
-                error={errors.telephone?.message}
-                placeholder="+7 (999) 999 99 99"
-                label="Телефон"
-            />
+                    <TextField
+                        registration={finalFormRegister('emailCode')}
+                        type="text"
+                        error={finalFormErrors.emailCode?.message}
+                        placeholder="Введите код из email"
+                        label="Введите код из email"
+                    />
 
-            <PasswordField
-                label="Пароль"
-                error={errors.password?.message}
-                registration={register('password')}
-            />
+                    <div className="flex items-center justify-center mt-4 gap-2">
+                        <SecondaryBtn
+                            onClick={onSubmitResendSms}
+                            type="button"
+                            className="text-xs rounded-sm mx-auto"
+                        >
+                            Повторно отправить смс
+                        </SecondaryBtn>
+                        <SecondaryBtn
+                            onClick={onSubmitResendEmail}
+                            type="button"
+                            className="text-xs rounded-sm mx-auto"
+                        >
+                            Повторно отправить email
+                        </SecondaryBtn>
+                    </div>
 
-            <PasswordField
-                label="Повторите пароль"
-                error={errors.confirmPassword?.message}
-                registration={register('confirmPassword')}
-            />
+                    <PrimaryBtn
+                        type="submit"
+                        className="w-full"
+                    >
+                        Зарегистрироваться
+                    </PrimaryBtn>
+                </form>
+            </Transition>
+            <Transition show={userUUID == null}>
+                <form
+                    onSubmit={initialFormSubmit(onInitialFormSubmit)}
+                    className="space-y-4 text-sm mt-3 transition duration-500 ease-in data-closed:opacity-0 data-open:max-h-100 data-closed:max-h-0"
+                >
+                    <TextField
+                        registration={initialFormRegister('name')}
+                        type="text"
+                        error={initialFormErrors.name?.message}
+                        placeholder="Ваше имя"
+                        label="Ваше имя"
+                        shouldFocus
+                    />
 
-            <CheckboxField
-                {...register('policy')}
-                isChecked={watch('policy')}
-                error={errors.policy?.message}
-            >
-                Я согласен на обработку моих персональных данных в соответствии
-                с Политикой конфиденциальности
-            </CheckboxField>
+                    <TextField
+                        registration={initialFormRegister('email')}
+                        type="email"
+                        error={initialFormErrors.email?.message}
+                        placeholder="Ваш emai"
+                        label="Ваш email"
+                    />
 
-            <CheckboxField
-                {...register('agreement')}
-                isChecked={watch('agreement')}
-                error={errors.agreement?.message}
-            >
-                Я принимаю условия Пользовательского соглашения
-            </CheckboxField>
+                    <TextField
+                        registration={initialFormRegister('telephone')}
+                        type="tel"
+                        error={initialFormErrors.telephone?.message}
+                        placeholder="+7 (999) 999 99 99"
+                        label="Телефон"
+                    />
 
-            <PrimaryBtn type="submit" className="w-full">
-                Зарегистрироваться
-            </PrimaryBtn>
+                    <PasswordField
+                        label="Пароль"
+                        error={initialFormErrors.password?.message}
+                        registration={initialFormRegister('password')}
+                    />
 
-            <Button
-                onClick={onClick}
-                className="underline underline-offset-3 text-center cursor-pointer w-full"
-            >
-                Уже зарегистрированы? Войти
-            </Button>
-        </form>
+                    <PasswordField
+                        label="Повторите пароль"
+                        error={initialFormErrors.confirmPassword?.message}
+                        registration={initialFormRegister('confirmPassword')}
+                    />
+
+                    <CheckboxField
+                        {...initialFormRegister('policy')}
+                        isChecked={watch('policy')}
+                        error={initialFormErrors.policy?.message}
+                    >
+                        Я согласен на обработку моих персональных данных в
+                        соответствии с Политикой конфиденциальности
+                    </CheckboxField>
+
+                    <CheckboxField
+                        {...initialFormRegister('agreement')}
+                        isChecked={watch('agreement')}
+                        error={initialFormErrors.agreement?.message}
+                    >
+                        Я принимаю условия Пользовательского соглашения
+                    </CheckboxField>
+
+                    <PrimaryBtn
+                        type="submit"
+                        className="w-full"
+                    >
+                        Продолжить
+                    </PrimaryBtn>
+
+                    <Button
+                        onClick={onClick}
+                        className="underline underline-offset-3 text-center cursor-pointer w-full"
+                    >
+                        Уже зарегистрированы? Войти
+                    </Button>
+                </form>
+            </Transition>
+        </>
     );
 }
