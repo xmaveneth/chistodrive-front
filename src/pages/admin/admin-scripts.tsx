@@ -20,13 +20,21 @@ export default function AdminScripts() {
         useToggle(false);
 
     const [showDeleteScriptDialog, toggleDeleteScriptDialog] = useToggle(false);
-    const [showDeleteScriptVersionDialog, toggleDeleteScriptVersionDialog] = useToggle(false);
+    const [showDeleteScriptVersionDialog, toggleDeleteScriptVersionDialog] =
+        useToggle(false);
 
     const { id } = useParams();
     const parsedId = Number(id);
     const { data: scripts, isLoading } = useScripts(parsedId);
     const [selectedScript, setSelectedScript] = useState<Script | null>(null);
-    const [selectedScriptVersion, setSelectedScriptVersion] = useState<ScriptVersion | null>(null);
+    const [selectedScriptVersion, setSelectedScriptVersion] =
+        useState<ScriptVersion | null>(null);
+
+    const currentScript = scripts?.data.find(
+        (script) => script.script_id === parsedId
+    );
+
+    const isReady = currentScript?.script_status === 'Готов';
 
     return (
         <div className="overflow-auto scrollbar-hidden text-xs sm:text-base">
@@ -38,7 +46,7 @@ export default function AdminScripts() {
             </TableHead>
 
             {isLoading ? (
-                <AdminSkeleton/>
+                <AdminSkeleton />
             ) : (
                 scripts &&
                 scripts.data.map((script, idx) => (
@@ -55,6 +63,7 @@ export default function AdminScripts() {
                                 setSelectedScript(script);
                                 toggleAddScriptVersionDialog(true);
                             }}
+                            readonly={isReady}
                         />
 
                         {script.versions.map((version, version_idx) => (
@@ -127,4 +136,3 @@ export default function AdminScripts() {
         </div>
     );
 }
-
