@@ -13,6 +13,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { AxiosError } from 'axios';
 import { useAuthContext } from '@/lib/hooks/context/use-auth-context';
 import notify from '@/lib/utils/notify';
+import { useNavigate } from 'react-router-dom';
 
 const initialFormSchema = z.object({
     email: z.string().email('Введите правильный email'),
@@ -34,6 +35,7 @@ export type InitialFormInputs = z.infer<typeof initialFormSchema>;
 export type FinalFormInputs = z.infer<typeof finalFormSchema>;
 
 export default function RestorePassword() {
+    const navigate = useNavigate();
     const { toggleForgotPasswordDialog, toggleLoginDialog } = useAuthContext();
 
     const urlParams = new URLSearchParams(window.location.search);
@@ -92,12 +94,15 @@ export default function RestorePassword() {
                 token,
             }),
         onSuccess: () => {
-            notify("Пароль успешно изменен!");
-            toggleLoginDialog(true);
-            toggleForgotPasswordDialog(false);
+            setTimeout(() => {
+                navigate('/');
+                notify('Пароль успешно изменен!');
+                toggleLoginDialog(true);
+                toggleForgotPasswordDialog(false);
+            }, 500);
         },
         onError: (error: unknown) => {
-            console.error(error)
+            console.error(error);
             if (error instanceof AxiosError && error.response) {
                 const detail = error.response.data?.ru_message;
                 setFinalFormError('password', {
