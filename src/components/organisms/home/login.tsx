@@ -16,9 +16,15 @@ import { saveAuthTokens } from '@/lib/utils/save-auth-tokens';
 const loginSchema = z.object({
     telephone: z
         .string()
-        .regex(/^\+?\d{10,15}$/, 'Введите правильный номер телефона'),
+        .transform((val) => val.replace(/[\s-]/g, '')),
     password: z.string().min(1, 'Введите пароль'),
 });
+
+        // .refine(
+        //     (val) => /^(?:\+7|8)\d{10}$/.test(val),
+        //     'Введите корректный номер телефона (например +7 915 123-45-67)'
+        // ),
+
 
 type LoginFormInputs = z.infer<typeof loginSchema>;
 

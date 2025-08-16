@@ -6,7 +6,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useCreateScript } from '@/lib/hooks/scripts/use-create-script';
 
 const scriptSchema = z.object({
-    name: z.string().min(1, 'Введите название скрипта'),
+    name: z
+        .string()
+        .min(1, 'Введите название скрипта')
+        .max(30, 'Название не должно превышать 30 символов'),
 });
 
 type ScriptFormInput = z.infer<typeof scriptSchema>;
@@ -34,7 +37,10 @@ export default function AddScriptDialog({
     };
 
     return (
-        <form className="my-10 space-y-2" onSubmit={handleSubmit(onSubmit)}>
+        <form
+            className="my-10 space-y-2"
+            onSubmit={handleSubmit(onSubmit)}
+        >
             <div className="space-y-2 my-8">
                 <TextField
                     registration={register('name')}
@@ -46,7 +52,11 @@ export default function AddScriptDialog({
                 />
             </div>
 
-            <PrimaryBtn type="submit" className="w-full" disabled={isPending}>
+            <PrimaryBtn
+                type="submit"
+                className="w-full"
+                disabled={isPending}
+            >
                 Добавить скрипт
             </PrimaryBtn>
 

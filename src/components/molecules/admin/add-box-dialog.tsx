@@ -6,7 +6,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useCreateCarwashBox } from '@/lib/hooks/boxes/use-create-carwash-box';
 
 const scriptSchema = z.object({
-    name: z.string().min(1, 'Введите ФИО'),
+    name: z
+        .string()
+        .min(1, 'Введите ФИО')
+        .max(30, 'Название бокса не должно превышать 30 символов'),
 });
 
 type BoxFormInput = z.infer<typeof scriptSchema>;
@@ -27,17 +30,17 @@ export default function AddBoxDialog({
         resolver: zodResolver(scriptSchema),
     });
 
-    const { mutate, isPending } = useCreateCarwashBox(
-        carWashId,
-        closeDialog
-    );
+    const { mutate, isPending } = useCreateCarwashBox(carWashId, closeDialog);
 
     const onSubmit = (data: BoxFormInput) => {
         mutate(data);
     };
 
     return (
-        <form className="my-10 space-y-2" onSubmit={handleSubmit(onSubmit)}>
+        <form
+            className="my-10 space-y-2"
+            onSubmit={handleSubmit(onSubmit)}
+        >
             <div className="space-y-2 my-8">
                 <TextField
                     registration={register('name')}
@@ -49,8 +52,12 @@ export default function AddBoxDialog({
                 />
             </div>
 
-            <PrimaryBtn type="submit" className="w-full" disabled={isPending}>
-                Добавить бокс 
+            <PrimaryBtn
+                type="submit"
+                className="w-full"
+                disabled={isPending}
+            >
+                Добавить бокс
             </PrimaryBtn>
 
             <PrimaryBtn
@@ -63,4 +70,3 @@ export default function AddBoxDialog({
         </form>
     );
 }
-

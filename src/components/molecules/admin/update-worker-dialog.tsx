@@ -8,9 +8,22 @@ import { useUpdateCarwashWorker } from '@/lib/hooks/workers/use-update-carwash-w
 
 const scriptSchema = z.object({
     id: z.number(),
-    full_name: z.string().min(1, 'Введите ФИО'),
-    job_title: z.string().min(1, 'Введите должность сотрудника'),
-    telephone: z.string().min(1, 'Введите телефон'),
+    full_name: z
+        .string()
+        .min(1, 'Введите ФИО')
+        .max(50, 'Имя не должно превышать 50 символов'),
+    job_title: z
+        .string()
+        .min(1, 'Введите должность сотрудника')
+        .max(50, 'Должность не должна превышать 50 символов'),
+    telephone: z
+        .string()
+        .min(1, 'Введите телефон')
+        .transform((val) => val.replace(/[\s-]/g, ''))
+        .refine(
+            (val) => /^(?:\+7|8)\d{10}$/.test(val),
+            'Введите корректный номер телефона (например +7 915 123-45-67)'
+        ),
 });
 
 type WorkerFormInput = z.infer<typeof scriptSchema>;
@@ -49,7 +62,10 @@ export default function UpdateWorkerDialog({
     };
 
     return (
-        <form className="my-10 space-y-2" onSubmit={handleSubmit(onSubmit)}>
+        <form
+            className="my-10 space-y-2"
+            onSubmit={handleSubmit(onSubmit)}
+        >
             <div className="space-y-2 my-8">
                 <TextField
                     registration={register('full_name')}
@@ -77,7 +93,11 @@ export default function UpdateWorkerDialog({
                 />
             </div>
 
-            <PrimaryBtn type="submit" className="w-full" disabled={isPending}>
+            <PrimaryBtn
+                type="submit"
+                className="w-full"
+                disabled={isPending}
+            >
                 Сохранить
             </PrimaryBtn>
 

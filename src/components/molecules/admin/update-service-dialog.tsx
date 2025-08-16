@@ -47,7 +47,7 @@ export default function UpdateServiceDialog({
         setServiceNameError("");
         setServiceDescriptionError("");
 
-        if (serviceName.length > 480) {
+        if (serviceName.length > 50) {
             setServiceNameError("Пожалуйста, введите более короткое название услуги");
             return;
         }
@@ -57,7 +57,7 @@ export default function UpdateServiceDialog({
             return;
         }
 
-        if (serviceDescription.length > 480) {
+        if (serviceDescription.length > 200) {
             setServiceNameError("Пожалуйста, введите более короткое описание услуги");
             return;
         }

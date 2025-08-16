@@ -11,13 +11,23 @@ import { useEffect } from 'react';
 import { VehicleType } from '@/lib/types/vehicles';
 
 const vehicleSchema = z.object({
-    brand: z.string().min(1, 'Введите марку автомобиля'),
-    model: z.string().min(1, 'Введите модель автомобиля'),
+    brand: z
+        .string()
+        .min(1, 'Введите марку автомобиля')
+        .max(20, 'Название марки не должно превышать 20 символов'),
+
+    model: z
+        .string()
+        .min(1, 'Введите модель автомобиля')
+        .max(20, 'Название модели не должно превышать 20 символов'),
     vehicle_type_id: z.number({
         required_error: 'Выберите тип транспорта',
         invalid_type_error: 'Неверный формат ID типа транспорта',
     }),
-    reg_number: z.string().min(1, 'Введите госномер'),
+    reg_number: z
+        .string()
+        .min(1, 'Введите госномер')
+        .max(12, 'Госномер не должен превышать 12 символов'),
 });
 
 type VehicleFormInput = z.infer<typeof vehicleSchema>;
@@ -47,7 +57,6 @@ export default function AddVehicleDialog({
         closeDialog
     );
 
-
     const onSubmit = (data: VehicleFormInput) => {
         createVehicle(data);
     };
@@ -70,7 +79,10 @@ export default function AddVehicleDialog({
     }, [vehicleTypeOptions.length]);
 
     return (
-        <form className="my-10 space-y-2" onSubmit={handleSubmit(onSubmit)}>
+        <form
+            className="my-10 space-y-2"
+            onSubmit={handleSubmit(onSubmit)}
+        >
             <div className="space-y-2 my-8">
                 <TextField
                     registration={register('brand')}
@@ -117,7 +129,11 @@ export default function AddVehicleDialog({
                 />
             </div>
 
-            <PrimaryBtn type="submit" className="w-full" disabled={isPending}>
+            <PrimaryBtn
+                type="submit"
+                className="w-full"
+                disabled={isPending}
+            >
                 Добавить автомобиль
             </PrimaryBtn>
 

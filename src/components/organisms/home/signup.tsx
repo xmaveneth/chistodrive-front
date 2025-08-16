@@ -24,14 +24,38 @@ import SecondaryBtn from '@/components/atoms/secondary-btn';
 import { saveAuthTokens } from '@/lib/utils/save-auth-tokens';
 const initialFormSchema = z
     .object({
-        name: z.string().min(1, 'Введите имя'),
+        name: z
+            .string()
+            .min(1, 'Данное обязательно к заполнению')
+            .max(50, 'Имя не должно превышать 50 символов')
+            .regex(
+                /^[A-Za-zА-Яа-яЁё\s-]+$/,
+                'Имя может содержать только буквы, дефис и пробел'
+            ),
         telephone: z
             .string()
-            .regex(/^\+?\d{10,15}$/, 'Введите правильный номер телефона'),
+            .transform((val) => val.replace(/[\s-]/g, ''))
+            .refine(
+                (val) => /^(?:\+7|8)\d{10}$/.test(val),
+                'Введите корректный номер телефона (например +7 915 123-45-67)'
+            ),
         email: z.string().email('Введите правильный email'),
         password: z
             .string()
-            .min(8, 'Пароль должен содержать минимум 8 символов'),
+            .min(8, 'Пароль должен содержать не менее 8 символов')
+            .regex(
+                /[a-z]/,
+                'Пароль должен содержать хотя бы одну строчную букву (a-z)'
+            )
+            .regex(
+                /[A-Z]/,
+                'Пароль должен содержать хотя бы одну заглавную букву (A-Z)'
+            )
+            .regex(/[0-9]/, 'Пароль должен содержать хотя бы одну цифру (0-9)')
+            .regex(
+                /[^a-zA-Z0-9]/,
+                'Пароль должен содержать хотя бы один спецсимвол'
+            ),
         confirmPassword: z.string().min(1, 'Повторите пароль'),
         policy: z.literal(true, {
             errorMap: () => ({
@@ -87,7 +111,9 @@ export default function Signup({ onClick, setDescription }: SignupProps) {
         resolver: zodResolver(finalFormSchema),
     });
 
-    function handleSignupSuccess(finalSignupResponse: { access_token: string }) {
+    function handleSignupSuccess(finalSignupResponse: {
+        access_token: string;
+    }) {
         saveAuthTokens(finalSignupResponse);
 
         queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CURRENT_USER] });
