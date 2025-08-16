@@ -11,6 +11,10 @@ import { useCurrentUser } from '@/lib/hooks/auth/use-current-user';
 import { ErrorBoundary } from 'react-error-boundary';
 import ErrorFallback from '@/components/organisms/shared/error-boundary';
 import ChangePassword from '../organisms/home/change-password';
+import { useMutation } from '@tanstack/react-query';
+import { changePasswordEmail } from '@/services/api/auth';
+import notify from '@/lib/utils/notify';
+import { AxiosError } from 'axios';
 
 export default function AccountLayout() {
     const { data: user, isLoading, isError } = useCurrentUser();
@@ -19,6 +23,23 @@ export default function AccountLayout() {
         useState(false);
     const [showChangePasswordDialog, setShowChangePasswordDialog] =
         useState(false);
+
+    const submitEmailCode = useMutation({
+        mutationFn: () => changePasswordEmail(),
+        onSuccess: () => {
+            setTimeout(() => {
+                notify('Код успешно отправлен вам на email!');
+            }, 500);
+        },
+        onError: (error: unknown) => {
+            if (error instanceof AxiosError && error.response) {
+                const detail = error.response.data?.ru_message;
+                notify(detail);
+            } else {
+                notify('Ошибка отправки кода. Попробуйте позже.');
+            }
+        },
+    });
 
     const isLoggedIn = !(isError || !user);
 
@@ -33,6 +54,11 @@ export default function AccountLayout() {
         );
     }
 
+    function handleOpenPasswordDialog() {
+        submitEmailCode.mutate();
+        setShowChangePasswordDialog(true);
+    }
+
     return (
         <div className="primary-px primary-py">
             <header className="flex items-center justify-center mb-6 sm:mb-10 xl:mb-12">
@@ -45,7 +71,7 @@ export default function AccountLayout() {
                 <div className="mb-4">
                     <AccountHeader
                         openDialog={() => setShowDeleteAccountDialog(true)}
-                        openChangePasswordDialog={() => setShowChangePasswordDialog(true)}
+                        openChangePasswordDialog={handleOpenPasswordDialog}
                     />
 
                     <UserData />

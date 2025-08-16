@@ -5,7 +5,7 @@ import { useLogout } from '@/lib/hooks/auth/use-logout';
 import useClickOutside from '@/lib/hooks/utils/use-click-outside';
 import useToggle from '@/lib/hooks/utils/use-toggle';
 import { Transition } from '@headlessui/react';
-import { Ellipsis, LogOut, ShieldUser, UserX } from 'lucide-react';
+import { Ellipsis, KeySquare, LogOut, ShieldUser, UserX } from 'lucide-react';
 import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -63,7 +63,7 @@ export default function AccountHeader({ openDialog, openChangePasswordDialog }: 
                             onClick={openChangePasswordDialog}
                             className="text-xs xs:text-sm"
                         >
-                            <UserX className="text-btn-bg size-4" />
+                            <KeySquare className="text-btn-bg size-4" />
                             Изменить пароль
                         </AdminItemBtn>
 
