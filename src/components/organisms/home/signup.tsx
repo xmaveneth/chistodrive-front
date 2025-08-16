@@ -19,11 +19,9 @@ import CheckboxField from '@/components/forms/checkbox-field';
 import { useAuthContext } from '@/lib/hooks/context/use-auth-context';
 import notify from '@/lib/utils/notify';
 import { QUERY_KEYS } from '@/lib/constants/queryKeys';
-import setAccessToken, {
-    FinalSignupResponseType,
-} from '@/lib/utils/set-access-token';
 import { useState } from 'react';
 import SecondaryBtn from '@/components/atoms/secondary-btn';
+import { saveAuthTokens } from '@/lib/utils/save-auth-tokens';
 const initialFormSchema = z
     .object({
         name: z.string().min(1, 'Введите имя'),
@@ -33,7 +31,7 @@ const initialFormSchema = z
         email: z.string().email('Введите правильный email'),
         password: z
             .string()
-            .min(6, 'Пароль должен содержать минимум 6 символов'),
+            .min(8, 'Пароль должен содержать минимум 8 символов'),
         confirmPassword: z.string().min(1, 'Повторите пароль'),
         policy: z.literal(true, {
             errorMap: () => ({
@@ -61,9 +59,10 @@ export type FinalFormInputs = z.infer<typeof finalFormSchema>;
 
 type SignupProps = {
     onClick: () => void;
+    setDescription: (val: boolean) => void;
 };
 
-export default function Signup({ onClick }: SignupProps) {
+export default function Signup({ onClick, setDescription }: SignupProps) {
     const queryClient = useQueryClient();
     const navigate = useNavigate();
     const { toggleSignupDialog } = useAuthContext();
@@ -88,8 +87,8 @@ export default function Signup({ onClick }: SignupProps) {
         resolver: zodResolver(finalFormSchema),
     });
 
-    function handleSignupSuccess(finalSignupResponse: FinalSignupResponseType) {
-        setAccessToken(finalSignupResponse);
+    function handleSignupSuccess(finalSignupResponse: { access_token: string }) {
+        saveAuthTokens(finalSignupResponse);
 
         queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CURRENT_USER] });
 
@@ -105,10 +104,11 @@ export default function Signup({ onClick }: SignupProps) {
             signupUser({ name, email, telephone, password }),
         onSuccess: (data) => {
             setUserUUID(data.uuid);
+            setDescription(true);
         },
         onError: (error: unknown) => {
             if (error instanceof AxiosError && error.response) {
-                const detail = error.response.data?.ru_message;
+                const detail = error.response.data?.detail;
                 setInitialFormError('telephone', {
                     message:
                         typeof detail === 'string'
@@ -162,7 +162,7 @@ export default function Signup({ onClick }: SignupProps) {
         },
         onError: (error: unknown) => {
             if (error instanceof AxiosError && error.response) {
-                const detail = error.response.data?.ru_message;
+                const detail = error.response.data?.detail?.ru_message;
                 setFinalFormError('emailCode', {
                     message:
                         typeof detail === 'string'
@@ -185,7 +185,7 @@ export default function Signup({ onClick }: SignupProps) {
         },
         onError: (error: unknown) => {
             if (error instanceof AxiosError && error.response) {
-                const detail = error.response.data?.ru_message;
+                const detail = error.response.data?.detail?.ru_message;
                 setFinalFormError('smsCode', {
                     message:
                         typeof detail === 'string'

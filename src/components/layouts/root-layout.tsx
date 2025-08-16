@@ -9,6 +9,7 @@ import { ErrorBoundary } from 'react-error-boundary';
 import { Outlet, ScrollRestoration } from 'react-router-dom';
 import { ToastContainer, Zoom } from 'react-toastify';
 import RestorePassword from '../organisms/home/restore-password';
+import { useState } from 'react';
 
 export function RootLayout() {
     const {
@@ -19,6 +20,11 @@ export function RootLayout() {
         toggleSignupDialog,
         toggleForgotPasswordDialog,
     } = useAuthContext();
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get('token');
+
+    const [isFinalSignupForm, setIsFinalSignupForm] = useState(false);
 
     return (
         <CityProvider>
@@ -33,7 +39,11 @@ export function RootLayout() {
 
             <DialogLayout
                 title="Восстановление пароля"
-                description="Подтвердите свой емаил для того, чтобы восстановить пароль к вашему аккаунту"
+                description={
+                    token
+                        ? 'Введите новый пароль'
+                        : 'Подтвердите свой емаил для того, чтобы восстановить пароль к вашему аккаунту'
+                }
                 isOpen={showForgotPasswordDialog}
                 closeDialog={() => toggleForgotPasswordDialog(false)}
             >
@@ -60,11 +70,16 @@ export function RootLayout() {
 
             <DialogLayout
                 title="Регистрация"
-                description="Заполните форму, чтобы получить доступ к сервису"
+                description={
+                    isFinalSignupForm
+                        ? 'Введите код доступа из смс и email, которые придут вам в течение 5 минут'
+                        : 'Заполните форму, чтобы получить доступ к сервису'
+                }
                 isOpen={showSignupDialog}
                 closeDialog={() => toggleSignupDialog(false)}
             >
                 <Signup
+                    setDescription={(val) => setIsFinalSignupForm(val)}
                     onClick={() => {
                         toggleLoginDialog(true);
                         toggleSignupDialog(false);

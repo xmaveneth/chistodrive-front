@@ -11,7 +11,7 @@ import { Button } from '@headlessui/react';
 import { useAuthContext } from '@/lib/hooks/context/use-auth-context';
 import notify from '@/lib/utils/notify';
 import { QUERY_KEYS } from '@/lib/constants/queryKeys';
-import setAccessToken from '@/lib/utils/set-access-token';
+import { saveAuthTokens } from '@/lib/utils/save-auth-tokens';
 
 const loginSchema = z.object({
     telephone: z
@@ -42,7 +42,7 @@ export default function Login({ onClick, onForgotPasswordClick }: LoginProps) {
     const mutation = useMutation({
         mutationFn: loginUser,
         onSuccess: (data) => {
-            setAccessToken(data);
+            saveAuthTokens(data);
 
             queryClient.invalidateQueries({
                 queryKey: [QUERY_KEYS.CURRENT_USER],
@@ -54,7 +54,7 @@ export default function Login({ onClick, onForgotPasswordClick }: LoginProps) {
         },
         onError: (error: unknown) => {
             if (error instanceof AxiosError && error.response) {
-                const detail = error.response.data?.detail;
+                const detail = error.response.data?.detail?.ru_message;
                 setError('telephone', {
                     message:
                         typeof detail === 'string'

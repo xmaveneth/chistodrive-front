@@ -1,5 +1,4 @@
 import { User } from '@/lib/types/user';
-import { FinalSignupResponseType } from '@/lib/utils/set-access-token';
 import { axiosInstance } from '@/services/api/axios-instance';
 import axios from 'axios';
 
@@ -65,7 +64,7 @@ export const validateSignupCode = async ({
     sms_code,
     email_code,
     user_uuid,
-}: ValidateSingupCodeType): Promise<FinalSignupResponseType> => {
+}: ValidateSingupCodeType): Promise<{ access_token: string }> => {
     const response = await axiosInstance.post(
         'api/auth/v2.0/final_registration',
         {},

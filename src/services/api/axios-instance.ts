@@ -8,6 +8,7 @@ export const axiosInstance = axios.create({
     headers: {
         'Content-Type': 'application/json',
     },
+    // withCredentials: true,
 });
 
 interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
@@ -65,13 +66,10 @@ axiosInstance.interceptors.response.use(
             isRefreshing = true;
 
             try {
-                const { access_token, refresh_token } = await refreshToken();
+                const { access_token } = await refreshToken();
 
                 Cookies.set('access_token', access_token, {
-                    secure: true,
-                    sameSite: 'Strict',
-                });
-                Cookies.set('refresh_token', refresh_token, {
+                    expires: 0.0104,
                     secure: true,
                     sameSite: 'Strict',
                 });
@@ -86,7 +84,6 @@ axiosInstance.interceptors.response.use(
             } catch (err) {
                 processQueue(null, err);
                 Cookies.remove('access_token');
-                Cookies.remove('refresh_token');
                 return Promise.reject(err);
             } finally {
                 isRefreshing = false;
