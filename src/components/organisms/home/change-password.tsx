@@ -1,53 +1,52 @@
 import PrimaryBtn from '@/components/atoms/primary-btn';
-import PasswordField from '@/components/forms/password-field';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
-import {
-    resetPassword,
-    ResetPasswordInput,
-} from '@/services/api/auth';
+import { changePassword, ChangePasswordInput } from '@/services/api/auth';
 import { useMutation } from '@tanstack/react-query';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AxiosError } from 'axios';
 import notify from '@/lib/utils/notify';
+import TextField from '@/components/forms/text-field';
+import PasswordField from '@/components/forms/password-field';
 
-const finalFormSchema = z
+const formSchema = z
     .object({
-        password: z
+        emailCode: z.string().min(1, 'Введите код из email'),
+        oldPassword: z.string().min(1, 'Введите текущий пароль'),
+        newPassword: z
             .string()
             .min(6, 'Пароль должен содержать минимум 6 символов'),
-        confirmPassword: z.string().min(1, 'Повторите пароль'),
+        confirmNewPassword: z.string().min(1, 'Повторите пароль'),
     })
-    .refine((data) => data.password === data.confirmPassword, {
+    .refine((data) => data.newPassword === data.confirmNewPassword, {
         message: 'Пароли не совпадают',
         path: ['confirmPassword'],
     });
 
-export type FinalFormInputs = z.infer<typeof finalFormSchema>;
+export type FormInputs = z.infer<typeof formSchema>;
 
 export default function ChangePassword() {
-    const token = "";
-
     const {
-        register: finalFormRegister,
-        handleSubmit: finalFormSubmit,
-        formState: { errors: finalFormErrors },
-        setError: setFinalFormError,
-    } = useForm<FinalFormInputs>({
-        resolver: zodResolver(finalFormSchema),
+        register,
+        handleSubmit,
+        formState: { errors },
+        setError,
+    } = useForm<FormInputs>({
+        resolver: zodResolver(formSchema),
     });
 
-
-    const submitFinalFormRequest = useMutation({
+    const submitRequest = useMutation({
         mutationFn: ({
-            password,
-            confirm_password,
-            token,
-        }: ResetPasswordInput) =>
-            resetPassword({
-                password,
-                confirm_password,
-                token,
+            current_password,
+            new_password,
+            new_password_2,
+            code,
+        }: ChangePasswordInput) =>
+            changePassword({
+                current_password,
+                new_password,
+                new_password_2,
+                code,
             }),
         onSuccess: () => {
             setTimeout(() => {
@@ -57,44 +56,59 @@ export default function ChangePassword() {
         onError: (error: unknown) => {
             if (error instanceof AxiosError && error.response) {
                 const detail = error.response.data?.ru_message;
-                setFinalFormError('password', {
+                setError('emailCode', {
                     message:
                         typeof detail === 'string'
                             ? detail
                             : 'Ошибка валидации данных. Попробуйте позже.',
                 });
             } else {
-                setFinalFormError('password', {
+                setError('emailCode', {
                     message: 'Ошибка валидации данных. Попробуйте позже.',
                 });
             }
         },
     });
 
-
-    const onFinalFormSubmit = (data: FinalFormInputs) => {
-        submitFinalFormRequest.mutate({
-            password: data.password,
-            confirm_password: data.confirmPassword,
-            token: token,
+    const onSubmit = (data: FormInputs) => {
+        submitRequest.mutate({
+            code: data.emailCode,
+            current_password: data.oldPassword,
+            new_password: data.newPassword,
+            new_password_2: data.confirmNewPassword,
         });
     };
 
     return (
         <form
-            onSubmit={finalFormSubmit(onFinalFormSubmit)}
+            onSubmit={handleSubmit(onSubmit)}
             className="space-y-4 text-sm mt-3"
         >
-            <PasswordField
-                label="Пароль"
-                error={finalFormErrors.password?.message}
-                registration={finalFormRegister('password')}
+            <TextField
+                registration={register('emailCode')}
+                type="text"
+                error={errors.emailCode?.message}
+                placeholder="Введите код из email"
+                label="Введите код из email"
+                shouldFocus
             />
 
             <PasswordField
-                label="Повторите пароль"
-                error={finalFormErrors.confirmPassword?.message}
-                registration={finalFormRegister('confirmPassword')}
+                label="Старый пароль"
+                error={errors.oldPassword?.message}
+                registration={register('oldPassword')}
+            />
+
+            <PasswordField
+                label="Новый пароль"
+                error={errors.newPassword?.message}
+                registration={register('newPassword')}
+            />
+
+            <PasswordField
+                label="Повторите новый пароль"
+                error={errors.confirmNewPassword?.message}
+                registration={register('confirmNewPassword')}
             />
 
             <PrimaryBtn
