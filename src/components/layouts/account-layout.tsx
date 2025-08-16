@@ -10,11 +10,14 @@ import UserData from '@/components/molecules/account/user-data';
 import { useCurrentUser } from '@/lib/hooks/auth/use-current-user';
 import { ErrorBoundary } from 'react-error-boundary';
 import ErrorFallback from '@/components/organisms/shared/error-boundary';
+import ChangePassword from '../organisms/home/change-password';
 
 export default function AccountLayout() {
     const { data: user, isLoading, isError } = useCurrentUser();
 
     const [showDeleteAccountDialog, setShowDeleteAccountDialog] =
+        useState(false);
+    const [showChangePasswordDialog, setShowChangePasswordDialog] =
         useState(false);
 
     const isLoggedIn = !(isError || !user);
@@ -22,18 +25,27 @@ export default function AccountLayout() {
     if (isLoading) return null;
 
     if (!isLoggedIn) {
-        return <Navigate to="/" replace />;
+        return (
+            <Navigate
+                to="/"
+                replace
+            />
+        );
     }
 
     return (
         <div className="primary-px primary-py">
             <header className="flex items-center justify-center mb-6 sm:mb-10 xl:mb-12">
-                <Logo className="w-33.5 sm:w-80 xl:w-123.5" isHeading={false} />
+                <Logo
+                    className="w-33.5 sm:w-80 xl:w-123.5"
+                    isHeading={false}
+                />
             </header>
             <section className="px-4 sm:px-8 sm:pb-9 xl:pb-8 xl:px-9 xl:pt-7 pt-5 pb-7 border border-border rounded-xl">
                 <div className="mb-4">
                     <AccountHeader
                         openDialog={() => setShowDeleteAccountDialog(true)}
+                        openChangePasswordDialog={() => setShowChangePasswordDialog(true)}
                     />
 
                     <UserData />
@@ -61,6 +73,15 @@ export default function AccountLayout() {
                 <DeleteUserDialog
                     closeDialog={() => setShowDeleteAccountDialog(false)}
                 />
+            </DialogLayout>
+
+            <DialogLayout
+                title="Изменение пароля"
+                description="Введите новый и старый пароль, а также код подтверждения, который мы отправили вам на емаил"
+                isOpen={showChangePasswordDialog}
+                closeDialog={() => setShowChangePasswordDialog(false)}
+            >
+                <ChangePassword />
             </DialogLayout>
         </div>
     );

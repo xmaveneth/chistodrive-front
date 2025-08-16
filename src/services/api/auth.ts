@@ -193,3 +193,11 @@ export const changePassword = async ({
     );
     return response.data;
 };
+
+export const changePasswordEmail = async () => {
+    const response = await axiosInstance.post(
+        'api/auth/v2.0/change_password_email',
+    );
+    return response.data;
+};
+

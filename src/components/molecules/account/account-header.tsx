@@ -11,8 +11,9 @@ import { useNavigate } from 'react-router-dom';
 
 type AccountHeaderProp = {
     openDialog: () => void;
+    openChangePasswordDialog: () => void;
 };
-export default function AccountHeader({ openDialog }: AccountHeaderProp) {
+export default function AccountHeader({ openDialog, openChangePasswordDialog }: AccountHeaderProp) {
     const { mutate: logout, isPending } = useLogout();
     const [showActions, toggleActions] = useToggle(false);
     const { data: isAdmin } = useIsCurrentUserAdmin();
@@ -42,9 +43,7 @@ export default function AccountHeader({ openDialog }: AccountHeaderProp) {
                     <Ellipsis className="text-white size-6 sm:size-8" />
                 </button>
                 <Transition show={showActions}>
-                    <div
-                        className="bg-light-bg absolute top-0 right-12 sm:right-16 flex flex-wrap items-center gap-4 sm:gap-6 rounded-xl p-4 transition duration-200 ease-in data-[closed]:opacity-0 data-[closed]:scale-x-50 origin-right"
-                    >
+                    <div className="bg-light-bg absolute top-0 right-12 sm:right-16 flex flex-wrap items-center gap-4 sm:gap-6 rounded-xl p-4 transition duration-200 ease-in data-[closed]:opacity-0 data-[closed]:scale-x-50 origin-right">
                         <AdminItemBtn
                             disabled={isPending}
                             onClick={() => logout()}
@@ -60,6 +59,14 @@ export default function AccountHeader({ openDialog }: AccountHeaderProp) {
                             <UserX className="text-btn-bg size-4" />
                             Удалить аккаунт
                         </AdminItemBtn>
+                        <AdminItemBtn
+                            onClick={openChangePasswordDialog}
+                            className="text-xs xs:text-sm"
+                        >
+                            <UserX className="text-btn-bg size-4" />
+                            Изменить пароль
+                        </AdminItemBtn>
+
                         {isAdmin && (
                             <AdminItemBtn
                                 onClick={() => navigate('/admin')}

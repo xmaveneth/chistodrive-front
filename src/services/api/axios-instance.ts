@@ -8,7 +8,7 @@ export const axiosInstance = axios.create({
     headers: {
         'Content-Type': 'application/json',
     },
-    withCredentials: true,
+    // withCredentials: true,
 });
 
 interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
@@ -70,8 +70,8 @@ axiosInstance.interceptors.response.use(
 
                 Cookies.set('access_token', access_token, {
                     expires: 0.0104,
-                    secure: true,
-                    sameSite: 'Strict',
+                    secure: false,
+                    sameSite: 'Lax',
                 });
 
                 processQueue(access_token, null);
