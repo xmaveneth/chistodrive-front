@@ -168,3 +168,28 @@ export const isCurrentUserAdmin = async (): Promise<boolean> => {
         return false;
     }
 };
+
+export type ChangePasswordInput = {
+    current_password: string,
+    new_password: string,
+    new_password_2: string,
+    code: string
+};
+
+export const changePassword = async ({
+    current_password,
+    new_password,
+    new_password_2,
+    code,
+}: ChangePasswordInput) => {
+    const response = await axiosInstance.post(
+        'api/auth/v2.0/change_password',
+        {
+            current_password,
+            new_password,
+            new_password_2,
+            code,
+        }
+    );
+    return response.data;
+};
