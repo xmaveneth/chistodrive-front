@@ -91,12 +91,13 @@ export default function RestorePassword() {
                 confirm_password,
                 token,
             }),
-        onSuccess: (data) => {
-            notify(data.ru_message);
+        onSuccess: () => {
+            notify("Пароль успешно изменен!");
             toggleLoginDialog(true);
             toggleForgotPasswordDialog(false);
         },
         onError: (error: unknown) => {
+            console.error(error)
             if (error instanceof AxiosError && error.response) {
                 const detail = error.response.data?.ru_message;
                 setFinalFormError('password', {
