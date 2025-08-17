@@ -33,12 +33,16 @@ const formSchema = z
     })
     .refine((data) => data.newPassword === data.confirmNewPassword, {
         message: 'Пароли не совпадают',
-        path: ['confirmPassword'],
+        path: ['confirmNewPassword'],
     });
 
 export type FormInputs = z.infer<typeof formSchema>;
 
-export default function ChangePassword() {
+type ChangePasswordProps = {
+    closeDialog: () => void;
+};
+
+export default function ChangePassword({ closeDialog }: ChangePasswordProps) {
     const {
         register,
         handleSubmit,
@@ -65,8 +69,10 @@ export default function ChangePassword() {
             setTimeout(() => {
                 notify('Пароль успешно изменен!');
             }, 500);
+            closeDialog();
         },
         onError: (error: unknown) => {
+            console.error(error);
             if (error instanceof AxiosError && error.response) {
                 const detail = error.response.data?.ru_message;
                 setError('emailCode', {

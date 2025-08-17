@@ -107,7 +107,9 @@ export default function AccountLayout() {
                 isOpen={showChangePasswordDialog}
                 closeDialog={() => setShowChangePasswordDialog(false)}
             >
-                <ChangePassword />
+                <ChangePassword
+                    closeDialog={() => setShowChangePasswordDialog(false)}
+                />
             </DialogLayout>
         </div>
     );
