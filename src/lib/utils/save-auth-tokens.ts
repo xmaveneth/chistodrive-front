@@ -10,6 +10,11 @@ export const saveAuthTokens = ({
         secure: false,
         sameSite: 'Lax',
     });
+    Cookies.set('refresh_token', access_token, {
+        expires: 7,
+        secure: false,
+        sameSite: 'Lax',
+    });
 };
 
 export const getAccessToken = () => Cookies.get('access_token');
