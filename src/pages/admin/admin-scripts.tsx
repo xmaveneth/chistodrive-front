@@ -35,6 +35,7 @@ export default function AdminScripts() {
     );
 
     const isReady = currentScript?.script_status === 'Готов';
+    console.log(isReady, "isReady")
 
     return (
         <div className="overflow-auto scrollbar-hidden text-xs sm:text-base">
@@ -63,7 +64,6 @@ export default function AdminScripts() {
                                 setSelectedScript(script);
                                 toggleAddScriptVersionDialog(true);
                             }}
-                            readonly={isReady}
                         />
 
                         {script.versions.map((version, version_idx) => (
@@ -81,12 +81,12 @@ export default function AdminScripts() {
                 ))
             )}
 
-            <div className="py-3 mt-1 w-188 sm:w-290">
+            {! isReady && <div className="py-3 mt-1 w-188 sm:w-290">
                 <AccountAddBtn
                     onClick={() => toggleAddScriptDialog(true)}
                     className="sticky left-40 sm:left-52 mx-0 z-20"
                 />
-            </div>
+            </div>}
 
             <DialogLayout
                 title="Добавить скрипт"

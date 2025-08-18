@@ -42,7 +42,7 @@ export interface FiltersResponse {
 }
 
 export type FiltersPayload = {
-    date: string;
+    date: string | null;
     start_time: string;
     end_time: string;
     start_price: number;

@@ -28,19 +28,17 @@ export default function AdminEntries() {
     const endTime = useRef('23:00');
     const startPrice = useRef(100);
     const endPrice = useRef(9900);
-    const [date, setDate] = useState<Date | null>(new Date());
+    const [date, setDate] = useState<Date | null>(null);
     const [serviceTypeId, setServiceTypeId] = useState<number>(0);
     const [statusId, setStatudId] = useState<number>(0);
 
     function triggerSearch() {
-        if (!date) return;
-
         loadAppointments({
             start_time: startTime.current,
             end_time: endTime.current,
             start_price: startPrice.current,
             end_price: endPrice.current,
-            date: formatDateToString(date),
+            date: date ? formatDateToString(date) : null,
             service_id: serviceTypeId,
             status_id: statusId,
         });
@@ -106,14 +104,18 @@ export default function AdminEntries() {
     const TableFilters = () => (
         <div className="flex items-center gap-x-6 mb-8 flex-wrap z-40">
             <FilterField title="Дата">
-                <DatePicker
-                    locale={ru}
-                    onChange={(date) => setDate(date)}
-                    selected={date}
-                    className="w-60 mb-3 bg-input-bg rounded-full text-sm md:text-base md:py-3 md:px-6 input-field py-2 px-4"
-                    popperClassName="!z-100"
-                    dateFormat="dd/MM/yyyy"
-                />
+                <div className="mb-3">
+                    <DatePicker
+                        locale={ru}
+                        onChange={(date) => setDate(date)}
+                        selected={date}
+                        className="w-60 bg-input-bg rounded-full text-sm md:text-base md:py-3 md:px-6 input-field py-2 px-4"
+                        popperClassName="!z-100"
+                        dateFormat="dd/MM/yyyy"
+                        isClearable
+                        placeholderText="Выберите дату"
+                    />
+                </div>
             </FilterField>
 
             <FilterField title="Временной интервал">

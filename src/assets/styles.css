@@ -4,9 +4,9 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-    --font-display: 'gilroy', ui-sans-serif, system-ui, sans-serif,
-        'apple color emoji', 'segoe ui emoji', 'segoe ui symbol',
-        'noto color emoji';
+    --font-display:
+        'gilroy', ui-sans-serif, system-ui, sans-serif, 'apple color emoji',
+        'segoe ui emoji', 'segoe ui symbol', 'noto color emoji';
 
     --font-rockstar: 'Rockstar';
     --breakpoint-xs: 420px;
@@ -108,4 +108,21 @@
 
 .custom-date-input::-ms-expand {
     display: none;
+}
+
+.react-datepicker__close-icon {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin-right: 5px;
+}
+.react-datepicker__close-icon::after {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    height: 20px !important;
+    width: 20px !important;
+    font-size: 20px !important;
+    background-color: transparent !important;
+    border: 1px solid rgba(255,255,255,0.5);
 }

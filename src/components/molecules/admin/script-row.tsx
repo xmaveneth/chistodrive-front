@@ -11,17 +11,17 @@ type ScriptRowProps = {
     id: number;
     onDelete: () => void;
     onClick: () => void;
-    readonly?: boolean;
 };
 
 export default function ScriptRow({
     script,
     index,
-    readonly = false,
     onDelete,
     onClick,
     id,
 }: ScriptRowProps) {
+
+    const isReady = script.script_status === 'Готов';
     return (
         <div className="w-180 sm:w-282 text-center grid grid-cols-[60px_1fr_1fr_1fr_60px] divide-x-1 mx-4 divide-white/20 border-y border-white/20">
             <Link
@@ -32,13 +32,13 @@ export default function ScriptRow({
                 {index}
             </Link>
             <div className="py-3 flex items-center justify-center">
-                {!readonly && (
+                {isReady && (
                     <AccountAddBtn
                         onClick={onClick}
                         className="ml-3"
                     />
                 )}
-                <span className={cn(!readonly && "mr-auto")}>{script.script_name}</span>
+                <span className={cn(isReady && "mr-auto")}>{script.script_name}</span>
                 <span
                     className="ml-4"
                     aria-hidden={true}
