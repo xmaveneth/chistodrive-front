@@ -22,29 +22,23 @@ export default function Footer() {
                     />
                 </Link>
 
-                <div className="flex items-center gap-1.5 xs:gap-2.5">
+                <div className="hidden sm:flex items-center gap-1.5 xs:gap-2.5">
                     <FooterSocial url="https://vk.com/chisto.drive" html={vkSvg} />
                     <FooterSocial url="https://t.me/chisto_drive" html={tgSvg} />
                 </div>
 
                 <div className="flex items-center gap-3 sm:gap-6 md:mr-auto">
                     <Link
-                        to="/"
-                        className="block hover:underline underline-offset-4"
-                    >
-                        О сервисе
-                    </Link>
-                    <Link
                         to="/rules"
-                        className="block hover:underline underline-offset-4"
+                        className="block text-center hover:underline underline-offset-4"
                     >
-                        Правила сервиса
+                        Пользовательское соглашение
                     </Link>
                 </div>
 
                 <Link
                     to="/policy"
-                    className="text-text-muted text-sm hidden lg:block mr-2 hover:underline underline-offset-4"
+                    className="text-text-muted mr-2 text-center hover:underline underline-offset-4"
                 >
                     Политика конфиденциальности
                 </Link>

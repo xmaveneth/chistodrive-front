@@ -2,6 +2,7 @@ import { QUERY_KEYS } from '@/lib/constants/queryKeys';
 import notify from '@/lib/utils/notify';
 import { deleteCurrentUser } from '@/services/api/auth';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 
@@ -14,9 +15,23 @@ export const useDeleteUser = () => {
         onSuccess: () => {
             Cookies.remove('access_token');
             Cookies.remove('refresh_token');
-            queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CURRENT_USER] })
+            queryClient.invalidateQueries({
+                queryKey: [QUERY_KEYS.CURRENT_USER],
+            });
             navigate('/');
-            notify("Пользователь успешно удален");
+            notify('Пользователь успешно удален');
+        },
+        onError: (error: unknown) => {
+            if (error instanceof AxiosError && error.response) {
+                const detail = error.response.data?.detail?.ru_message;
+                notify(
+                    typeof detail === 'string'
+                        ? detail
+                        : 'Ошибка регистрации. Попробуйте позже.'
+                );
+            } else {
+                notify('Ошибка регистрации. Попробуйте позже.');
+            }
         },
     });
 };

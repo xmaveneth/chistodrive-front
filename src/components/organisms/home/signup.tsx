@@ -14,7 +14,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AxiosError } from 'axios';
 import { Button, Transition } from '@headlessui/react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import CheckboxField from '@/components/forms/checkbox-field';
 import { useAuthContext } from '@/lib/hooks/context/use-auth-context';
 import notify from '@/lib/utils/notify';
@@ -134,7 +134,7 @@ export default function Signup({ onClick, setDescription }: SignupProps) {
         },
         onError: (error: unknown) => {
             if (error instanceof AxiosError && error.response) {
-                const detail = error.response.data?.detail;
+                const detail = error.response.data?.detail.ru_message;
                 setInitialFormError('telephone', {
                     message:
                         typeof detail === 'string'
@@ -165,7 +165,7 @@ export default function Signup({ onClick, setDescription }: SignupProps) {
         },
         onError: (error: unknown) => {
             if (error instanceof AxiosError && error.response) {
-                const detail = error.response.data?.ru_message;
+                const detail = error.response.data?.detail.ru_message;
                 setFinalFormError('smsCode', {
                     message:
                         typeof detail === 'string'
@@ -350,7 +350,15 @@ export default function Signup({ onClick, setDescription }: SignupProps) {
                         error={initialFormErrors.policy?.message}
                     >
                         Я согласен на обработку моих персональных данных в
-                        соответствии с Политикой конфиденциальности
+                        соответствии с
+                        <Link
+                            className="inline underline underline-offset-3 text-center cursor-pointer transition hover:text-white"
+                            to="/policy"
+                            onClick={() => toggleSignupDialog(false)}
+                        >
+                            {' '}
+                            Политикой конфиденциальности
+                        </Link>
                     </CheckboxField>
 
                     <CheckboxField
@@ -358,7 +366,15 @@ export default function Signup({ onClick, setDescription }: SignupProps) {
                         isChecked={watch('agreement')}
                         error={initialFormErrors.agreement?.message}
                     >
-                        Я принимаю условия Пользовательского соглашения
+                        Я принимаю условия
+                        <Link
+                            className="inline underline underline-offset-3 text-center cursor-pointer transition hover:text-white"
+                            to="/rules"
+                            onClick={() => toggleSignupDialog(false)}
+                        >
+                            {' '}
+                            Пользовательского соглашения
+                        </Link>
                     </CheckboxField>
 
                     <PrimaryBtn
@@ -370,7 +386,7 @@ export default function Signup({ onClick, setDescription }: SignupProps) {
 
                     <Button
                         onClick={onClick}
-                        className="underline underline-offset-3 text-center cursor-pointer w-full"
+                        className="underline underline-offset-3 text-center cursor-pointer w-full transition hover:text-white"
                     >
                         Уже зарегистрированы? Войти
                     </Button>
