@@ -35,8 +35,8 @@ export default function PriceRangePicker({
     function handleChange(ranges: number[]) {
         setValues(ranges);
         onChange({
-            from: values[0],
-            to: values[1],
+            from: ranges[0],
+            to: ranges[1],
         });
     }
 

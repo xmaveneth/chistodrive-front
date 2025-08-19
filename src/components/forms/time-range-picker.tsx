@@ -46,8 +46,8 @@ export default function TimeRangePicker({
     function handleChange(ranges: number[]) {
         setValues(ranges);
         onChange({
-            from: convertToTime(values[0]),
-            to: convertToTime(values[1]),
+            from: convertToTime(ranges[0]),
+            to: convertToTime(ranges[1]),
         });
     }
 

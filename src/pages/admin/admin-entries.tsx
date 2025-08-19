@@ -177,7 +177,7 @@ export default function AdminEntries() {
         <div>
             <TableFilters />
             <div className="overflow-auto scrollbar-hidden text-xs sm:text-base">
-                <TableHead gridClass="grid-cols-[60px_1.5fr_1fr_2fr_1fr_1fr_250px_1fr_1fr_1fr_1fr_1fr_60px] w-400 sm:w-460 z-10">
+                <TableHead gridClass="grid-cols-[60px_1.5fr_1fr_1fr_2fr_1fr_250px_1fr_1fr_1fr_1fr_1fr_60px] w-400 sm:w-460 z-10">
                     <TableHeadContent />
                 </TableHead>
 
