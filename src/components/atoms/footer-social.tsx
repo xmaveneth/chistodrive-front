@@ -7,7 +7,7 @@ export default function FooterSocial({ html, url }: FooterSocialProps) {
         <a
             href={url}
             target="_blank"
-            className="flex items-center justify-center border shrink-0 size-8 rounded-full border-white/20 transition-colors duration-200 ease-in hover:bg-btn-bg/20"
+            className="flex items-center justify-center border shrink-0 size-8 xs:size-10 md:size-12 rounded-full border-white/20 transition-colors duration-200 ease-in hover:bg-btn-bg/20"
             dangerouslySetInnerHTML={{ __html: html }}
         ></a>
     );
