@@ -68,11 +68,11 @@ axiosInstance.interceptors.response.use(
             try {
                 const { access_token } = await refreshToken();
 
-                Cookies.set('access_token', access_token, {
-                    expires: 0.0104,
-                    secure: false,
-                    sameSite: 'Lax',
-                });
+                // Cookies.set('access_token', access_token, {
+                //     expires: 0.0104,
+                //     secure: false,
+                //     sameSite: 'Lax',
+                // });
 
                 processQueue(access_token, null);
 
@@ -83,7 +83,7 @@ axiosInstance.interceptors.response.use(
                 return axiosInstance(originalRequest);
             } catch (err) {
                 processQueue(null, err);
-                Cookies.remove('access_token');
+                // Cookies.remove('access_token');
                 return Promise.reject(err);
             } finally {
                 isRefreshing = false;
