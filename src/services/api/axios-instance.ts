@@ -3,7 +3,7 @@ import Cookies from 'js-cookie';
 import { refreshToken } from '@/services/api/refresh-token';
 
 export const axiosInstance = axios.create({
-    baseURL: 'https://api.chistodrive-wash.ru/',
+    baseURL: 'https://api.gyuhjnkbhjj.ru/',
     timeout: 10000,
     headers: {
         'Content-Type': 'application/json',

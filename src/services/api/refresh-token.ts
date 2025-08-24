@@ -2,7 +2,8 @@ import Cookies from 'js-cookie';
 import axios from 'axios';
 
 export const plainAxios = axios.create({
-    baseURL: 'https://api.chistodrive-wash.ru/',
+    baseURL: 'https://api.gyuhjnkbhjj.ru/',
+    withCredentials: true,
     headers: {
         'Content-Type': 'application/json',
     },

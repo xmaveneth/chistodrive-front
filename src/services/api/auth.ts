@@ -8,8 +8,9 @@ type LoginCredentials = {
 };
 
 const plainAxiosInstance = axios.create({
-    baseURL: 'https://api.chistodrive-wash.ru/',
+    baseURL: 'https://api.gyuhjnkbhjj.ru/',
     timeout: 10000,
+    withCredentials: true,
     headers: {
         'Content-Type': 'application/json',
     },
