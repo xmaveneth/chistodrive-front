@@ -40,7 +40,7 @@ export const routes = [
             { index: true, element: <Home /> },
             { path: 'search', element: <Search /> },
             { path: 'policy', element: <Policy /> },
-            { path: 'rules', element: <Rules /> },
+            { path: 'terms', element: <Rules /> },
             { path: 'carwash/:id', element: <Carwash /> },
             {
                 path: 'account',

@@ -11,7 +11,6 @@ import { Button } from '@headlessui/react';
 import { useAuthContext } from '@/lib/hooks/context/use-auth-context';
 import notify from '@/lib/utils/notify';
 import { QUERY_KEYS } from '@/lib/constants/queryKeys';
-import { saveAuthTokens } from '@/lib/utils/save-auth-tokens';
 
 const loginSchema = z.object({
     telephone: z
@@ -48,7 +47,7 @@ export default function Login({ onClick, onForgotPasswordClick }: LoginProps) {
     const mutation = useMutation({
         mutationFn: loginUser,
         onSuccess: (data) => {
-            saveAuthTokens(data);
+            // saveAuthTokens(data);
 
             queryClient.invalidateQueries({
                 queryKey: [QUERY_KEYS.CURRENT_USER],
