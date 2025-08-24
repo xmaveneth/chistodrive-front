@@ -53,7 +53,7 @@ function FooterTop() {
             </div>
             <div className="flex items-center gap-3 xs:gap-6 md:gap-8 basis-full lg:basis-auto">
                 <Link
-                    to="/rules"
+                    to="/terms"
                     className="block hover:underline underline-offset-4"
                 >
                     Пользовательское соглашение

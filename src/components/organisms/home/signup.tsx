@@ -21,7 +21,6 @@ import notify from '@/lib/utils/notify';
 import { QUERY_KEYS } from '@/lib/constants/queryKeys';
 import { useState } from 'react';
 import SecondaryBtn from '@/components/atoms/secondary-btn';
-import { saveAuthTokens } from '@/lib/utils/save-auth-tokens';
 const initialFormSchema = z
     .object({
         name: z
@@ -111,10 +110,8 @@ export default function Signup({ onClick, setDescription }: SignupProps) {
         resolver: zodResolver(finalFormSchema),
     });
 
-    function handleSignupSuccess(finalSignupResponse: {
-        access_token: string;
-    }) {
-        saveAuthTokens(finalSignupResponse);
+    function handleSignupSuccess() {
+        // saveAuthTokens(finalSignupResponse);
 
         queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CURRENT_USER] });
 
@@ -160,8 +157,8 @@ export default function Signup({ onClick, setDescription }: SignupProps) {
                 email_code,
                 user_uuid,
             }),
-        onSuccess: (data) => {
-            handleSignupSuccess(data);
+        onSuccess: () => {
+            handleSignupSuccess();
         },
         onError: (error: unknown) => {
             if (error instanceof AxiosError && error.response) {
@@ -369,7 +366,7 @@ export default function Signup({ onClick, setDescription }: SignupProps) {
                         Я принимаю условия
                         <Link
                             className="inline underline underline-offset-3 text-center cursor-pointer transition hover:text-white"
-                            to="/rules"
+                            to="/terms"
                             onClick={() => toggleSignupDialog(false)}
                         >
                             {' '}

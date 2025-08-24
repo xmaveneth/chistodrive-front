@@ -1,6 +1,5 @@
 import { User } from '@/lib/types/user';
 import { axiosInstance } from '@/services/api/axios-instance';
-import axios from 'axios';
 
 type LoginCredentials = {
     telephone: string;
@@ -21,7 +20,7 @@ export const loginUser = async ({ telephone, password }: LoginCredentials) => {
     params.append('telephone', telephone);
     params.append('password', password);
 
-    const response = await plainAxiosInstance.post('api/jwt/login', params, {
+    const response = await axiosInstance.post('api/jwt/login', params, {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     });
 
