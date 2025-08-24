@@ -46,7 +46,7 @@ export default function Login({ onClick, onForgotPasswordClick }: LoginProps) {
 
     const mutation = useMutation({
         mutationFn: loginUser,
-        onSuccess: (data) => {
+        onSuccess: () => {
             // saveAuthTokens(data);
 
             queryClient.invalidateQueries({

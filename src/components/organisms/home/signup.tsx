@@ -157,8 +157,8 @@ export default function Signup({ onClick, setDescription }: SignupProps) {
                 email_code,
                 user_uuid,
             }),
-        onSuccess: (data) => {
-            handleSignupSuccess(data);
+        onSuccess: () => {
+            handleSignupSuccess();
         },
         onError: (error: unknown) => {
             if (error instanceof AxiosError && error.response) {
