@@ -6,14 +6,13 @@ type LoginCredentials = {
     password: string;
 };
 
-const plainAxiosInstance = axios.create({
-    baseURL: 'https://api.gyuhjnkbhjj.ru/',
-    timeout: 10000,
-    withCredentials: true,
-    headers: {
-        'Content-Type': 'application/json',
-    },
-});
+// const plainAxiosInstance = axios.create({
+//     baseURL: 'https://api.chistodrive-wash.ru/',
+//     timeout: 10000,
+//     headers: {
+//         'Content-Type': 'application/json',
+//     },
+// });
 
 export const loginUser = async ({ telephone, password }: LoginCredentials) => {
     const params = new URLSearchParams();

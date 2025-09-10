@@ -1,3 +1,4 @@
+import axios from 'axios';
 import PrimaryBtn from '@/components/atoms/primary-btn';
 import PasswordField from '@/components/forms/password-field';
 import TextField from '@/components/forms/text-field';
@@ -6,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import { loginUser } from '@/services/api/auth';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { AxiosError } from 'axios';
+// import { AxiosError } from 'axios';
 import { Button } from '@headlessui/react';
 import { useAuthContext } from '@/lib/hooks/context/use-auth-context';
 import notify from '@/lib/utils/notify';
@@ -57,21 +58,36 @@ export default function Login({ onClick, onForgotPasswordClick }: LoginProps) {
                 toggleLoginDialog(false);
             }, 500);
         },
-        onError: (error: unknown) => {
-            if (error instanceof AxiosError && error.response) {
-                const detail = error.response.data?.detail?.ru_message;
+	onError: (err: unknown) => {
+            if (axios.isAxiosError(err) && err.response) {
+                const data: any = err.response.data;
+                const ru = data?.detail?.ru_message ?? data?.ru_message;
                 setError('telephone', {
-                    message:
-                        typeof detail === 'string'
-                            ? detail
-                            : 'Ошибка входа в аккаунт. Попробуйте позже.',
+                    message: typeof ru === 'string'
+                        ? ru
+                        : (err.response.status === 401
+                        ? 'Неверный логин или пароль'
+                        : 'Ошибка входа в аккаунт. Попробуйте позже.'),
                 });
-            } else {
-                setError('telephone', {
-                    message: 'Ошибка входа. Попробуйте позже.',
-                });
+                return;
             }
+            setError('telephone', { message: 'Ошибка входа. Попробуйте позже.' });
         },
+        // onError: (error: unknown) => {
+           // if (error instanceof AxiosError && error.response) {
+             //   const detail = error.response.data?.detail?.ru_message;
+               // setError('telephone', {
+                 //   message:
+                   //     typeof detail === 'string'
+                     //       ? detail
+                       //     : 'Ошибка входа в аккаунт. Попробуйте позже.',
+              //  });
+          //  } else {
+            //    setError('telephone', {
+              //      message: 'Ошибка входа. Попробуйте позже.',
+              //  });
+          //  }
+      //  },
     });
 
     const onSubmit = (data: LoginFormInputs) => {
